@@ -1,2 +1,37 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Flutter/Dart specific
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-deps
+.packages
+.pub/
+build/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/flutter_assets/
+ios/Pods/
+ios/Podfile.lock
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/app/release/
+android/.idea/
+android/local.properties
+*.iml
+
+# IDE specific
+.idea/
+.vscode/
+
+# System specific
+.DS_Store
+Thumbs.db
+
+# Others
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Configuration files
+*.env
+*.secret
