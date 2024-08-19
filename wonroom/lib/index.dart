@@ -20,15 +20,45 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Won-Room'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.help_outline),
-            onPressed: () {
-              // 고객센터 클릭 시 실행될 코드
-            },
-          ),
-        ],
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    // 검색 아이콘 클릭 시 실행될 코드
+                  },
+                ),
+              ),
+            ),
+            const Text('Won-Room'),
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.notifications),
+                      onPressed: () {
+                        // 알람 아이콘 클릭 시 실행될 코드
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.person),
+                      onPressed: () {
+                        // 마이페이지 아이콘 클릭 시 실행될 코드
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
         bottom: TabBar(
           controller: _tabController,
           tabs: const [
@@ -119,9 +149,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              _buildPlantCard('Images/plant1.png', '벤자민나무'),
-              _buildPlantCard('Images/plant2.png', '알로카시아'),
-              _buildPlantCard('Images/plant3.png', '다육식물'),
+              // _buildPlantCard('Images/plant1.png', '벤자민나무'),
+              // _buildPlantCard('Images/plant2.png', '알로카시아'),
+              // _buildPlantCard('Images/plant3.png', '다육식물'),
               // 다른 추천 식물 카드 추가 가능
             ],
           ),
