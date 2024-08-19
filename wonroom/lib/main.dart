@@ -9,7 +9,7 @@ import 'package:wonroom/myPlant.dart';
 void main() {
   runApp(const MyApp());
 }
-
+// 주석
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
