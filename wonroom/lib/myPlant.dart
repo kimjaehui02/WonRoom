@@ -64,9 +64,20 @@ class Myplant extends StatelessWidget {
                     ),
                     padding: EdgeInsets.only(top: 8, bottom: 8, right: 20, left: 20),
                     child: Text('도감1', style: TextStyle(
-                      color: Colors.white
+                        color: Colors.white
                     ),),
-                  )
+                  ),
+                  SizedBox(width: 10,),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xff595959),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding: EdgeInsets.only(top: 8, bottom: 8, right: 20, left: 20),
+                    child: Text('도감1', style: TextStyle(
+                        color: Colors.white
+                    ),),
+                  ),
                 ]
               ),
             ),
