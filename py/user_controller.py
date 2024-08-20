@@ -1,14 +1,14 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 # Blueprint flask 내에 있는 모듈
 # flask 서버 내 파일 관리를 도와주는 모듈
 import pymysql
 import json
 
-users = Blueprint("member", __name__, template_folder="templates")
+users = Blueprint("users", __name__, template_folder="templates")
 
 @users.route('/')
 def test():
-    return "member Page"
+    return "users Page"
 
 # jdbc py - db 연결
 # mysql 사용시에 pymysql
@@ -32,15 +32,15 @@ def dbtest():
         return 'fail'
 
 
-
 @users.route("/insert", methods=['POST'])
 def insert():
-    # 0. 데이터 받아주기
-    user_id = request.form.get('user_id')
-    user_pw = request.form.get('user_pw')
-    user_nick = request.form.get('user_nick')
-    user_email = request.form.get('user_email')
-    reg_date = request.form.get('reg_date')
+    # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
+    data = request.get_json()
+    user_id = data.get('user_id')
+    user_pw = data.get('user_pw')
+    user_nick = data.get('user_nick')
+    user_email = data.get('user_email')
+    reg_date = data.get('reg_date')
 
     # 1. DB 연결
     db = pymysql.connect(
@@ -68,7 +68,7 @@ def insert():
         db.commit()
     except Exception as e:
         db.rollback()  # 오류 발생 시 롤백
-        return f"Error: {str(e)}"
+        return f"Error: {str(e)}", 500  # 상태 코드 500 (서버 오류)
     finally:
         cursor.close()
         db.close()
@@ -78,154 +78,141 @@ def insert():
     else:
         return "fail"
 
-
-@users.route('/login')
-def login() :
-    json_data = []
-    # 0. 데이터 가지고 오기
-    id = request.args.get("id")
-    pw = request.args.get("pw")
-
-    # 1. DB 연결
-    db = pymysql.connect(host='localhost',user='root', password='1234', db='flutter_db',charset='utf8')
-
-    # 2. 데이터 접근을 위한 객체 - cursor
-    cursor = db.cursor()
-
-    # 3. sql문
-    sql = "select * from member where id = %(id)s and pw = %(pw)s"
-
-    # 4. sql문 실행
-    dict1 = {"id" : id, "pw" : pw}
-    cursor.execute(sql, dict1)
-
-    # 5. select문 값 받아주기
-    result = cursor.fetchall() 
-    # select 문의 결과값 모든 행을 가져오기
-    # result = cursor.fetchone() 
-    # select 문의 결과값 중 상단 1개만 가지고오기
-    # cursor.fetchmany(3)
-    # select 문의 결과값 중 n개의 데이터를 출력 
-    print(result)
-    row_header = [i[0] for i in cursor.description]
-    print(row_header)    
-    for i in result:
-        # zip() 서로 다른 리스트 하나로 묶는 내장 함수 
-        # -> 묶인 결과는 튜플 형식
-        # print(dict(zip(row_header, i)))
-        json_data.append(dict(zip(row_header, i)))
-    print(json_data)
-
-    # json.dumps(데이터)
-    data = json.dumps(json_data)
-
-    # cursor 객체는 데이터의 컬럼명..
-    # for i in cursor.description:
-    #     print(i[0])
-
-
-        
-    print(cursor.description[0])
-
-    # 튜플은 리턴이 안된다.
-    # 튜플 -> json 형식으로 바꾸어 준다
-    # 리스트 형식
-    return data
-
-
-@users.route("/update")
-def update():
-    # 0. 데이터 가지고 오기
-    id = request.args.get("id")
-    pw = request.args.get("pw")
-    age = int(request.args.get("age"))
-    name = request.args.get("name")
+@users.route("/login", methods=['POST'])
+def login():
+    # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
+    data = request.get_json()
+    user_id = data.get('user_id')
+    user_pw = data.get('user_pw')
 
     # 1. DB 연결
-    db = pymysql.connect(host='localhost', user='root', password='1234', db='flutter_db', charset='utf8')
+    db = pymysql.connect(
+        host='project-db-cgi.smhrd.com',  # URL
+        user='plant',                     # 사용자 이름
+        password='1234',                  # 비밀번호
+        db='plant',                       # 데이터베이스 이름
+        charset='utf8',                   # 인코딩
+        port=3307                         # 포트
+    )
 
-    # 2. 데이터 접근을 위한 객체 - cursor
+    # 2. 데이터 접근 객체 - cursor
     cursor = db.cursor()
 
-    # 3. sql문
-    sql = "UPDATE member SET pw = %(pw)s, age = %(age)s, name = %(name)s WHERE id = %(id)s"
+    # 3. SQL문 작성
+    sql = '''
+    SELECT user_id, user_nick, user_email, reg_date FROM users WHERE user_id = %s AND user_pw = %s
+    '''
 
-    # 4. sql문 실행
-    dict1 = {"id": id, "pw": pw, "age": age, "name": name}
-    cursor.execute(sql, dict1)
+    # 4. select 실행, 파라미터 채워주기
+    try:
+        cursor.execute(sql, (user_id, user_pw))
+        user = cursor.fetchone()
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500  # 상태 코드 500 (서버 오류)
+    finally:
+        cursor.close()
+        db.close()
 
-    # 5. 커밋 및 커서 닫기
-    db.commit()
-    row = cursor.rowcount
-
-
-    cursor.close()
-
-    # Database 닫기
-    db.close()
-
-    # 결과 반환
-    if row > 0:
-        return "success"
+    if user:
+       # 사용자 정보를 JSON 형식으로 변환 (user_pw 제외)
+        return jsonify({
+            "status": "success",
+            "user_id": user[0],
+            "user_nick": user[1],
+            "user_email": user[2],
+            "reg_date": user[3]
+        })
     else:
-        return "fail"
-
-# @member.route("/update")
-# def update():
-#     #업데이트 기능 만들기
-#     id = request.args.get('id')
-#     pw = request.args.get('pw')
-#     name = request.args.get('name')
-#     age = int(request.args.get('age'))
-#     # MySQL 데이터베이스 연결
-#     db = pymysql.connect(host='localhost', user='root', password='123456', db='flutter_db', charset='utf8')
-#     # 데이터에 접근
-#     cursor = db.cursor()
-#     # SQL query 작성
-#     sql = 'update member set pw = %(pw)s, age = %(age)s, name = %(name)s where id = %(id)s'
-    
-#     cursor.execute(sql,{'id': id, 'pw':pw,'age':age,'name':name })
-#     row = cursor.rowcount
-
-#     # 수정 사항 db에 저장
-#     db.commit()
- 
-# # Database 닫기
-#     db.close()
+        return jsonify({"status": "fail"}), 401  # 상태 코드 401 (인증 실패)
 
 
-#     if row>0:
-#         sendMsg = "success"
-#     else:
-#         sendMsg = 'fail'
-#     return sendMsg
+
+@users.route("/update", methods=['POST'])
+def update():
+   # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
+    data = request.get_json()
+    user_id = data.get('user_id')
+    user_pw = data.get('user_pw')
+    user_nick = data.get('user_nick')
+    user_email = data.get('user_email')
+
+    # 1. DB 연결
+    db = pymysql.connect(
+        host='project-db-cgi.smhrd.com',
+        user='plant',
+        password='1234',
+        db='plant',
+        charset='utf8',
+        port=3307
+    )
+
+    # 2. 데이터 접근 객체 - cursor
+    cursor = db.cursor()
+
+    # 3. SQL문 작성 (업데이트 쿼리)
+    sql = '''
+    UPDATE users
+    SET user_pw = %s, user_nick = %s, user_email = %s
+    WHERE user_id = %s
+    '''
+
+    # 4. update 실행, 파라미터 채워주기
+    try:
+        cursor.execute(sql, (user_pw, user_nick, user_email, user_id))
+        db.commit()
+        row = cursor.rowcount
+    except Exception as e:
+        db.rollback()  # 오류 발생 시 롤백
+        return jsonify({"status": "fail", "message": str(e)}), 500  # 상태 코드 500 (서버 오류)
+    finally:
+        cursor.close()
+        db.close()
+
+    if row > 0:
+        return jsonify({"status": "success"})
+    else:
+        return jsonify({"status": "fail", "message": "User not found"}), 404  # 상태 코드 404 (사용자 없음)
 
 
-@users.route('/delete')
+
+@users.route('/delete', methods=['POST'])
 def delete():
-    #회원 탈퇴기능 만들기
-    id = request.args.get('id')
+    # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
+    data = request.get_json()
+    user_id = data.get('user_id')
 
     # MySQL 데이터베이스 연결
     # 1. DB 연결
-    db = pymysql.connect(host='localhost', user='root', password='1234', db='flutter_db', charset='utf8')
-    # 데이터에 접근
+    db = pymysql.connect(
+        host='project-db-cgi.smhrd.com',
+        user='plant',
+        password='1234',
+        db='plant',
+        charset='utf8',
+        port=3307
+    )
+    # 2. 데이터 접근 객체 - cursor
     cursor = db.cursor()
-    # SQL query 작성
-    sql = 'delete from member where id = %(id)s'
-    cursor.execute(sql,{'id': id })
-    row = cursor.rowcount
+    # 3. SQL문 작성 (삭제 쿼리)
+    sql = '''
+    DELETE FROM users
+    WHERE user_id = %s
+    '''
 
-    # 수정 사항 db에 저장
-    db.commit()
- 
-    # Database 닫기
-    db.close()
+    # 4. delete 실행, 파라미터 채워주기
+    try:
+        cursor.execute(sql, (user_id,))
+        db.commit()
+        row = cursor.rowcount
+    except Exception as e:
+        db.rollback()  # 오류 발생 시 롤백
+        return jsonify({"status": "fail", "message": str(e)}), 500  # 상태 코드 500 (서버 오류)
+    finally:
+        cursor.close()
+        db.close()
 
-    if row>0:
-        sendMsg = "success"
+    if row > 0:
+        return jsonify({"status": "success"})
     else:
-        sendMsg = 'fail'
-    return sendMsg
-
-
+        return jsonify({"status": "fail", "message": "User not found"}), 404  # 상태 코드 404 (사용자 없음)
+       

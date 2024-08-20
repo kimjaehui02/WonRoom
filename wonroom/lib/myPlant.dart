@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:wonroom/DB/comments/comments_service.dart';
+import 'package:wonroom/DB/likes/likes_service.dart';
+import 'package:wonroom/DB/photos/photos_service.dart';
+import 'package:wonroom/DB/plant_management_records/plant_management_records_service.dart';
+import 'package:wonroom/DB/posts/posts_service.dart';
+import 'package:wonroom/DB/user_plants/user_plants_service.dart';
+import 'package:wonroom/Flask/storage_manager.dart';
 import 'Flask/test.dart';
+import 'package:wonroom/DB/users/user_service.dart';
+
 
 class Myplant extends StatelessWidget {
   const Myplant({super.key});
@@ -126,7 +135,9 @@ class Myplant extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               OutlinedButton.icon( onPressed: () {
-                                testConnection();
+                                usersInsert('1','2','3','4');
+
+                                print('test');
                               },
                                 icon: Icon(Icons.water_drop, size: 18, color: Colors.lightBlueAccent,),
                                 label: Text("물주기", style: TextStyle(color: Color(0xff787878)),),
@@ -165,7 +176,63 @@ class Myplant extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              OutlinedButton.icon( onPressed: () { },
+                              OutlinedButton.icon( onPressed: () async {
+                                // 데이터 읽기
+                                int? user_id = await readDataAsInt('user_id');  // 사용자가 null일 경우 처리 필요
+
+                                // 데이터 삽입 요청
+                                // addPost(
+                                //   postTitle: '글제목',
+                                //   postContent: '글내용',
+                                //   userId: user_id ?? 1,  // null일 경우 0으로 대체
+                                // );
+
+                                // 댓글 추가
+                                // int nonNullableUserId = user_id ?? 1;  // null일 경우 0으로 대체
+                                // addComment(
+                                //   postId: 3,
+                                //   userId: 1,
+                                //   commentContent: '댓글내용',
+                                //   parentCommentId: 3,
+                                // );
+                                //
+                                // 좋아요 추가
+                                // addLike(
+                                //   userId: 1,
+                                //   postId: 3,
+                                // );
+                                //
+                                // 사진 추가
+                                // addPhoto(
+                                //   postId: 3,
+                                //   category: '1',
+                                //   isPrimary: false,
+                                //   fileName: 'photo.png',
+                                //   serverPath: 'cd',
+                                //   fileType: 'png',
+                                // );
+                                //
+                                // 식물 추가
+                                // addPlant(
+                                //   1,  // null일 경우 0으로 대체
+                                //   1,
+                                //   '다이어리명',
+                                //   '2024-08-20 12:34:56',
+                                // );
+                                //
+                                // 식물 관리 기록 추가
+                                addPlantManagementRecord(
+                                  catalogNumber: 1,
+                                  managementDate: '2024-08-20 12:34:56',  // 날짜 형식 확인
+                                  managementType: 'Watering',
+                                  details: '기타',
+                                  plantId: 2,
+                                );
+
+                                // 다른 데이터 읽기 (필요시)
+                                // readData('1번');
+                              }
+                                ,
                                 icon: Image.asset('images/potion.png', // 외부 이미지 경로
                                   width: 18, // 아이콘 크기
                                   height: 18, // 아이콘 크기
@@ -206,7 +273,9 @@ class Myplant extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              OutlinedButton.icon( onPressed: () { },
+                              OutlinedButton.icon( onPressed: () {
+                                usersLogin('1', '2');
+                              },
                                 icon: Image.asset('images/scissor.png', // 외부 이미지 경로
                                   width: 18, // 아이콘 크기
                                   height: 18, // 아이콘 크기
@@ -244,7 +313,11 @@ class Myplant extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              OutlinedButton.icon( onPressed: () { },
+                              OutlinedButton.icon( onPressed: () {
+                                // usersUpdate('5', '5', '5');
+                                // usersDelete()
+                                usersDelete();
+                              },
                                 icon: Image.asset('images/soil.png', // 외부 이미지 경로
                                   width: 18, // 아이콘 크기
                                   height: 18, // 아이콘 크기
