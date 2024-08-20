@@ -160,7 +160,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             // ),
             SizedBox(width: 40), // 공간을 추가하여 중앙의 FloatingActionButton과 겹치지 않도록 함
             _buildBottomNavBarItem(
-              icon: Icons.book_outlined,
+              icon: Icons.
+              book_outlined,
               label: '다이어리',
               index: 2,
             ),
