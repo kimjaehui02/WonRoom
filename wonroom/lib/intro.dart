@@ -62,7 +62,7 @@ class Intro extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       // 로그인 버튼 클릭 시 동작
-                      print('로그인 버튼 클릭됨');
+                      print('로그인 버튼 클릭 됨');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
