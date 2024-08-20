@@ -61,6 +61,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Row(
+
           children: [
             IconButton(
               icon: const Icon(Icons.search),
