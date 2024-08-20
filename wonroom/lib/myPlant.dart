@@ -498,7 +498,8 @@ class Myplant extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       Text('기록이 없습니다. \n 기록을 추가해보세요.',
-                                      textAlign: TextAlign.center,),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Color(0xff787878)),),
                                     ],
                                   ),
                                 )
@@ -539,7 +540,8 @@ class Myplant extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       Text('기록이 없습니다. \n 기록을 추가해보세요.',
-                                        textAlign: TextAlign.center,),
+                                        textAlign: TextAlign.center,
+                                      style: TextStyle(color: Color(0xff787878)),),
                                     ],
                                   ),
                                 )
