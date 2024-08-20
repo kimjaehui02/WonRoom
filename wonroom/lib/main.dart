@@ -4,11 +4,13 @@ import 'package:wonroom/index.dart';
 import 'package:wonroom/intro.dart';
 import 'package:wonroom/join.dart';
 import 'package:wonroom/login.dart';
+import 'package:wonroom/myPlant.dart';
+import 'package:wonroom/myPlantNull.dart';
 
 void main() {
   runApp(const MyApp());
 }
-
+// 주석
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    home: FindingPwTemporarily(),
+    home: MyplantNull(),
     );
   }
 }
