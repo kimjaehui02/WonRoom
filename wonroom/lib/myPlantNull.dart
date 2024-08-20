@@ -118,7 +118,7 @@ class MyplantNull extends StatelessWidget {
                   minimumSize: const Size.fromHeight(50),
                 ),
                 child: const Text(
-                  '도감 등록하기',
+                  '다이어리 등록하기',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.white,
