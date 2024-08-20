@@ -100,6 +100,7 @@ class Myplant extends StatelessWidget {
                 ],
               ),
             ),
+
             Container(
               color: Colors.white,
               child: Column(
@@ -134,6 +135,7 @@ class Myplant extends StatelessWidget {
 
                       SizedBox(height: 24),
 
+                      // 이미지
                       Container(
                         width: MediaQuery.of(context).size.width * 0.8,
                         height: MediaQuery.of(context).size.width * 0.8,
@@ -148,96 +150,196 @@ class Myplant extends StatelessWidget {
                       ),
 
                       Container(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xffeeeeee),
-                              width: 1,
-                            ),
-                          ),
-                        ),
+                        padding: EdgeInsets.only(left: 32, right: 32),
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Color(0xffeeeeee),
+                                    width: 1,
+                                  ),
+                                ),
+                              ),
 
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            OutlinedButton.icon(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.water_drop,
-                                size: 18,
-                                color: Colors.lightBlueAccent,
-                              ),
-                              label: Text(
-                                "물주기",
-                                style: TextStyle(color: Color(0xff787878)),
-                              ),
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: Color(0xffc2c2c2)),
-                              ),
-                            ),
-                            SizedBox(width: 20),
-                            RichText(
-                              text: TextSpan(
-                                text: '다음 권장 날짜 : ',
-                                style: TextStyle(
-                                  color: Color(0xffc2c2c2),
-                                ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  TextSpan(
-                                    text: "09.12",
-                                    style: TextStyle(
-                                      color: Color(0xff787878),
-                                      fontWeight: FontWeight.bold,
+                                  OutlinedButton.icon(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.water_drop,
+                                      size: 18,
+                                      color: Colors.lightBlueAccent,
+                                    ),
+                                    label: Text(
+                                      "물주기",
+                                      style: TextStyle(color: Color(0xff787878)),
+                                    ),
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(color: Color(0xffc2c2c2)),
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: '다음 권장 날짜 : ',
+                                      style: TextStyle(
+                                        color: Color(0xffc2c2c2),
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: "09.12",
+                                          style: TextStyle(
+                                            color: Color(0xff787878),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xffeeeeee),
-                              width: 1,
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            OutlinedButton.icon(
-                              onPressed: () {},
-                              icon: Image.asset(
-                                'images/potion.png', // 영양제 아이콘
-                                width: 18,
-                                height: 18,
-                              ),
-                              label: Text(
-                                "영양제",
-                                style: TextStyle(color: Color(0xff787878)),
-                              ),
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: Color(0xffc2c2c2)),
-                              ),
-                            ),
-                            SizedBox(width: 20),
-                            RichText(
-                              text: TextSpan(
-                                text: '다음 권장 날짜 : ',
-                                style: TextStyle(
-                                  color: Color(0xffc2c2c2),
+
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Color(0xffeeeeee),
+                                    width: 1,
+                                  ),
                                 ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  TextSpan(
-                                    text: "09.12",
-                                    style: TextStyle(
-                                      color: Color(0xff787878),
-                                      fontWeight: FontWeight.bold,
+                                  OutlinedButton.icon(
+                                    onPressed: () {},
+                                    icon: Image.asset(
+                                      'images/potion.png', // 영양제 아이콘
+                                      width: 18,
+                                      height: 18,
+                                    ),
+                                    label: Text(
+                                      "영양제",
+                                      style: TextStyle(color: Color(0xff787878)),
+                                    ),
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(color: Color(0xffc2c2c2)),
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: '다음 권장 날짜 : ',
+                                      style: TextStyle(
+                                        color: Color(0xffc2c2c2),
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: "09.12",
+                                          style: TextStyle(
+                                            color: Color(0xff787878),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Color(0xffeeeeee),
+                                    width: 1,
+                                  ),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  OutlinedButton.icon(
+                                    onPressed: () {},
+                                    icon: Image.asset(
+                                      'images/scissor.png', // 가지치기 아이콘
+                                      width: 18,
+                                      height: 18,
+                                    ),
+                                    label: Text(
+                                      "가지치기",
+                                      style: TextStyle(color: Color(0xff787878)),
+                                    ),
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(color: Color(0xffc2c2c2)),
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: '다음 권장 날짜 : ',
+                                      style: TextStyle(
+                                        color: Color(0xffc2c2c2),
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: "09.12",
+                                          style: TextStyle(
+                                            color: Color(0xff787878),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  OutlinedButton.icon(
+                                    onPressed: () {},
+                                    icon: Image.asset(
+                                      'images/soil.png', // 분갈이 아이콘
+                                      width: 18,
+                                      height: 18,
+                                    ),
+                                    label: Text(
+                                      "분갈이",
+                                      style: TextStyle(color: Color(0xff787878)),
+                                    ),
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(color: Color(0xffc2c2c2)),
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: '다음 권장 날짜 : ',
+                                      style: TextStyle(
+                                        color: Color(0xffc2c2c2),
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: "09.12",
+                                          style: TextStyle(
+                                            color: Color(0xff787878),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -247,96 +349,7 @@ class Myplant extends StatelessWidget {
                         ),
                       ),
 
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xffeeeeee),
-                              width: 1,
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            OutlinedButton.icon(
-                              onPressed: () {},
-                              icon: Image.asset(
-                                'images/scissor.png', // 가지치기 아이콘
-                                width: 18,
-                                height: 18,
-                              ),
-                              label: Text(
-                                "가지치기",
-                                style: TextStyle(color: Color(0xff787878)),
-                              ),
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: Color(0xffc2c2c2)),
-                              ),
-                            ),
-                            SizedBox(width: 20),
-                            RichText(
-                              text: TextSpan(
-                                text: '다음 권장 날짜 : ',
-                                style: TextStyle(
-                                  color: Color(0xffc2c2c2),
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: "09.12",
-                                    style: TextStyle(
-                                      color: Color(0xff787878),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            OutlinedButton.icon(
-                              onPressed: () {},
-                              icon: Image.asset(
-                                'images/soil.png', // 분갈이 아이콘
-                                width: 18,
-                                height: 18,
-                              ),
-                              label: Text(
-                                "분갈이",
-                                style: TextStyle(color: Color(0xff787878)),
-                              ),
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: Color(0xffc2c2c2)),
-                              ),
-                            ),
-                            SizedBox(width: 20),
-                            RichText(
-                              text: TextSpan(
-                                text: '다음 권장 날짜 : ',
-                                style: TextStyle(
-                                  color: Color(0xffc2c2c2),
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: "09.12",
-                                    style: TextStyle(
-                                      color: Color(0xff787878),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+
                     ],
                   ),
 
@@ -348,6 +361,7 @@ class Myplant extends StatelessWidget {
                     color: Color(0xffeeeeee),
                   ),
 
+                  // 기록
                   Container(
                     padding: const EdgeInsets.all(32),
                     child: Column(
@@ -363,6 +377,7 @@ class Myplant extends StatelessWidget {
                             ),
                           ],
                         ),
+
                         SizedBox(height: 24),
 
                         // 물주기 기록
@@ -406,6 +421,7 @@ class Myplant extends StatelessWidget {
                             ),
                           ),
                         ),
+
                         SizedBox(height: 24),
 
                         // 영양제 기록
@@ -492,7 +508,6 @@ class Myplant extends StatelessWidget {
                         ),
                         SizedBox(height: 24),
 
-
                         // 분갈이 기록
                         Center(
                           child: Container(
@@ -546,7 +561,7 @@ class Myplant extends StatelessWidget {
                           ),
                           minimumSize: const Size.fromHeight(50),
                         ),
-                          child: const Text('도감 등록하기',
+                          child: const Text('해당 식물 정보 알아보기',
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.white,
