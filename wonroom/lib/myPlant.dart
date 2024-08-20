@@ -8,7 +8,7 @@ class Myplant extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('마이 도감', style: TextStyle(color: Colors.black)),
+        title: Text('다이어리', style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
