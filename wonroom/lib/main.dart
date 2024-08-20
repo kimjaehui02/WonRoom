@@ -5,11 +5,14 @@ import 'package:wonroom/intro.dart';
 import 'package:wonroom/join.dart';
 import 'package:wonroom/login.dart';
 import 'package:wonroom/myPlant.dart';
+import 'package:wonroom/myPlantNull.dart';
+import 'package:wonroom/plantDictionary.dart';
+
 
 void main() {
   runApp(const MyApp());
 }
-
+// 주석
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -17,7 +20,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    home: Myplant(),
+    theme: ThemeData(
+      fontFamily: 'Pretendard',
+      scaffoldBackgroundColor: Colors.white,
+      primaryColor : Colors.white,
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.white, // 앱바 배경색
+      ),
+    ),
+    home: PlantDictionary(),
     );
   }
 }

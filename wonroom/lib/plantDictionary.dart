@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Index extends StatefulWidget {
-  const Index({super.key});
+class PlantDictionary extends StatefulWidget {
+  const PlantDictionary({super.key});
 
   @override
   _IndexState createState() => _IndexState();
 }
 
-class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
+class _IndexState extends State<PlantDictionary> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _selectedIndex = 0;
   final ScrollController _scrollController = ScrollController();
@@ -64,9 +64,13 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
 
           children: [
             IconButton(
-              icon: const Icon(Icons.search),
+              icon: const Icon(Icons.search,
+                color: Color(0xff787878),
+                size: 28,
+              ),
               onPressed: () {},
             ),
+            SizedBox(width: 40,),
             Expanded(
               child: Center(
                 child: RichText(
@@ -77,14 +81,19 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                         style: TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontFamily: 'DMSerifDisplay',
+                          letterSpacing: 2,
+                          fontSize: 28,
                         ),
                       ),
                       TextSpan(
                         text: '-Room',
                         style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
+                          color: Color(0xff595959),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'DMSerifDisplay',
+                          letterSpacing: 1,
+                          fontSize: 28,
                         ),
                       ),
                     ],
@@ -93,22 +102,34 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               ),
             ),
             IconButton(
-              icon: const Icon(Icons.notifications_none_outlined),
+              icon: const Icon(Icons.notifications_none_outlined,
+                color: Color(0xff787878),
+                size: 28,
+              ),
               onPressed: () {},
             ),
             IconButton(
-              icon: const Icon(Icons.person_outline),
+              icon: const Icon(Icons.person_outline,
+                color: Color(0xff787878),
+                size: 28,
+              ),
               onPressed: () {},
             ),
           ],
         ),
         bottom: TabBar(
           controller: _tabController,
-          isScrollable: false,
+          isScrollable: true,
           labelColor: Colors.green,
+          labelStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
           indicatorColor: Colors.green,
+          indicatorPadding: EdgeInsets.zero,
           indicatorWeight: 3.0,
-          labelPadding: EdgeInsets.symmetric(horizontal: 8.0),
+          tabAlignment: TabAlignment.start,
+          labelPadding: EdgeInsets.symmetric(horizontal: 20.0),
           tabs: const [
             Tab(text: '홈'),
             Tab(text: '식물사전'),
@@ -143,6 +164,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         ],
       ),
       bottomNavigationBar: BottomAppBar(
+        // color: Colors.white, // 하단바 배경색을 하얀색으로 설정
         shape: CircularNotchedRectangle(),
         notchMargin: 6.0,
         child: Row(
@@ -160,8 +182,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             // ),
             SizedBox(width: 40), // 공간을 추가하여 중앙의 FloatingActionButton과 겹치지 않도록 함
             _buildBottomNavBarItem(
-              icon: Icons.
-              book_outlined,
+              icon: Icons.book_outlined,
               label: '다이어리',
               index: 2,
             ),
@@ -178,6 +199,14 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.lightGreen[600], // 연두색
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  spreadRadius: 1,
+                  blurRadius: 0.5,
+                ),
+              ],
+
             ),
             child: FloatingActionButton(
               onPressed: () {},
