@@ -5,6 +5,7 @@ import 'package:wonroom/intro.dart';
 import 'package:wonroom/join.dart';
 import 'package:wonroom/login.dart';
 import 'package:wonroom/myPlant.dart';
+import 'package:wonroom/myPlantNull.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    home: Myplant(),
+    home: MyplantNull(),
     );
   }
 }

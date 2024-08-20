@@ -497,8 +497,8 @@ class Myplant extends StatelessWidget {
                                 Container(
                                   child: Column(
                                     children: [
-                                      Text('기록이 없습니다.'),
-                                      Text('기록을 추가해보세요.')
+                                      Text('기록이 없습니다. \n 기록을 추가해보세요.',
+                                      textAlign: TextAlign.center,),
                                     ],
                                   ),
                                 )
@@ -538,8 +538,8 @@ class Myplant extends StatelessWidget {
                                 Container(
                                   child: Column(
                                     children: [
-                                      Text('기록이 없습니다.'),
-                                      Text('기록을 추가해보세요.')
+                                      Text('기록이 없습니다. \n 기록을 추가해보세요.',
+                                        textAlign: TextAlign.center,),
                                     ],
                                   ),
                                 )
