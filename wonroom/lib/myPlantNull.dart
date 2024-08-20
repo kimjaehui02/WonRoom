@@ -104,7 +104,7 @@ class MyplantNull extends StatelessWidget {
             // 하단 버튼
             Container(
               width: double.infinity,
-              padding: EdgeInsets.all(32),
+              padding: EdgeInsets.all(24),
               child: ElevatedButton(
                 onPressed: () {
                   // 도감 등록하기 버튼 클릭 시 실행될 코드

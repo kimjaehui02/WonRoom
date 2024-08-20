@@ -150,7 +150,7 @@ class Myplant extends StatelessWidget {
                       ),
 
                       Container(
-                        padding: EdgeInsets.only(left: 32, right: 32),
+                        padding: EdgeInsets.only(left: 24, right: 24),
                         child: Column(
                           children: [
                             Container(
@@ -363,7 +363,7 @@ class Myplant extends StatelessWidget {
 
                   // 기록
                   Container(
-                    padding: const EdgeInsets.all(32),
+                    padding: const EdgeInsets.all(24),
                     child: Column(
                       children: [
                         Row(
