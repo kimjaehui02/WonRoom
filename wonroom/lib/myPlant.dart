@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Flask/test.dart';
 
 class Myplant extends StatelessWidget {
   const Myplant({super.key});
@@ -124,7 +125,9 @@ class Myplant extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              OutlinedButton.icon( onPressed: () { },
+                              OutlinedButton.icon( onPressed: () {
+                                testConnection();
+                              },
                                 icon: Icon(Icons.water_drop, size: 18, color: Colors.lightBlueAccent,),
                                 label: Text("물주기", style: TextStyle(color: Color(0xff787878)),),
                                 style: OutlinedButton.styleFrom(
