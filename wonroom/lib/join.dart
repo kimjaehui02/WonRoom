@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 class Join extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SignUpScreen(),
-    );
+    return SignUpScreen();
   }
 }
 
@@ -15,6 +13,9 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+
+  final _idFocusNode = FocusNode(); // FocusNode 추가
+
   final _formKey = GlobalKey<FormState>();
   final _idController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -27,6 +28,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? _nicknameValidationMessage; // 닉네임 검증 메시지
   String? _idValidationMessage; // 아이디 검증 메시지
 
+  // 비밀번호 보이기/숨기기 상태 변수
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +42,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _nicknameController.addListener(_updateNicknameValidation);
     _emailController.addListener(_updateEmailValidation);
     _idController.addListener(_updateIdValidation); // 아이디 검증 호출
+    _idFocusNode.addListener(_updateIdValidation); // FocusNode에 리스너 추가
   }
 
   void _updateButtonState() {
@@ -79,15 +85,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _updateIdValidation() {
     final id = _idController.text;
 
-    setState(() {
-      if (id.isEmpty) {
-        _idValidationMessage = null;
-      } else {
-        // 아이디 중복 검사 예시 (실제 중복 체크 로직은 서버와 연동되어야 함)
-        _idValidationMessage = id == "wonroom" ? '중복된 아이디입니다.' : '사용 가능한 아이디입니다.';
-        _isIdDuplicate = id == "wonroom";
-      }
-    });
+    if (!_idFocusNode.hasFocus) { // 포커스를 잃을 때만 검사
+      setState(() {
+        if (id.isEmpty) {
+          _idValidationMessage = null;
+        } else {
+          // 아이디 중복 검사 예시 (실제 중복 체크 로직은 서버와 연동되어야 함)
+          _idValidationMessage =
+          id == "wonroom" ? '중복된 아이디입니다.' : '사용 가능한 아이디입니다.';
+          _isIdDuplicate = id == "wonroom";
+        }
+      });
+    }
   }
 
   void _showSuccessDialog() {
@@ -154,6 +163,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   void dispose() {
     _idController.dispose();
+
+    _idFocusNode.dispose(); // FocusNode 리소스 해제
+
     _passwordController.dispose();
     _passwordConfirmController.dispose();
     _nicknameController.dispose();
@@ -202,6 +214,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       SizedBox(height: 8.0),
                       TextFormField(
                         controller: _idController,
+                        focusNode: _idFocusNode, // FocusNode 연결
                         decoration: InputDecoration(
                           labelText: '아이디',
                           errorText: _isIdDuplicate ? _idValidationMessage : null,
@@ -249,9 +262,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               hintText: 'ex. won01room%',
                               border: OutlineInputBorder(),
                               contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
-                              suffixIcon: Icon(Icons.visibility_off_outlined),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscurePassword = !_obscurePassword;
+                                  });
+                                },
+                              ),
                             ),
-                            obscureText: true,
+                            obscureText: _obscurePassword,
                             validator: (value) {
                               if (value == null || value.length < 8) {
                                 return '비밀번호는 8자리 이상이어야 합니다.';
@@ -290,9 +312,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           hintText: 'ex. won01room%',
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
-                          suffixIcon: Icon(Icons.visibility_off_outlined),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureConfirmPassword  ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureConfirmPassword = !_obscureConfirmPassword;
+                              });
+                            },
+                          ),
                         ),
-                        obscureText: true,
+                        obscureText: _obscureConfirmPassword,
                         validator: (value) {
                           if (value != _passwordController.text) {
                             return '비밀번호가 일치하지 않습니다.';
