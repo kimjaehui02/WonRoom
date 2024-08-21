@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/Finding_Pw_Temporarily.dart';
 import 'package:wonroom/index.dart';
-import 'package:wonroom/intro.dart';
+// import 'package:wonroom/intro.dart';
 import 'package:wonroom/join.dart';
 import 'package:wonroom/login.dart';
 import 'package:wonroom/myPlant.dart';
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white, // 앱바 배경색
       ),
     ),
-    home: PlantDictionary(),
+    home: Index(),
     );
   }
 }

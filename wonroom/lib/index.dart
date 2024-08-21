@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'plantDictionary.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});
@@ -67,6 +68,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               icon: const Icon(Icons.search),
               onPressed: () {},
             ),
+            SizedBox(width: 40,),
             Expanded(
               child: Center(
                 child: RichText(
@@ -77,14 +79,19 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                         style: TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontFamily: 'DMSerifDisplay',
+                          letterSpacing: 2,
+                          fontSize: 28,
                         ),
                       ),
                       TextSpan(
                         text: '-Room',
                         style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
+                          color: Color(0xff595959),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'DMSerifDisplay',
+                          letterSpacing: 1,
+                          fontSize: 28,
                         ),
                       ),
                     ],
@@ -104,11 +111,19 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         ),
         bottom: TabBar(
           controller: _tabController,
-          isScrollable: false,
+          isScrollable: true,
           labelColor: Colors.green,
+          labelStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+
+
           indicatorColor: Colors.green,
+          indicatorPadding: EdgeInsets.zero,
           indicatorWeight: 3.0,
-          labelPadding: EdgeInsets.symmetric(horizontal: 8.0),
+          tabAlignment: TabAlignment.start,
+          labelPadding: EdgeInsets.symmetric(horizontal: 20.0),
           tabs: const [
             Tab(text: '홈'),
             Tab(text: '식물사전'),
@@ -124,10 +139,10 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             controller: _tabController,
             children: [
               _buildHomePage(),
-              _buildPlaceholderPage('식물사전 페이지'),
-              _buildPlaceholderPage('식물클리닉 페이지'),
-              _buildPlaceholderPage('커뮤니티 페이지'),
-              _buildPlaceholderPage('고객센터 페이지'),
+              PlantDictionary(),
+              _buildPlantClinicPage('식물클리닉 페이지'),
+              _buildCommunityPage('커뮤니티 페이지'),
+              _buildCustomerServicePage('고객센터 페이지'),
             ],
           ),
           if (_isFabVisible)
@@ -183,7 +198,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               onPressed: () {},
               backgroundColor: Colors.transparent,
               elevation: 0,
-              child: Icon(Icons.camera_alt_outlined, color: Colors.white, size: 30),
+              child: Icon(
+                  Icons.camera_alt_outlined, color: Colors.white, size: 30),
             ),
           ),
         ],
@@ -207,12 +223,14 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             Icon(
               icon,
               size: 30,
-              color: _selectedIndex == index ? Colors.lightGreen[600] : Colors.grey,
+              color: _selectedIndex == index ? Colors.lightGreen[600] : Colors
+                  .grey,
             ),
             Text(
               label,
               style: TextStyle(
-                color: _selectedIndex == index ? Colors.lightGreen[600] : Colors.grey,
+                color: _selectedIndex == index ? Colors.lightGreen[600] : Colors
+                    .grey,
                 fontSize: 12,
               ),
             ),
@@ -478,7 +496,20 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildPlaceholderPage(String text) {
+
+  Widget _buildPlantClinicPage(String text) {
+    return Center(
+      child: Text(text),
+    );
+  }
+
+  Widget _buildCommunityPage(String text) {
+    return Center(
+      child: Text(text),
+    );
+  }
+
+  Widget _buildCustomerServicePage(String text) {
     return Center(
       child: Text(text),
     );

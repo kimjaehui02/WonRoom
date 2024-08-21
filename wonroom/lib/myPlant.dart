@@ -355,7 +355,7 @@ class Myplant extends StatelessWidget {
 
                   // 구분
                   Container(
-                    margin: EdgeInsets.only(top: 40),
+                    margin: EdgeInsets.only(top: 40, bottom: 24),
                     width: MediaQuery.of(context).size.width,
                     height: 8,
                     color: Color(0xffeeeeee),
@@ -365,20 +365,20 @@ class Myplant extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(24),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              '이전 기록',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
+                        Container(
+                          padding: EdgeInsets.only(bottom: 12, left: 10),
+                          child: Text(
+                            '이전 기록',
+                            style: TextStyle(
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ],
+                          ),
                         ),
 
-                        SizedBox(height: 24),
+                        SizedBox(height: 12),
 
                         // 물주기 기록
                         Center(
