@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/myPlantRegistration.dart';
+import 'package:wonroom/showFloatingActionModal.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});
@@ -44,9 +45,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     setState(() {
       _selectedIndex = index;
     });
-    if (index == 0) {
-      _tabController.index = 0;
-    }
+    _tabController.index = index;
   }
 
   void _scrollToTop() {
@@ -62,7 +61,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Row(
-
           children: [
             IconButton(
               icon: const Icon(Icons.search),
@@ -154,15 +152,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               label: '홈',
               index: 0,
             ),
-            // _buildBottomNavBarItem(
-            //   icon: Icons.camera_alt_outlined,
-            //   label: '이미지 촬영',
-            //   index: 1,
-            // ),
-            SizedBox(width: 40), // 공간을 추가하여 중앙의 FloatingActionButton과 겹치지 않도록 함
+            SizedBox(width: 40), // 중앙의 FloatingActionButton과 겹치지 않도록 공간 추가
             _buildBottomNavBarItem(
-              icon: Icons.
-              book_outlined,
+              icon: Icons.book_outlined,
               label: '다이어리',
               index: 2,
             ),
@@ -181,7 +173,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               color: Colors.lightGreen[600], // 연두색
             ),
             child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                showFloatingActionModal(context);
+              },
               backgroundColor: Colors.transparent,
               elevation: 0,
               child: Icon(Icons.camera_alt_outlined, color: Colors.white, size: 30),
@@ -232,11 +226,152 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         children: [
           _buildMyPlantsSection(),
           const SizedBox(height: 50),
+          _buildWeatherWidget(),
+          const SizedBox(height: 50),
           _buildRecommendedPlantsSection(),
           const SizedBox(height: 50),
           _buildPopularPostsSection(),
           const SizedBox(height: 40),
         ],
+      ),
+    );
+  }
+
+  Widget _buildWeatherWidget() {
+    return Center(
+      child: Container(
+        width: 300,
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.blue.withOpacity(0.2),
+              blurRadius: 8,
+              offset: Offset(0, 2),
+            ),
+          ],
+          border: Border.all(
+            color: Colors.lightBlue,
+            width: 2,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 위치와 현위치
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '중구 을지로 1가',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.location_on,
+                      color: Colors.blue,
+                      size: 16,
+                    ),
+                    SizedBox(width: 4),
+                    Text(
+                      '현위치',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            // 날씨 정보
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    Icon(
+                      Icons.wb_sunny,
+                      color: Colors.orange,
+                      size: 48,
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      '맑음',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  '30.9',
+                  style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 8),
+            // 메시지
+            Center(
+              child: Text(
+                '오늘은 광합성하기 좋은 날씨입니다',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+            // 하단 추가 정보
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  '습도 66%',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[700],
+                  ),
+                ),
+                Text(
+                  '체감 31.9°',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[700],
+                  ),
+                ),
+                Text(
+                  '서풍 1.9m/s',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[700],
+                  ),
+                ),
+                Text(
+                  '미세 좋음',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[700],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -294,7 +429,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             height: 50,
             child: ElevatedButton(
               onPressed: () {
-                  showPlantRegistrationModal(context);
+                showPlantRegistrationModal(context);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
@@ -487,4 +622,3 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
 }
-
