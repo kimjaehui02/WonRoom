@@ -26,42 +26,108 @@ class _JoinState extends State<Join> {
     _formControllers.nicknameController.addListener(_updateNicknameValidation);
     _formControllers.emailController.addListener(_updateEmailValidation);
     _formControllers.idController.addListener(_updateIdValidation); // 아이디 검증 호출
+
     _formControllers.idFocusNode.addListener(_updateIdValidation); // FocusNode에 리스너 추가
+    _formControllers.emailFocusNode.addListener(_updateEmailValidation); // FocusNode에 리스너 추가
+    _formControllers.nicknameFocusNode.addListener(_updateNicknameValidation); // FocusNode에 리스너 추가
   }
 
   void _updateButtonState() {
+    // final idValid = _formControllers.idController.text.isNotEmpty;
+    final idValid = _idValidationMessage == '사용 가능한 아이디 입니다.';
+    final passwordNotEmpty = _formControllers.passwordController.text.isNotEmpty;
+    // _emailValidationMessage
+    final passwordConfirmNotEmpty = _formControllers.passwordConfirmController.text.isNotEmpty;
+    // final nicknameValid = _formControllers.nicknameController.text.isNotEmpty;
+    final nicknameValid = _nicknameValidationMessage == '사용 가능한 닉네임 입니다.';
+    // final emailValid = _formControllers.emailController.text.isNotEmpty;
+    final emailValid = _emailValidationMessage == '사용 가능한 이메일 입니다.';
+    final passwordsMatch = _formControllers.passwordController.text == _formControllers.passwordConfirmController.text;
+
+    final ids = _formControllers.idController.text;
+    final ems = _formControllers.emailController.text;
+    final nis = _formControllers.nicknameController.text;
+
+    // 각 조건을 콘솔에 출력
+    print('ID Valid: $ids');
+    print('Password Not Empty: $ems');
+    print('Password Confirm Not Empty: $nis');
+    print('Nickname Valid: $nicknameValid');
+    print('Email Valid: $emailValid');
+    print('Passwords Match: $passwordsMatch');
+
     setState(() {
-      _formControllers.isButtonEnabled = _formControllers.idController.text.isNotEmpty &&
-          _formControllers.passwordController.text.isNotEmpty &&
-          _formControllers.passwordConfirmController.text.isNotEmpty &&
-          _formControllers.nicknameController.text.isNotEmpty &&
-          _formControllers.emailController.text.isNotEmpty &&
-          _formControllers.passwordController.text == _formControllers.passwordConfirmController.text;
+      _formControllers.isButtonEnabled = idValid &&
+          passwordNotEmpty &&
+          passwordConfirmNotEmpty &&
+          nicknameValid &&
+          emailValid &&
+          passwordsMatch;
     });
+
+    // 최종 버튼 활성화 상태를 콘솔에 출력
+    print('Button Enabled: ${_formControllers.isButtonEnabled}');
   }
 
-  void _updateEmailValidation() {
-    setState(() {
-      _emailValidationMessage = Validators.validateEmail(_formControllers.emailController.text);
-    });
-  }
+  // void _updateEmailValidation() {
+  //
+  //   if (!_formControllers.emailFocusNode.hasFocus) { // 포커스를 잃을 때만 검사
+  //     setState(() {
+  //       _emailValidationMessage = Validators.validateEmail(_formControllers.emailController.text);
+  //     });
+  //   }
+  // }
+  void _updateEmailValidation() async {
+    if (!_formControllers.emailFocusNode.hasFocus) {
+      final validationMessage = await Validators.validateEmail(_formControllers.emailController.text);
 
-  void _updateNicknameValidation() {
-    setState(() {
-      _nicknameValidationMessage = Validators.validateNickname(_formControllers.nicknameController.text);
-    });
-  }
-
-  void _updateIdValidation() {
-    final id = _formControllers.idController.text;
-    if (!_formControllers.idFocusNode.hasFocus) { // 포커스를 잃을 때만 검사
-      setState(() {
-        final validationMessage = Validators.validateId(id);
-        _formControllers.isIdDuplicate = id == "wonroom";
-        _idValidationMessage = validationMessage;
-      });
+      // 상태가 변경될 때만 setState를 호출합니다.
+      if (_emailValidationMessage != validationMessage) {
+        setState(() {
+          _emailValidationMessage = validationMessage;
+        });
+      }
     }
   }
+
+  void _updateNicknameValidation() async {
+    if (!_formControllers.nicknameFocusNode.hasFocus) {
+      final validationMessage = await Validators.validateNickname(_formControllers.nicknameController.text);
+
+      // 상태가 변경될 때만 setState를 호출합니다.
+      if (_nicknameValidationMessage != validationMessage) {
+        setState(() {
+          _nicknameValidationMessage = validationMessage;
+        });
+      }
+    }
+  }
+
+  void _updateIdValidation() async {
+    if (!_formControllers.idFocusNode.hasFocus) {
+      final validationMessage = await Validators.validateId(_formControllers.idController.text);
+
+      // 상태가 변경될 때만 setState를 호출합니다.
+      if (_idValidationMessage != validationMessage) {
+        setState(() {
+          _idValidationMessage = validationMessage;
+        });
+      }
+    }
+  }
+
+
+
+  // void _updateIdValidation() {
+  //   final id = _formControllers.idController.text;
+  //   if (!_formControllers.idFocusNode.hasFocus) { // 포커스를 잃을 때만 검사
+  //     setState(() {
+  //       final validationMessage = Validators.validateId(id);
+  //       _formControllers.isIdDuplicate = id == "wonroom";
+  //       _idValidationMessage = validationMessage;
+  //     });
+  //   }
+  // }
 
   void _showSuccessDialog() {
     showDialog(
@@ -224,7 +290,7 @@ class _JoinState extends State<Join> {
           focusNode: _formControllers.idFocusNode,
           decoration: InputDecoration(
             labelText: '아이디',
-            errorText: _formControllers.isIdDuplicate ? _idValidationMessage : null,
+            errorText: _formControllers.isIdDuplicate ? _idValidationMessage ?? '' : null,
             border: OutlineInputBorder(),
             contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
             errorStyle: TextStyle(
@@ -234,13 +300,13 @@ class _JoinState extends State<Join> {
           ),
           onChanged: (_) => _updateIdValidation(),
         ),
-        if (_idValidationMessage == '사용 가능한 아이디입니다.')
+        if (_idValidationMessage != null)
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
               _idValidationMessage!,
               style: TextStyle(
-                color: Colors.green,
+                color: _idValidationMessage == '사용 가능한 아이디 입니다.' ? Colors.green : Colors.red,
                 fontSize: 12,
               ),
             ),
@@ -286,6 +352,7 @@ class _JoinState extends State<Join> {
             ),
           ),
           obscureText: _obscurePassword,
+          onChanged: (_)=>_updateButtonState(),
           validator: (value) => Validators.validatePassword(value),
         ),
         SizedBox(height: 4.0),
@@ -337,6 +404,7 @@ class _JoinState extends State<Join> {
             ),
           ),
           obscureText: _obscureConfirmPassword,
+          onChanged: (_)=>_updateButtonState(),
           validator: (value) => Validators.validateConfirmPassword(value, _formControllers.passwordController.text),
         ),
         SizedBox(height: 25.0),
@@ -364,6 +432,7 @@ class _JoinState extends State<Join> {
         SizedBox(height: 8.0),
         TextFormField(
           controller: _formControllers.nicknameController,
+          focusNode: _formControllers.nicknameFocusNode,
           decoration: InputDecoration(
             labelText: '닉네임',
             border: OutlineInputBorder(),
@@ -371,7 +440,7 @@ class _JoinState extends State<Join> {
           ),
           onChanged: (_) => _updateNicknameValidation(),
         ),
-        if (_nicknameValidationMessage == '사용 가능한 닉네임입니다.')
+        if (_nicknameValidationMessage == '사용 가능한 닉네임 입니다.')
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
@@ -419,9 +488,10 @@ class _JoinState extends State<Join> {
         SizedBox(height: 8.0),
         TextFormField(
           controller: _formControllers.emailController,
+          focusNode: _formControllers.emailFocusNode,
           decoration: InputDecoration(
             labelText: '이메일',
-            errorText: _emailValidationMessage == '사용 가능한 이메일입니다.' ? null : _emailValidationMessage,
+            errorText: _emailValidationMessage == '사용 가능한 이메일 입니다.' ? null : _emailValidationMessage,
             border: OutlineInputBorder(),
             contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
             errorStyle: TextStyle(
@@ -431,7 +501,7 @@ class _JoinState extends State<Join> {
           ),
           onChanged: (_) => _updateEmailValidation(),
         ),
-        if (_emailValidationMessage == '사용 가능한 이메일입니다.')
+        if (_emailValidationMessage == '사용 가능한 이메일 입니다.')
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(

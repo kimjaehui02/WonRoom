@@ -126,6 +126,89 @@ def login():
         return jsonify({"status": "fail"}), 401  # 상태 코드 401 (인증 실패)
 
 
+# DB 연결 함수
+def get_db_connection():
+    return pymysql.connect(
+        host='project-db-cgi.smhrd.com',  # URL
+        user='plant',                     # 사용자 이름
+        password='1234',                  # 비밀번호
+        db='plant',                       # 데이터베이스 이름
+        charset='utf8',                   # 인코딩
+        port=3307                         # 포트
+    )
+
+# 아이디 중복 검사
+@users.route("/check_id", methods=['POST'])
+def check_id():
+    data = request.get_json()
+    user_id = data.get('user_id')
+
+    db = get_db_connection()
+    cursor = db.cursor()
+
+    sql = 'SELECT COUNT(*) FROM users WHERE user_id = %s'
+    
+    try:
+        cursor.execute(sql, (user_id,))
+        count = cursor.fetchone()[0]
+        if count > 0:
+            return jsonify({"status": "fail", "message": "이미 사용 중인 아이디입니다."}), 400
+        else:
+            return jsonify({"status": "success", "message": "사용 가능한 아이디입니다."})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        db.close()
+
+# 닉네임 중복 검사
+@users.route("/check_nickname", methods=['POST'])
+def check_nickname():
+    data = request.get_json()
+    user_nick = data.get('user_nick')
+
+    db = get_db_connection()
+    cursor = db.cursor()
+
+    sql = 'SELECT COUNT(*) FROM users WHERE user_nick = %s'
+    
+    try:
+        cursor.execute(sql, (user_nick,))
+        count = cursor.fetchone()[0]
+        if count > 0:
+            return jsonify({"status": "fail", "message": "이미 사용 중인 닉네임입니다."}), 400
+        else:
+            return jsonify({"status": "success", "message": "사용 가능한 닉네임입니다."})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        db.close()
+
+# 이메일 중복 검사
+@users.route("/check_email", methods=['POST'])
+def check_email():
+    data = request.get_json()
+    user_email = data.get('user_email')
+
+    db = get_db_connection()
+    cursor = db.cursor()
+
+    sql = 'SELECT COUNT(*) FROM users WHERE user_email = %s'
+    
+    try:
+        cursor.execute(sql, (user_email,))
+        count = cursor.fetchone()[0]
+        if count > 0:
+            return jsonify({"status": "fail", "message": "이미 사용 중인 이메일입니다."}), 400
+        else:
+            return jsonify({"status": "success", "message": "사용 가능한 이메일입니다."})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        db.close()
+
 
 @users.route("/update", methods=['POST'])
 def update():
@@ -216,3 +299,4 @@ def delete():
     else:
         return jsonify({"status": "fail", "message": "User not found"}), 404  # 상태 코드 404 (사용자 없음)
        
+

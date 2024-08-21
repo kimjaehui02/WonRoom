@@ -145,3 +145,72 @@ void usersDelete() async {
     print("Error: $e");
   }
 }
+
+// 아이디 중복 검사
+Future<bool> checkUserId(String user_id) async {
+  final String url = "$baseUrl/users/check_id";
+
+  try {
+    Response response = await dio.post(
+      url,
+      data: {"user_id": user_id},
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = response.data;
+      return responseData['status'] == 'success';
+    } else {
+      print('Unexpected status code: ${response.statusCode}');
+      return false;
+    }
+  } catch (e) {
+    print("Error: $e");
+    return false;
+  }
+}
+
+// 닉네임 중복 검사
+Future<bool> checkUserNickname(String user_nick) async {
+  final String url = "$baseUrl/users/check_nickname";
+
+  try {
+    Response response = await dio.post(
+      url,
+      data: {"user_nick": user_nick},
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = response.data;
+      return responseData['status'] == 'success';
+    } else {
+      print('Unexpected status code: ${response.statusCode}');
+      return false;
+    }
+  } catch (e) {
+    print("Error: $e");
+    return false;
+  }
+}
+
+// 이메일 중복 검사
+Future<bool> checkUserEmail(String user_email) async {
+  final String url = "$baseUrl/users/check_email";
+
+  try {
+    Response response = await dio.post(
+      url,
+      data: {"user_email": user_email},
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = response.data;
+      return responseData['status'] == 'success';
+    } else {
+      print('Unexpected status code: ${response.statusCode}');
+      return false;
+    }
+  } catch (e) {
+    print("Error: $e");
+    return false;
+  }
+}
