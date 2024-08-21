@@ -4,31 +4,26 @@ import 'package:wonroom/showFloatingActionModal.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});
-
   @override
   _IndexState createState() => _IndexState();
 }
-
 class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _selectedIndex = 0;
   final ScrollController _scrollController = ScrollController();
   bool _isFabVisible = false;
-
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 5, vsync: this);
     _scrollController.addListener(_scrollListener);
   }
-
   @override
   void dispose() {
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
     super.dispose();
   }
-
   void _scrollListener() {
     if (_scrollController.offset >= 200 && !_isFabVisible) {
       setState(() {
@@ -40,11 +35,13 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       });
     }
   }
-
   void _onBottomNavBarItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+    if (index == 0) {
+      _tabController.index = 0;
+    }
     _tabController.index = index;
   }
 
@@ -55,7 +52,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       curve: Curves.easeInOut,
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,8 +112,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
-
-
           indicatorColor: Colors.green,
           indicatorPadding: EdgeInsets.zero,
           indicatorWeight: 3.0,
@@ -167,7 +161,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               label: '홈',
               index: 0,
             ),
-            SizedBox(width: 40), // 중앙의 FloatingActionButton과 겹치지 않도록 공간 추가
+            SizedBox(width: 40), // 공간을 추가하여 중앙의 FloatingActionButton과 겹치지 않도록 함
             _buildBottomNavBarItem(
               icon: Icons.book_outlined,
               label: '다이어리',
@@ -201,7 +195,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
   Widget _buildBottomNavBarItem({
     required IconData icon,
     required String label,
@@ -218,14 +211,12 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             Icon(
               icon,
               size: 30,
-              color: _selectedIndex == index ? Colors.lightGreen[600] : Colors
-                  .grey,
+              color: _selectedIndex == index ? Colors.lightGreen[600] : Colors.grey,
             ),
             Text(
               label,
               style: TextStyle(
-                color: _selectedIndex == index ? Colors.lightGreen[600] : Colors
-                    .grey,
+                color: _selectedIndex == index ? Colors.lightGreen[600] : Colors.grey,
                 fontSize: 12,
               ),
             ),
@@ -234,7 +225,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
   Widget _buildHomePage() {
     return SingleChildScrollView(
       controller: _scrollController,
@@ -242,7 +232,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // _buildMyPlantsSection(),
           _buildMyPlantsSection(),
           const SizedBox(height: 50),
           _buildWeatherWidget(),
@@ -505,28 +494,26 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             color: Colors.grey[300],
             height: 1,
             width: double.infinity,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () {
-                showPlantRegistrationModal(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              buildStatusRow(
-                iconPath: 'images/potion.png',
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildStatusRow(
+                icon: Icons.water_drop, // 변경
                 text: 'Next D-6',
               ),
-              buildStatusRow(
-                iconPath: 'images/scissor.png',
-                text: 'Next D-6',
+              _buildStatusRow(
+                icon: Icons.pest_control, // 다른 아이콘 예시
+                text: 'Next D-3',
               ),
-              buildStatusRow(
-                iconPath: 'images/soil.png',
-                text: 'Next D-6',
+              _buildStatusRow(
+                icon: Icons.science, // 다른 아이콘 예시
+                text: 'Next D-1',
+              ),
+              _buildStatusRow(
+                icon: Icons.grass, // 다른 아이콘 예시
+                text: 'Next D-5',
               ),
             ],
           ),
@@ -535,7 +522,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
 
-  // 이미지 색상변경
   Widget _buildActionContainer({
     required dynamic icon, // 변경: dynamic으로 변경하여 IconData와 String 모두 허용
     required String text,
@@ -571,31 +557,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
-  Widget buildStatusRow({
-    required String iconPath,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Image.asset(
-          iconPath,
-          color: Colors.grey, // 이미지 색상 회색으로 변경
-          width: 12,
-          height: 12,
-        ),
-        const SizedBox(width: 5),
-        Text(
-          text,
-          style: const TextStyle(
-            fontSize: 12,
-            color: Colors.grey, // 텍스트 색상 회색으로 변경
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildStatusRow({
     required dynamic icon, // 변경: dynamic으로 변경하여 IconData와 String 모두 허용
     required String text,
@@ -622,80 +583,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ],
     );
   }
-
-  // 다이어리 비어있을 때 코드
-  // Widget _buildMyPlantsSection() {
-  //   return Container(
-  //     padding: const EdgeInsets.all(24),
-  //     decoration: BoxDecoration(
-  //       borderRadius: BorderRadius.circular(8),
-  //       color: Colors.white.withOpacity(0.8),
-  //       boxShadow: [
-  //         BoxShadow(
-  //           color: Colors.black.withOpacity(0.13),
-  //           spreadRadius: 2,
-  //           blurRadius: 8,
-  //           offset: const Offset(0, 2),
-  //         ),
-  //       ],
-  //     ),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.center,
-  //       children: [
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             const Text(
-  //               '다이어리',
-  //               style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
-  //             ),
-  //             TextButton(
-  //               onPressed: () {},
-  //               child: Row(
-  //                 children: const [
-  //                   Text(
-  //                     '다이어리 이동하기 >',
-  //                     style: TextStyle(
-  //                       color: Colors.grey,
-  //                     ),
-  //                   ),
-  //                   SizedBox(width: 5),
-  //                 ],
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //         const SizedBox(height: 20),
-  //         const Text(
-  //           '등록된 식물이 없습니다.\n나의 반려식물을 등록해 보세요.',
-  //           textAlign: TextAlign.center,
-  //           style: TextStyle(fontSize: 16),
-  //         ),
-  //         const SizedBox(height: 20),
-  //         SizedBox(
-  //           width: double.infinity,
-  //           height: 50,
-  //           child: ElevatedButton(
-  //             onPressed: () {},
-  //             style: ElevatedButton.styleFrom(
-  //               backgroundColor: Colors.green,
-  //               shape: RoundedRectangleBorder(
-  //                 borderRadius: BorderRadius.circular(10),
-  //               ),
-  //             ),
-  //             child: const Text(
-  //               '다이어리 등록하기',
-  //               style: TextStyle(
-  //                 fontSize: 16,
-  //                 color: Colors.white,
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   Widget _buildRecommendedPlantsSection() {
     return Column(
@@ -740,7 +627,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ],
     );
   }
-
   Widget _buildPopularPostsSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -803,8 +689,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ],
     );
   }
-
-
   Widget _buildPopularPostCard({
     required String imagePath,
     required String boardName,
@@ -879,7 +763,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
   Widget _buildPlantCard(String imagePath, String plantName) {
     return Container(
       margin: const EdgeInsets.only(right: 10),
@@ -904,7 +787,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
   Widget _buildPlantDictionaryPage() {
     return SingleChildScrollView(
       controller: _scrollController,
@@ -912,30 +794,23 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // _buildPlantCamera(),
           const SizedBox(height: 50),
-          // _buildRecommendedPlantsSection(),
           const SizedBox(height: 50),
-          // _buildPopularPostsSection(),
           const SizedBox(height: 40),
         ],
       ),
     );
   }
-
-
   Widget _buildPlantClinicPage(String text) {
     return Center(
       child: Text(text),
     );
   }
-
   Widget _buildCommunityPage(String text) {
     return Center(
       child: Text(text),
     );
   }
-
   Widget _buildCustomerServicePage(String text) {
     return Center(
       child: Text(text),
