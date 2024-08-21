@@ -59,6 +59,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       appBar: AppBar(
         title: Row(
 
@@ -67,6 +68,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               icon: const Icon(Icons.search),
               onPressed: () {},
             ),
+            SizedBox(width: 40,),
             Expanded(
               child: Center(
                 child: RichText(
@@ -77,14 +79,19 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                         style: TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontFamily: 'DMSerifDisplay',
+                          letterSpacing: 2,
+                          fontSize: 28,
                         ),
                       ),
                       TextSpan(
                         text: '-Room',
                         style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
+                          color: Color(0xff595959),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'DMSerifDisplay',
+                          letterSpacing: 1,
+                          fontSize: 28,
                         ),
                       ),
                     ],
@@ -104,11 +111,19 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         ),
         bottom: TabBar(
           controller: _tabController,
-          isScrollable: false,
+          isScrollable: true,
           labelColor: Colors.green,
+          labelStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+
+
           indicatorColor: Colors.green,
+          indicatorPadding: EdgeInsets.zero,
           indicatorWeight: 3.0,
-          labelPadding: EdgeInsets.symmetric(horizontal: 8.0),
+          tabAlignment: TabAlignment.start,
+          labelPadding: EdgeInsets.symmetric(horizontal: 20.0),
           tabs: const [
             Tab(text: '홈'),
             Tab(text: '식물사전'),
@@ -124,10 +139,10 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             controller: _tabController,
             children: [
               _buildHomePage(),
-              _buildPlaceholderPage('식물사전 페이지'),
-              _buildPlaceholderPage('식물클리닉 페이지'),
-              _buildPlaceholderPage('커뮤니티 페이지'),
-              _buildPlaceholderPage('고객센터 페이지'),
+              _buildPlantDictionaryPage(),
+              _buildPlantClinicPage('식물클리닉 페이지'),
+              _buildCommunityPage('커뮤니티 페이지'),
+              _buildCustomerServicePage('고객센터 페이지'),
             ],
           ),
           if (_isFabVisible)
@@ -183,7 +198,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               onPressed: () {},
               backgroundColor: Colors.transparent,
               elevation: 0,
-              child: Icon(Icons.camera_alt_outlined, color: Colors.white, size: 30),
+              child: Icon(
+                  Icons.camera_alt_outlined, color: Colors.white, size: 30),
             ),
           ),
         ],
@@ -207,12 +223,14 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             Icon(
               icon,
               size: 30,
-              color: _selectedIndex == index ? Colors.lightGreen[600] : Colors.grey,
+              color: _selectedIndex == index ? Colors.lightGreen[600] : Colors
+                  .grey,
             ),
             Text(
               label,
               style: TextStyle(
-                color: _selectedIndex == index ? Colors.lightGreen[600] : Colors.grey,
+                color: _selectedIndex == index ? Colors.lightGreen[600] : Colors
+                    .grey,
                 fontSize: 12,
               ),
             ),
@@ -229,6 +247,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // _buildMyPlantsSection(),
           _buildMyPlantsSection(),
           const SizedBox(height: 50),
           _buildRecommendedPlantsSection(),
@@ -240,11 +259,12 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
 
+  // 다이어리 있을 때
   Widget _buildMyPlantsSection() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         color: Colors.white.withOpacity(0.8),
         boxShadow: [
           BoxShadow(
@@ -256,7 +276,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -267,59 +287,307 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               ),
               TextButton(
                 onPressed: () {},
-                child: Row(
-                  children: const [
-                    Text(
-                      '다이어리 이동하기 >',
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                  ],
+                child: const Text(
+                  '다이어리 이동하기 >',
+                  style: TextStyle(color: Colors.grey),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          const Text(
-            '등록된 식물이 없습니다.\n나의 반려식물을 등록해 보세요.',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16),
+          const SizedBox(height: 10),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  image: const DecorationImage(
+                    image: AssetImage('images/백량금.jpg'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '몬스테라',
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            _buildActionContainer(
+                              icon: Icons.water_drop, // 변경
+                              text: '물주기',
+                              iconColor: Colors.lightBlueAccent,
+                              iconSize: 20,
+                            ),
+                            const SizedBox(width: 10),
+                            _buildActionContainer(
+                              icon: 'images/potion.png',
+                              text: '영양제',
+                              iconSize: 20,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            _buildActionContainer(
+                              icon: 'images/scissor.png',
+                              text: '가지치기',
+                              iconSize: 20,
+                            ),
+                            const SizedBox(width: 10),
+                            _buildActionContainer(
+                              icon: 'images/soil.png',
+                              text: '분갈이',
+                              iconSize: 20,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              // IconButton(
+              //   icon: const Icon(Icons.more_vert),
+              //   onPressed: () {},
+              // ),
+            ],
           ),
           const SizedBox(height: 20),
-          SizedBox(
+          Container(
+            color: Colors.grey[300],
+            height: 1,
             width: double.infinity,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildStatusRow(
+                icon: Icons.water_drop, // 변경
+                text: 'Next D-6',
               ),
-              child: const Text(
-                '다이어리 등록하기',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
+              buildStatusRow(
+                iconPath: 'images/potion.png',
+                text: 'Next D-6',
               ),
-            ),
+              buildStatusRow(
+                iconPath: 'images/scissor.png',
+                text: 'Next D-6',
+              ),
+              buildStatusRow(
+                iconPath: 'images/soil.png',
+                text: 'Next D-6',
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
+  // 이미지 색상변경
+  Widget _buildActionContainer({
+    required dynamic icon, // 변경: dynamic으로 변경하여 IconData와 String 모두 허용
+    required String text,
+    Color? iconColor,
+    double iconSize = 24,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey[400]!),
+      ),
+      child: Row(
+        children: [
+          if (icon is IconData)
+            Icon(
+              icon,
+              size: iconSize,
+              color: iconColor ?? Colors.grey,
+            )
+          else if (icon is String && icon.endsWith('.png'))
+            Image.asset(
+              icon,
+              width: iconSize,
+              height: iconSize,
+            ),
+          const SizedBox(width: 4),
+          Text(
+            text,
+            style: const TextStyle(fontSize: 16, color: Colors.grey),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildStatusRow({
+    required String iconPath,
+    required String text,
+  }) {
+    return Row(
+      children: [
+        Image.asset(
+          iconPath,
+          color: Colors.grey, // 이미지 색상 회색으로 변경
+          width: 12,
+          height: 12,
+        ),
+        const SizedBox(width: 5),
+        Text(
+          text,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Colors.grey, // 텍스트 색상 회색으로 변경
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatusRow({
+    required dynamic icon, // 변경: dynamic으로 변경하여 IconData와 String 모두 허용
+    required String text,
+  }) {
+    return Row(
+      children: [
+        if (icon is IconData)
+          Icon(
+            icon,
+            size: 12,
+            color: Colors.grey,
+          )
+        else if (icon is String && icon.endsWith('.png'))
+          Image.asset(
+            icon,
+            width: 12,
+            height: 12,
+          ),
+        const SizedBox(width: 5),
+        Text(
+          text,
+          style: const TextStyle(fontSize: 12, color: Colors.grey),
+        ),
+      ],
+    );
+  }
+
+  // 다이어리 비어있을 때 코드
+  // Widget _buildMyPlantsSection() {
+  //   return Container(
+  //     padding: const EdgeInsets.all(24),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(8),
+  //       color: Colors.white.withOpacity(0.8),
+  //       boxShadow: [
+  //         BoxShadow(
+  //           color: Colors.black.withOpacity(0.13),
+  //           spreadRadius: 2,
+  //           blurRadius: 8,
+  //           offset: const Offset(0, 2),
+  //         ),
+  //       ],
+  //     ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             const Text(
+  //               '다이어리',
+  //               style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+  //             ),
+  //             TextButton(
+  //               onPressed: () {},
+  //               child: Row(
+  //                 children: const [
+  //                   Text(
+  //                     '다이어리 이동하기 >',
+  //                     style: TextStyle(
+  //                       color: Colors.grey,
+  //                     ),
+  //                   ),
+  //                   SizedBox(width: 5),
+  //                 ],
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //         const SizedBox(height: 20),
+  //         const Text(
+  //           '등록된 식물이 없습니다.\n나의 반려식물을 등록해 보세요.',
+  //           textAlign: TextAlign.center,
+  //           style: TextStyle(fontSize: 16),
+  //         ),
+  //         const SizedBox(height: 20),
+  //         SizedBox(
+  //           width: double.infinity,
+  //           height: 50,
+  //           child: ElevatedButton(
+  //             onPressed: () {},
+  //             style: ElevatedButton.styleFrom(
+  //               backgroundColor: Colors.green,
+  //               shape: RoundedRectangleBorder(
+  //                 borderRadius: BorderRadius.circular(10),
+  //               ),
+  //             ),
+  //             child: const Text(
+  //               '다이어리 등록하기',
+  //               style: TextStyle(
+  //                 fontSize: 16,
+  //                 color: Colors.white,
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
   Widget _buildRecommendedPlantsSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          '추천 식물',
-          style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              '추천 식물',
+              style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+            ),
+            TextButton(
+              onPressed: () {
+                // 더보기 버튼 클릭 시 동작할 코드 작성
+              },
+              child: Row(
+                children: const [
+                  Text(
+                    '더보기 >',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                ],
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 10),
         SingleChildScrollView(
@@ -340,9 +608,30 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          '인기글',
-          style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              '인기글',
+              style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+            ),
+            TextButton(
+              onPressed: () {
+                // 더보기 버튼 클릭 시 동작할 코드 작성
+              },
+              child: Row(
+                children: const [
+                  Text(
+                    '더보기 >',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                ],
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 10),
         SizedBox(
@@ -377,6 +666,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ],
     );
   }
+
 
   Widget _buildPopularPostCard({
     required String imagePath,
@@ -478,7 +768,38 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildPlaceholderPage(String text) {
+  Widget _buildPlantDictionaryPage() {
+    return SingleChildScrollView(
+      controller: _scrollController,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // _buildPlantCamera(),
+          const SizedBox(height: 50),
+          // _buildRecommendedPlantsSection(),
+          const SizedBox(height: 50),
+          // _buildPopularPostsSection(),
+          const SizedBox(height: 40),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _buildPlantClinicPage(String text) {
+    return Center(
+      child: Text(text),
+    );
+  }
+
+  Widget _buildCommunityPage(String text) {
+    return Center(
+      child: Text(text),
+    );
+  }
+
+  Widget _buildCustomerServicePage(String text) {
     return Center(
       child: Text(text),
     );
