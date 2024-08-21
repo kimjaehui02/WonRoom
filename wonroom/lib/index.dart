@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wonroom/myPlantRegistration.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});
@@ -292,7 +293,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                  showPlantRegistrationModal(context);
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
                 shape: RoundedRectangleBorder(
@@ -484,3 +487,4 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
 }
+
