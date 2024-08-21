@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/Finding_Pw.dart';
-import 'join.dart'; // Join 화면을 가져옵니다.
+import 'Join/join.dart'; // Join 화면을 가져옵니다.
 
 class Login extends StatelessWidget {
   Login({super.key});
