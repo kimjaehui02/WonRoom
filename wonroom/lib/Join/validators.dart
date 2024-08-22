@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/DB/users/user_service.dart';
 import 'package:wonroom/Join/controllers.dart';
+import 'package:wonroom/index.dart';
+import 'package:wonroom/join.dart';
 
 
 class Validators {
@@ -133,7 +135,11 @@ class Validators {
                                   _formControllers.passwordController.text,
                                   _formControllers.nicknameController.text,
                                   _formControllers.emailController.text);
-                      Navigator.of(context).pop(); // 모달 닫기
+                      // Navigator.of(context).pop(); // 모달 닫기
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => Index()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
