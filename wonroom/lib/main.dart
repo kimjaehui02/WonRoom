@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wonroom/Finding_Pw.dart';
 import 'package:wonroom/Finding_Pw_Temporarily.dart';
 import 'package:wonroom/index.dart';
 import 'package:wonroom/intro.dart';
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white, // 앱바 배경색
       ),
     ),
-    home: Index(),
+    home: Intro(),
     );
   }
 }
