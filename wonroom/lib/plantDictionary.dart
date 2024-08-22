@@ -67,14 +67,10 @@ class _PlantDictionaryState extends State<PlantDictionary> {
     return Padding(
         padding: const EdgeInsets.all(16),
         child: CustomScrollView(
-          // CustomScrollView의 괄호 시작
-          controller: _scrollController, // CustomScrollView의 controller 속성
+          controller: _scrollController,
           slivers: [
-            // CustomScrollView의 slivers 속성 (리스트 형태로 여러 Sliver를 포함할 수 있음)
             SliverToBoxAdapter(
-              // SliverToBoxAdapter의 괄호 시작
               child: Padding(
-                // Padding의 괄호 시작
                 padding: const EdgeInsets.all(16),
                 child: Text(
                   '식물 사전',
@@ -83,19 +79,15 @@ class _PlantDictionaryState extends State<PlantDictionary> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ), // Padding의 괄호 끝
-            ), // SliverToBoxAdapter의 괄호 끝
+              ),
+            ),
             SliverGrid(
-              // SliverGrid의 괄호 시작
               delegate: SliverChildBuilderDelegate(
-                // SliverChildBuilderDelegate의 괄호 시작
                     (context, index) {
-                  // itemBuilder의 괄호 시작
                   if (index == _items.length && _isLoading) {
-                    return Center(child: CircularProgressIndicator()); // 로딩 인디케이터
+                    return Center(child: CircularProgressIndicator());
                   }
                   return GestureDetector(
-                    // GestureDetector의 괄호 시작
                     onTap: () {
                       Navigator.push(
                         context,
@@ -108,21 +100,18 @@ class _PlantDictionaryState extends State<PlantDictionary> {
                       );
                     },
                     child: Column(
-                      // Column의 괄호 시작
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Expanded(
-                          // Expanded의 괄호 시작
                           child: Container(
-                            // Container의 괄호 시작
                             decoration: BoxDecoration(
-                              color: Colors.grey.shade300, // 임시 배경 색상
-                              borderRadius: BorderRadius.circular(10), // 라운드 처리
+                              color: Colors.grey.shade300,
+                              borderRadius: BorderRadius.circular(10),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black26, // 그림자 색상
+                                  color: Colors.black26,
                                   blurRadius: 4, // 그림자의 흐림 정도
-                                  offset: Offset(2, 2), // 그림자의 위치
+                                  offset: Offset(2, 2),
                                 ),
                               ],
                             ),
@@ -131,12 +120,12 @@ class _PlantDictionaryState extends State<PlantDictionary> {
                               borderRadius: BorderRadius.circular(10),
                               child: Image.network(
                                 _items[index]["image"]!,
-                                fit: BoxFit.cover, // 이미지 비율에 맞게 자르기
+                                fit: BoxFit.cover,
                               ),
-                            ), // ClipRRect의 괄호 끝
-                          ), // Container의 괄호 끝
-                        ), // Expanded의 괄호 끝
-                        SizedBox(height: 8), // 이미지와 텍스트 사이의 간격
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 8),
                         Text(
                           _items[index]["name"]!,
                           style: TextStyle(
@@ -145,22 +134,21 @@ class _PlantDictionaryState extends State<PlantDictionary> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                      ], // Column의 children 목록 끝
-                    ), // GestureDetector의 괄호 끝
-                  ); // itemBuilder의 괄호 끝
+                      ],
+                    ),
+                  );
                 },
                 childCount: _items.length + (_isLoading ? 1 : 0),
-              ), // SliverChildBuilderDelegate의 괄호 끝
+              ),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                // SliverGridDelegateWithFixedCrossAxisCount의 괄호 시작
                 crossAxisCount: 2, // 한 행에 2개의 항목
                 crossAxisSpacing: 12, // 항목 간의 수평 간격
                 mainAxisSpacing: 24, // 항목 간의 수직 간격
                 childAspectRatio: 1, // 1:1 비율 설정
-              ), // SliverGridDelegateWithFixedCrossAxisCount의 괄호 끝
-            ), // SliverGrid의 괄호 끝
-          ], // CustomScrollView의 slivers 목록 끝
-        ), // CustomScrollView의 괄호 끝
+              ),
+            ),
+          ],
+        ),
       );
   }
 }
