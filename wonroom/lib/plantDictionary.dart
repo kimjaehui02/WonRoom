@@ -126,6 +126,8 @@ class _PlantDictionaryState extends State<PlantDictionary> {
                           ),
                         ),
                         SizedBox(height: 8),
+
+                        // padding: const EdgeInsets.only(left: 10, right: 10, top: 4),
                         Text(
                           _items[index]["name"]!,
                           style: TextStyle(

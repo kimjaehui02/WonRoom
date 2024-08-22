@@ -133,12 +133,12 @@ class Myplant extends StatelessWidget {
                         ],
                       ),
 
-                      SizedBox(height: 24),
+                      SizedBox(height: 16),
 
                       // 이미지
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: MediaQuery.of(context).size.width * 0.8,
+                        width: MediaQuery.of(context).size.width * 0.85,
+                        height: MediaQuery.of(context).size.width * 0.85,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.redAccent,
@@ -285,7 +285,57 @@ class Myplant extends StatelessWidget {
                                   SizedBox(width: 20),
                                   RichText(
                                     text: TextSpan(
-                                      text: '다음 권장 날짜 : ',
+                                      text: '마지막 활동 날짜 : ',
+                                      style: TextStyle(
+                                        color: Color(0xffc2c2c2),
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: "09.12",
+                                          style: TextStyle(
+                                            color: Color(0xff787878),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Color(0xffeeeeee),
+                                    width: 1,
+                                  ),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  OutlinedButton.icon(
+                                    onPressed: () {},
+                                    icon: Image.asset(
+                                      'images/soil.png', // 분갈이 아이콘
+                                      width: 18,
+                                      height: 18,
+                                    ),
+                                    label: Text(
+                                      "분갈이",
+                                      style: TextStyle(color: Color(0xff787878)),
+                                    ),
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(color: Color(0xffc2c2c2)),
+                                    ),
+                                  ),
+                                  SizedBox(width: 20),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: '마지막 활동 날짜 : ',
                                       style: TextStyle(
                                         color: Color(0xffc2c2c2),
                                       ),
@@ -311,13 +361,13 @@ class Myplant extends StatelessWidget {
                                 children: [
                                   OutlinedButton.icon(
                                     onPressed: () {},
-                                    icon: Image.asset(
-                                      'images/soil.png', // 분갈이 아이콘
-                                      width: 18,
-                                      height: 18,
+                                    icon: Icon(
+                                      Icons.eco,
+                                      size: 18,
+                                      color: Colors.lightGreen,
                                     ),
                                     label: Text(
-                                      "분갈이",
+                                      "진단",
                                       style: TextStyle(color: Color(0xff787878)),
                                     ),
                                     style: OutlinedButton.styleFrom(
@@ -327,7 +377,7 @@ class Myplant extends StatelessWidget {
                                   SizedBox(width: 20),
                                   RichText(
                                     text: TextSpan(
-                                      text: '다음 권장 날짜 : ',
+                                      text: '마지막 진단 날짜 : ',
                                       style: TextStyle(
                                         color: Color(0xffc2c2c2),
                                       ),
@@ -345,6 +395,7 @@ class Myplant extends StatelessWidget {
                                 ],
                               ),
                             ),
+
                           ],
                         ),
                       ),
@@ -363,7 +414,7 @@ class Myplant extends StatelessWidget {
 
                   // 기록
                   Container(
-                    padding: const EdgeInsets.all(24),
+                    padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -550,28 +601,126 @@ class Myplant extends StatelessWidget {
                           ),
                         ),
 
-                        SizedBox(height: 100,),
-
-                        // 버튼
-                        ElevatedButton(onPressed: (){
-
-                        }, style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xff595959),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          minimumSize: const Size.fromHeight(50),
-                        ),
-                          child: const Text('해당 식물 정보 알아보기',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                            ),
-                          ),
-                        )
                       ],
                     ),
+                  ),
+
+                  // 구분
+                  Container(
+                    margin: EdgeInsets.only(top: 40, bottom: 24),
+                    width: MediaQuery.of(context).size.width,
+                    height: 8,
+                    color: Color(0xffeeeeee),
+                  ),
+
+                  // 진단
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '진단 기록',
+                                style: TextStyle(
+                                  fontSize: 21,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+
+                              TextButton(onPressed: (){},
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '자세히 보기 ',
+                                        style: TextStyle(
+                                          color: Color(0xff787878),
+                                        ),
+                                      ),
+                                      Icon(Icons.arrow_forward_ios,
+                                        size: 12,
+                                      )
+                                    ],
+                                  ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: 12),
+
+                        // 진단 기록
+                        Center(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: EdgeInsets.all(30),
+                            color: Color(0xfffafafa),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.eco,
+                                      size: 32,
+                                      color: Colors.lightGreen,
+                                    ),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      '건강 기록',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    buildTimelineItem("03.19 \n 정상", true),
+                                    buildTimelineItem("04.19 \n 질병", true),
+                                    buildTimelineItem("05.19 \n 해충", true),
+                                    buildTimelineItem("06.19 \n 정상", true),
+                                    buildTimelineItem(" \n ", false),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: 100,),
+
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                      // 버튼
+                    child: ElevatedButton(onPressed: (){
+
+                    },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xff595959),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        minimumSize: const Size.fromHeight(50),
+                      ),
+                        child: const Text('해당 식물 정보 알아보기',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
                   ),
                 ],
               ),
