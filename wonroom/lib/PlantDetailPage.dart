@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class PlantDetailPage extends StatelessWidget {
@@ -186,6 +188,7 @@ class PlantDetailPage extends StatelessWidget {
                 ],
               ),
             ),
+
             // 구분
             Container(
               margin: EdgeInsets.only(top: 40, bottom: 24),
@@ -193,49 +196,49 @@ class PlantDetailPage extends StatelessWidget {
               height: 8,
               color: Color(0xffeeeeee),
             ),
+
             Container(
               padding: const EdgeInsets.all(16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     padding: EdgeInsets.only(bottom: 12, left: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '몬스테라 심기 및 재배',
-                          style: TextStyle(
-                            fontSize: 21,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-
-                        Table(
-                          // border: TableBorder.all(color: Colors.grey), // 테두리 색상 설정
-                          columnWidths: {
-                            0: FlexColumnWidth(2), // 첫 번째 열 비율
-                            1: FlexColumnWidth(3), // 두 번째 열 비율
-                          },
-                          children: [
-                            _buildTableRow("강도", "어려움", true),
-                            _buildTableRow("관리 수준", "낮음", false),
-                            _buildTableRow("관리 난이도", "쉬움", true),
-                            _buildTableRow("수명", "다년생", false),
-                            _buildTableRow("급수 일정", "매주", true),
-                            _buildTableRow("햇빛 요건", "부분 햇빛", false),
-                            _buildTableRow("토양 pH", "5.5-6.5", true),
-                            _buildTableRow("심는 시기", "사계절", false),
-                            _buildTableRow("내한성 구역", "10-13", true),
-                            _buildTableRow("독성", "사람 & 동물에게 유독함", false),
-                          ],
-                        ),
-
-                      ],
+                    child: Text(
+                      '몬스테라 심기 및 재배',
+                      style: TextStyle(
+                        fontSize: 21,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   SizedBox(height: 12),
+                  Table(
+                    columnWidths: {
+                      0: FlexColumnWidth(2), // 첫 번째 열 비율
+                      1: FlexColumnWidth(3), // 두 번째 열 비율
+                    },
+                    children: List<TableRow>.generate(
+                      _tableData.length,
+                          (index) {
+                        return _buildTableRow(
+                          _tableData[index]['parameter']!,
+                          _tableData[index]['value']!,
+                          index,
+                        );
+                      },
+                    ),
+                  ),
                 ],
               ),
+            ),
+
+            // 구분
+            Container(
+              margin: EdgeInsets.only(top: 24, bottom: 24),
+              width: MediaQuery.of(context).size.width,
+              height: 8,
+              color: Color(0xffeeeeee),
             ),
           ],
         ),
@@ -244,25 +247,45 @@ class PlantDetailPage extends StatelessWidget {
   }
 }
 
+// 테이블 데이터
+final List<Map<String, String>> _tableData = [
+  {"parameter": "강도", "value": "어려움"},
+  {"parameter": "관리 수준", "value": "낮음"},
+  {"parameter": "관리 난이도", "value": "쉬움"},
+  {"parameter": "수명", "value": "다년생"},
+  {"parameter": "급수 일정", "value": "매주"},
+  {"parameter": "햇빛 요건", "value": "부분 햇빛"},
+  {"parameter": "토양 pH", "value": "5.5-6.5"},
+  {"parameter": "심는 시기", "value": "사계절"},
+  {"parameter": "내한성 구역", "value": "10-13"},
+  {"parameter": "독성", "value": "사람 & 동물에게 유독함"},
+];
+
 // 테이블 행 생성 메서드
-TableRow _buildTableRow(String parameter, String value, bool isOdd) {
+TableRow _buildTableRow(String parameter, String value, int index) {
   return TableRow(
     decoration: BoxDecoration(
-      color: isOdd ? Colors.grey[200] : Colors.white, // 홀수 행에 회색 배경색 적용
+      color: index.isOdd ? Colors.white : Color(0xffeeeeee),
+      borderRadius: BorderRadius.circular(5),
     ),
     children: [
-      Container(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        child: Text(parameter, style: TextStyle(fontSize: 16)),
-      ),
-      Container(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          value,
-          style: TextStyle(fontSize: 16),
-          textAlign: TextAlign.right,
-        ),
-      ),
+      _buildTableCell(parameter, TextAlign.left),
+      _buildTableCell(value, TextAlign.right),
     ],
+  );
+}
+
+// 테이블 셀 생성 메서드
+Widget _buildTableCell(String text, TextAlign textAlign) {
+  return Container(
+    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(5), // 셀의 둥근 모서리 설정
+    ),
+    child: Text(
+      text,
+      style: TextStyle(fontSize: 16),
+      textAlign: textAlign,
+    ),
   );
 }
