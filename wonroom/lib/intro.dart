@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wonroom/index.dart';
 import 'package:wonroom/join.dart';
 import 'package:wonroom/login.dart';
 
@@ -95,10 +96,14 @@ class Intro extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       // 회원가입 버튼 클릭 시 동작
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Join()),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => Join()),
+                      // );
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => Index()),
+                      // );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
