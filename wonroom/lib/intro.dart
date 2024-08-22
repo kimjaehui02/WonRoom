@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wonroom/Join/join.dart';
+import 'package:wonroom/join.dart';
 import 'package:wonroom/login.dart';
 
 class Intro extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'validators.dart';
-import 'controllers.dart';
+import 'Join/validators.dart';
+import 'Join/controllers.dart';
 
 class Join extends StatefulWidget {
   @override
