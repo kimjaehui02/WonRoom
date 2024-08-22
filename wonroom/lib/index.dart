@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wonroom/myPage.dart';
 import 'package:wonroom/myPlantRegistration.dart';
 import 'package:wonroom/showFloatingActionModal.dart';
 
@@ -100,7 +101,12 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             ),
             IconButton(
               icon: const Icon(Icons.person_outline),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyPage()), // MyPage로 이동
+                );
+              },
             ),
           ],
         ),
