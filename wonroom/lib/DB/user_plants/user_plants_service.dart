@@ -38,12 +38,12 @@ void addPlant(int user_id, int catalog_number, String diary_title, String next_w
 }
 
 
-void getPlant(int plant_id) async {
+void getPlants(int user_id) async {
   final String url = "$baseUrl/user_plants/select";
 
   try {
     Response response = await dio.get(url, queryParameters: {
-      "plant_id": plant_id,
+      "user_id": user_id,
     });
 
     print('Status Code: ${response.statusCode}');
