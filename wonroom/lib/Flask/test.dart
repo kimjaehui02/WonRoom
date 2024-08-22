@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-
 void testConnection() async {
   String url = "http://192.168.219.81:8087/";  // Flask 서버의 /test 엔드포인트
 
