@@ -16,6 +16,10 @@ class _JoinState extends State<Join> {
   String? _nicknameValidationMessage;
   String? _emailValidationMessage;
 
+  String? idCheck;
+  String? nicknameCheck;
+  String? emailCheck;
+
   @override
   void initState() {
     super.initState();
@@ -32,7 +36,7 @@ class _JoinState extends State<Join> {
     _formControllers.nicknameFocusNode.addListener(_updateNicknameValidation); // FocusNode에 리스너 추가
   }
 
-  void _updateButtonState() {
+  bool _updateButtonState() {
     // final idValid = _formControllers.idController.text.isNotEmpty;
     final idValid = _idValidationMessage == '사용 가능한 아이디 입니다.';
     final passwordNotEmpty = _formControllers.passwordController.text.isNotEmpty;
@@ -65,8 +69,13 @@ class _JoinState extends State<Join> {
           passwordsMatch;
     });
 
+    idCheck = ids;
+    nicknameCheck = nis;
+    emailCheck = ems;
+
     // 최종 버튼 활성화 상태를 콘솔에 출력
     print('Button Enabled: ${_formControllers.isButtonEnabled}');
+    return _formControllers.isButtonEnabled;
   }
 
   // void _updateEmailValidation() {
@@ -88,6 +97,7 @@ class _JoinState extends State<Join> {
         });
       }
     }
+    _updateButtonState();
   }
 
   void _updateNicknameValidation() async {
@@ -101,6 +111,7 @@ class _JoinState extends State<Join> {
         });
       }
     }
+    _updateButtonState();
   }
 
   void _updateIdValidation() async {
@@ -114,6 +125,7 @@ class _JoinState extends State<Join> {
         });
       }
     }
+    _updateButtonState();
   }
 
 
@@ -129,65 +141,8 @@ class _JoinState extends State<Join> {
   //   }
   // }
 
-  void _showSuccessDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Container(
-            padding: EdgeInsets.all(20.0),
-            constraints: BoxConstraints(maxWidth: 400),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  '회원가입 완료',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 16.0),
-                Text(
-                  '지금 바로 건강한 반려식물\n관리를 시작해보세요.',
-                  style: TextStyle(fontSize: 18),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 24.0),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // 모달 닫기
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      padding: EdgeInsets.symmetric(vertical: 14.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    child: Text(
-                      '확인',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+
+
 
   @override
   void dispose() {
@@ -231,18 +186,21 @@ class _JoinState extends State<Join> {
               ),
             ),
             ElevatedButton(
-              onPressed: _formControllers.isButtonEnabled ? () {
-                if (_formKey.currentState!.validate()) {
-                  setState(() {
-                    // 중복된 아이디 체크
-                    _formControllers.isIdDuplicate = _formControllers.idController.text == "wonroom";
-                  });
-
-                  if (!_formControllers.isIdDuplicate) {
+              onPressed: _formControllers.isButtonEnabled ? () async {
+                bool test = await Validators.validateAll(_formControllers.idController.text,
+                    _formControllers.nicknameController.text,
+                    _formControllers.emailController.text);
+                if(test)
+                  {
                     // 회원가입 처리 로직
-                    _showSuccessDialog(); // 모달 창 띄우기
+                    Validators.showSuccessDialog(context, _formControllers);
                   }
+                else
+                {
+                  Validators.showErrorDialog(context, '사용자 정보가 올바르지 않습니다. 다시 시도해주세요.');
+
                 }
+
               } : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: _formControllers.isButtonEnabled ? Colors.green : Colors.grey[400],
@@ -298,7 +256,7 @@ class _JoinState extends State<Join> {
               fontSize: 12,
             ),
           ),
-          onChanged: (_) => _updateIdValidation(),
+          // onChanged: (_) => _updateIdValidation(),
         ),
         if (_idValidationMessage != null)
           Padding(

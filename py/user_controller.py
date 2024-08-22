@@ -55,6 +55,12 @@ def insert():
     # 2. 데이터 접근 객체 - cursor
     cursor = db.cursor()
 
+    print(user_id)
+    print(user_pw)
+    print(user_nick)
+    print(user_email)
+    print(reg_date)
+
     # 3. SQL문 작성
     sql = '''
     INSERT INTO users (user_id, user_pw, user_nick, user_email, reg_date)
