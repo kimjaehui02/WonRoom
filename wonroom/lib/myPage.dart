@@ -298,33 +298,54 @@ class PersonalInfoEditPage extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return AlertDialog(
-                        content: Text(
-                          '변경이 완료되었습니다.\n확인 버튼을 누르면 이전 페이지로 이동합니다.',
-                          style: TextStyle(fontSize: 16),
-                          textAlign: TextAlign.center,
+                      return Dialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        actions: [
-                          Center(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black, // 버튼 배경색을 검정색으로 설정
-                                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 32), // 버튼 크기 조절
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8), // 버튼 모서리를 둥글게 설정
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                '변경이 완료되었습니다.',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 16),
+                              Text(
+                                '확인 버튼을 누르면 \n이전 페이지로 이동합니다.',
+                                style: TextStyle(fontSize: 16, color: Colors.grey),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 24),
+                              Align(
+                                alignment: Alignment.center,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.black, // 버튼 배경색을 검정색으로 설정
+                                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 32), // 버튼 크기 조절
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8), // 버튼 모서리를 둥글게 설정
+                                    ),
+                                  ),
+                                  child: Text('확인', style: TextStyle(fontSize: 18, color: Colors.white)),
+                                  onPressed: () {
+                                    Navigator.pop(context); // 다이얼로그를 닫음
+                                    Navigator.pop(context); // 이전 페이지로 이동
+                                  },
                                 ),
                               ),
-                              child: Text('확인', style: TextStyle(fontSize: 18, color: Colors.white)),
-                              onPressed: () {
-                                Navigator.pop(context); // 다이얼로그를 닫음
-                                Navigator.pop(context); // 이전 페이지로 이동
-                              },
-                            ),
+                            ],
                           ),
-                        ],
+                        ),
                       );
                     },
                   );
+
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green, // 버튼 배경색을 녹색으로 설정
