@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/join.dart';
+import 'package:wonroom/login.dart';
 
 class Intro extends StatelessWidget {
   const Intro({super.key});
@@ -66,7 +67,10 @@ class Intro extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       // 로그인 버튼 클릭 시 동작
-                      print('로그인 버튼 클릭 됨');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Login()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
