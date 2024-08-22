@@ -436,7 +436,10 @@ class Myplant extends StatelessWidget {
                           child: Container(
                             width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.all(30),
-                            color: Color(0xfffafafa),
+                            decoration: BoxDecoration(
+                                color : Color(0xfffafafa),
+                                borderRadius: BorderRadius.circular(10)
+                            ),
                             child: Column(
                               children: [
                                 Row(
@@ -480,7 +483,10 @@ class Myplant extends StatelessWidget {
                           child: Container(
                             width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.all(30),
-                            color: Color(0xfffafafa),
+                            decoration: BoxDecoration(
+                                color : Color(0xfffafafa),
+                                borderRadius: BorderRadius.circular(10)
+                            ),
                             child: Column(
                               children: [
                                 Row(
@@ -523,7 +529,10 @@ class Myplant extends StatelessWidget {
                           child: Container(
                             width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.all(30),
-                            color: Color(0xfffafafa),
+                            decoration: BoxDecoration(
+                                color : Color(0xfffafafa),
+                                borderRadius: BorderRadius.circular(10)
+                            ),
                             child: Column(
                               children: [
                                 Row(
@@ -565,7 +574,10 @@ class Myplant extends StatelessWidget {
                           child: Container(
                             width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.all(30),
-                            color: Color(0xfffafafa),
+                            decoration: BoxDecoration(
+                                color : Color(0xfffafafa),
+                                borderRadius: BorderRadius.circular(10)
+                            ),
                             child: Column(
                               children: [
                                 Row(
@@ -658,7 +670,10 @@ class Myplant extends StatelessWidget {
                           child: Container(
                             width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.all(30),
-                            color: Color(0xfffafafa),
+                            decoration: BoxDecoration(
+                                color : Color(0xfffafafa),
+                                borderRadius: BorderRadius.circular(10)
+                            ),
                             child: Column(
                               children: [
                                 Row(

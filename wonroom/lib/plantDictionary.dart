@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wonroom/PlantDetailPage.dart';
 
 class PlantDictionary extends StatefulWidget {
   @override
@@ -93,8 +94,8 @@ class _PlantDictionaryState extends State<PlantDictionary> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => PlantDetailPage(
-                            plantName: _items[index]["name"]!,
-                            plantImage: _items[index]["image"]!,
+                            // plantName: _items[index]["name"]!,
+                            // plantImage: _items[index]["image"]!,
                           ),
                         ),
                       );
@@ -155,18 +156,18 @@ class _PlantDictionaryState extends State<PlantDictionary> {
   }
 }
 
-class PlantDetailPage extends StatelessWidget {
-  final String plantName;
-  final String plantImage;
-
-  PlantDetailPage({required this.plantName, required this.plantImage});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(plantName),
-      ),
-    );
-  }
-}
+// class PlantDetailPage extends StatelessWidget {
+//   final String plantName;
+//   final String plantImage;
+//
+//   PlantDetailPage({required this.plantName, required this.plantImage});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(plantName),
+//       ),
+//     );
+//   }
+// }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/Finding_Pw_Temporarily.dart';
+import 'package:wonroom/PlantDetailPage.dart';
 import 'package:wonroom/index.dart';
 // import 'package:wonroom/intro.dart';
 import 'package:wonroom/join.dart';
