@@ -161,7 +161,7 @@ class Login extends StatelessWidget {
                             );
                           },
                           style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Colors.green, width: 2), // 테두리 색상과 두께
+                            side: BorderSide(color: Color(0xff6bbe45), width: 2), // 테두리 색상과 두께
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero, // 직사각형 모양
                             ),
@@ -169,7 +169,7 @@ class Login extends StatelessWidget {
                           ),
                           child: const Text(
                             '회원가입',
-                            style: TextStyle(color: Colors.green, fontSize: 22), // 초록색 글씨
+                            style: TextStyle(color: Color(0xff6bbe45), fontSize: 22), // 초록색 글씨
                           ),
                         ),
                       ),

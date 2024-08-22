@@ -153,7 +153,7 @@ class FindingPw extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey[400], // 버튼 배경색
+                  backgroundColor: Color(0xff6bbe45), // 버튼 배경색
                   padding: const EdgeInsets.symmetric(vertical: 12.0), // 버튼 위아래 여백 조정
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.zero, // 직사각형 모양

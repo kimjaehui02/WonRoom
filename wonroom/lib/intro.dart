@@ -25,17 +25,21 @@ class Intro extends StatelessWidget {
                           TextSpan(
                             text: 'Won', // 초록색으로 할 부분
                             style: TextStyle(
-                              fontSize: 42,
+                              color: Colors.green,
                               fontWeight: FontWeight.bold,
-                              color: Colors.green[600], // 초록색으로 설정
+                              fontFamily: 'DMSerifDisplay',
+                              letterSpacing: 2,
+                              fontSize: 42,
                             ),
                           ),
                           TextSpan(
                             text: '-Room', // 나머지 부분
                             style: TextStyle(
-                              fontSize: 42,
+                              color: Color(0xff595959),
                               fontWeight: FontWeight.bold,
-                              color: Colors.black, // 검정색으로 설정
+                              fontFamily: 'DMSerifDisplay',
+                              letterSpacing: 1,
+                              fontSize: 42,
                             ),
                           ),
                         ],
