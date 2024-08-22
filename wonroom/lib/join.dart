@@ -143,6 +143,7 @@ class _JoinState extends State<Join> {
 
 
 
+
   @override
   void dispose() {
     _formControllers.dispose(); // 모든 컨트롤러 및 FocusNode 리소스 해제
@@ -202,7 +203,7 @@ class _JoinState extends State<Join> {
 
               } : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: _isButtonEnabled ? Color(0xff6bbe45) : Colors.grey[400],
+                backgroundColor: _formControllers.isButtonEnabled ? Colors.green : Colors.grey[400],
                 minimumSize: Size(double.infinity, 48),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.zero,
