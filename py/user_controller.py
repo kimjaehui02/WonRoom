@@ -55,6 +55,7 @@ def insert():
     # 2. 데이터 접근 객체 - cursor
     cursor = db.cursor()
 
+    print("/insert")
     print(user_id)
     print(user_pw)
     print(user_nick)
@@ -84,6 +85,7 @@ def insert():
     else:
         return "fail"
 
+
 @users.route("/login", methods=['POST'])
 def login():
     # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
@@ -103,6 +105,10 @@ def login():
 
     # 2. 데이터 접근 객체 - cursor
     cursor = db.cursor()
+
+    print("/login")
+    print(user_id)
+    print(user_pw)
 
     # 3. SQL문 작성
     sql = '''
