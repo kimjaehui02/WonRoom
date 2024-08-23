@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/Finding_Pw.dart';
 import 'package:wonroom/Finding_Pw_Temporarily.dart';
+import 'package:wonroom/PlantDetailPage.dart';
+import 'package:wonroom/community.dart';
 import 'package:wonroom/index.dart';
-import 'package:wonroom/intro.dart';
+// import 'package:wonroom/intro.dart';
 import 'package:wonroom/join.dart';
 import 'package:wonroom/login.dart';
+import 'package:wonroom/myCommentsNull.dart';
 import 'package:wonroom/myPlant.dart';
 import 'package:wonroom/myPlantNull.dart';
+import 'package:wonroom/notificationNulll.dart';
 import 'package:wonroom/plantDictionary.dart';
+import 'package:wonroom/splash.dart';
+import 'package:wonroom/writePage.dart';
 
 
 void main() {
