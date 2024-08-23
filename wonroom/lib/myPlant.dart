@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wonroom/myPlantClinic.dart';
 
 class Myplant extends StatelessWidget {
   const Myplant({super.key});
@@ -141,7 +142,6 @@ class Myplant extends StatelessWidget {
                         height: MediaQuery.of(context).size.width * 0.85,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Colors.redAccent,
                           image: DecorationImage(
                             fit: BoxFit.fill,
                             image: AssetImage('images/img01.jpg'), // 로컬 이미지 경로
@@ -719,7 +719,9 @@ class Myplant extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                       // 버튼
                     child: ElevatedButton(onPressed: (){
-
+                      Navigator.push(context,
+                        MaterialPageRoute(builder: (_)=>MyPlantClinic()),
+                      );
                     },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xff595959),
