@@ -4,7 +4,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 List<int> intList = List<int>.generate(6, (index) => index++, growable: false);
 
 class PlantDetailPage extends StatelessWidget {
-
   final PageController _pageController = PageController();
 
   @override
@@ -95,12 +94,14 @@ class PlantDetailPage extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.water_drop, color: Colors.lightBlueAccent),
+                                  Icon(Icons.water_drop,
+                                      color: Colors.lightBlueAccent),
                                   SizedBox(width: 5),
                                   Text(
                                     '물주기:',
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Color(0xff595959), fontSize: 16),
+                                    style: TextStyle(
+                                        color: Color(0xff595959), fontSize: 16),
                                   ),
                                 ],
                               ),
@@ -108,7 +109,8 @@ class PlantDetailPage extends StatelessWidget {
                               Text(
                                 '10 Day',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(color: Color(0xff595959),
+                                style: TextStyle(
+                                  color: Color(0xff595959),
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -135,7 +137,8 @@ class PlantDetailPage extends StatelessWidget {
                                   Text(
                                     '온도:',
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Color(0xff595959), fontSize: 16),
+                                    style: TextStyle(
+                                        color: Color(0xff595959), fontSize: 16),
                                   ),
                                 ],
                               ),
@@ -143,7 +146,8 @@ class PlantDetailPage extends StatelessWidget {
                               Text(
                                 '18-30℃',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(color: Color(0xff595959),
+                                style: TextStyle(
+                                  color: Color(0xff595959),
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -154,7 +158,6 @@ class PlantDetailPage extends StatelessWidget {
                       ),
                     ],
                   ),
-
                   SizedBox(height: 10),
                   Container(
                     width: double.infinity,
@@ -173,7 +176,8 @@ class PlantDetailPage extends StatelessWidget {
                             Text(
                               '식물 위치:',
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: Color(0xff595959), fontSize: 16),
+                              style: TextStyle(
+                                  color: Color(0xff595959), fontSize: 16),
                             ),
                           ],
                         ),
@@ -181,7 +185,8 @@ class PlantDetailPage extends StatelessWidget {
                         Text(
                           '반그늘, 차광된 빛이 들어오는 밝은 그늘',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Color(0xff595959),
+                          style: TextStyle(
+                            color: Color(0xff595959),
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -224,7 +229,7 @@ class PlantDetailPage extends StatelessWidget {
                     },
                     children: List<TableRow>.generate(
                       _tableData.length,
-                          (index) {
+                      (index) {
                         return _buildTableRow(
                           _tableData[index]['parameter']!,
                           _tableData[index]['value']!,
@@ -246,83 +251,99 @@ class PlantDetailPage extends StatelessWidget {
             ),
 
             // PageView와 SmoothPageIndicator 추가
-            Container(
-              height: 300,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: PageView.builder(
-                      controller: _pageController,
-                      itemCount: 3, // 카드 개수
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16),
-                          padding: EdgeInsets.only(left: 30, right: 30, top: 30, bottom: 40),
-                          decoration: BoxDecoration(
-                            color: Color(0xfffafafa),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+            Column(
+              children: [
+                // PageView.builder가 내부 요소의 크기에 맞게 조정
+                Container(
+                  padding: EdgeInsets.all(16), // Padding around the PageView
+                  child: Column(
+                    children: [
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: 260,
+                        ),
+                        child: PageView.builder(
+                          controller: _pageController,
+                          itemCount: 3, // 카드 개수
+                          itemBuilder: (context, index) {
+                            return Container(
+                              padding: EdgeInsets.only(
+                                  left: 30, right: 30, top: 30, bottom: 40),
+                              decoration: BoxDecoration(
+                                color: Color(0xfffafafa),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
                                 children: [
-                                  Icon(Icons.tips_and_updates_sharp, color: Colors.amber, size: 26,),
-                                  SizedBox(width: 5),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.tips_and_updates_sharp,
+                                        color: Colors.amber,
+                                        size: 26,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        '식물 관리 Tip',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Color(0xff595959),
+                                            fontSize: 20),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 20),
                                   Text(
-                                    '식물 관리 Tip',
+                                    '\" 적절한 빛 관리 \"',
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Color(0xff595959), fontSize: 20),
+                                    style: TextStyle(
+                                      color: Color(0xff595959),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: RichText(
+                                      text: TextSpan(
+                                        style: TextStyle(
+                                          height: 2,
+                                          color: Color(0xff595959),
+                                          fontSize: 16,
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                              text:'밝은 간접광을 선호하지만 직사광선은 피하세요.\n'),
+                                          TextSpan(
+                                              text:'빛이 부족하면 성장이 느려질 수 있습니다.\n'),
+                                          TextSpan(text: '통풍이 잘 되는 곳에 두면 이상적입니다.'),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 20),
-                              Text(
-                                '\" 적절한 빛 관리 \"',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Color(0xff595959),
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: RichText(
-                                  text: TextSpan(
-                                    style: TextStyle(
-                                      height: 2,
-                                      color: Color(0xff595959),
-                                      fontSize: 16,
-                                    ),
-                                    children: [
-                                      TextSpan(text: '밝은 간접광을 선호하지만 직사광선은 피하세요.\n'),
-                                      TextSpan(text: '빛이 부족하면 성장이 느려질 수 있습니다.\n'),
-                                      TextSpan(text: '통풍이 잘 되는 곳에 두면 이상적입니다.'),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      SmoothPageIndicator(
+                        controller: _pageController, // PageView의 controller를 연결
+                        count: 3,
+                        effect: ExpandingDotsEffect(
+                          dotHeight: 8,
+                          dotWidth: 8,
+                          activeDotColor: Color(0xff779d60),
+                          dotColor: Colors.grey,
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 16),
-                  SmoothPageIndicator(
-                    controller: _pageController,  // PageView의 controller를 연결
-                    count: 3,
-                    effect: ExpandingDotsEffect(
-                      dotHeight: 8,
-                      dotWidth: 8,
-                      activeDotColor: Color(0xff779d60),
-                      dotColor: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
 
             // 구분
@@ -348,7 +369,6 @@ class PlantDetailPage extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   Container(
                     height: 200, // ListView의 높이를 고정합니다.
                     child: ListView.builder(
@@ -367,17 +387,20 @@ class PlantDetailPage extends StatelessWidget {
                                   color: Colors.blueAccent,
                                   borderRadius: BorderRadius.circular(8.0),
                                   image: DecorationImage(
-                                    image: AssetImage('images/plant_${intList[index]}.jpg'),
+                                    image: AssetImage(
+                                        'images/plant_${intList[index]}.jpg'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
                               SizedBox(height: 8),
                               Padding(
-                                padding: const EdgeInsets.only(left: 10, right: 10, top: 4),
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 4),
                                 child: Text(
                                   '${intList[index]}번째',
-                                  style: TextStyle(color: Colors.black, fontSize: 16),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 16),
                                 ),
                               ),
                             ],
@@ -390,6 +413,7 @@ class PlantDetailPage extends StatelessWidget {
               ),
             ),
 
+            SizedBox(height: 24,)
           ],
         ),
       ),
