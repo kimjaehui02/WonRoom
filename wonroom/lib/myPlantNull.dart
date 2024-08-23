@@ -82,14 +82,16 @@ class MyplantNull extends StatelessWidget {
             Expanded(
               child: Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    SizedBox(height: 250,),
                     ImageIcon(AssetImage('images/info.png'),
-                      size: 100,
+                      size: 50,
                       color: Color(0xffc2c2c2),
                     ),
+                    SizedBox(height: 10,),
                     Text(
-                      '등록된 식물이 없습니다.\n나의 반려식물을 등록해 보세요.',
+                      '알림 내역이 없습니다. \n곧 좋은 소식 정보 알려드릴게요!',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Color(0xff787878),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wonroom/myPage.dart';
 import 'package:wonroom/myPlantRegistration.dart';
 import 'package:wonroom/showFloatingActionModal.dart';
+import 'plantDictionary.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});
@@ -118,6 +119,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
+
+
           indicatorColor: Colors.green,
           indicatorPadding: EdgeInsets.zero,
           indicatorWeight: 3.0,
@@ -139,6 +142,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             children: [
               _buildHomePage(),
               _buildPlantDictionaryPage(),
+              PlantDictionary(),
               _buildPlantClinicPage('식물클리닉 페이지'),
               _buildCommunityPage('커뮤니티 페이지'),
               _buildCustomerServicePage('고객센터 페이지'),
@@ -217,12 +221,14 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             Icon(
               icon,
               size: 30,
-              color: _selectedIndex == index ? Colors.lightGreen[600] : Colors.grey,
+              color: _selectedIndex == index ? Colors.lightGreen[600] : Colors
+                  .grey,
             ),
             Text(
               label,
               style: TextStyle(
-                color: _selectedIndex == index ? Colors.lightGreen[600] : Colors.grey,
+                color: _selectedIndex == index ? Colors.lightGreen[600] : Colors
+                    .grey,
                 fontSize: 12,
               ),
             ),
@@ -807,16 +813,38 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
+
+  // Widget _buildPlantDictionaryPage() {
+  //   return SingleChildScrollView(
+  //     controller: _scrollController,
+  //     padding: const EdgeInsets.all(16),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         // _buildPlantCamera(),
+  //         const SizedBox(height: 50),
+  //         // _buildRecommendedPlantsSection(),
+  //         const SizedBox(height: 50),
+  //         // _buildPopularPostsSection(),
+  //         const SizedBox(height: 40),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+
   Widget _buildPlantClinicPage(String text) {
     return Center(
       child: Text(text),
     );
   }
+
   Widget _buildCommunityPage(String text) {
     return Center(
       child: Text(text),
     );
   }
+
   Widget _buildCustomerServicePage(String text) {
     return Center(
       child: Text(text),
