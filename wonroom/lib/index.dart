@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'plantDictionary.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});
@@ -139,6 +140,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             controller: _tabController,
             children: [
               _buildHomePage(),
+              PlantDictionary(),
               _buildPlantDictionaryPage(),
               _buildPlantClinicPage('식물클리닉 페이지'),
               _buildCommunityPage('커뮤니티 페이지'),
@@ -768,6 +770,23 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
 
+  // Widget _buildPlantDictionaryPage() {
+  //   return SingleChildScrollView(
+  //     controller: _scrollController,
+  //     padding: const EdgeInsets.all(16),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         // _buildPlantCamera(),
+  //         const SizedBox(height: 50),
+  //         // _buildRecommendedPlantsSection(),
+  //         const SizedBox(height: 50),
+  //         // _buildPopularPostsSection(),
+  //         const SizedBox(height: 40),
+  //       ],
+  //     ),
+  //   );
+  // }
   Widget _buildPlantDictionaryPage() {
     return SingleChildScrollView(
       controller: _scrollController,
