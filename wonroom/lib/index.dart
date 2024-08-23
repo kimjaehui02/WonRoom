@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wonroom/myPage.dart';
 import 'package:wonroom/myPlantRegistration.dart';
 import 'package:wonroom/showFloatingActionModal.dart';
+import 'plantDictionary.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});
@@ -139,6 +140,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             controller: _tabController,
             children: [
               _buildHomePage(),
+              PlantDictionary(),
               _buildPlantDictionaryPage(),
               _buildPlantClinicPage('식물클리닉 페이지'),
               _buildCommunityPage('커뮤니티 페이지'),
@@ -152,7 +154,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               child: FloatingActionButton(
                 onPressed: _scrollToTop,
                 child: Icon(Icons.arrow_upward),
-                backgroundColor: Colors.green,
+                backgroundColor: Color(0xff6bbe45),
               ),
             ),
         ],
@@ -186,7 +188,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             height: 70, // 버튼의 세로 크기
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.lightGreen[600], // 연두색
+              color: Color(0xff6bbe45), // 연두색
             ),
             child: FloatingActionButton(
               onPressed: () {
@@ -218,12 +220,14 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             Icon(
               icon,
               size: 30,
-              color: _selectedIndex == index ? Colors.lightGreen[600] : Colors.grey,
+              color: _selectedIndex == index ? Color(0xff6bbe45) : Colors
+                  .grey,
             ),
             Text(
               label,
               style: TextStyle(
-                color: _selectedIndex == index ? Colors.lightGreen[600] : Colors.grey,
+                color: _selectedIndex == index ? Color(0xff6bbe45) : Colors
+                    .grey,
                 fontSize: 12,
               ),
             ),
@@ -461,7 +465,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                               iconColor: Colors.lightBlueAccent,
                               iconSize: 20,
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 15),
                             _buildActionContainer(
                               icon: 'images/potion.png',
                               text: '영양제',
@@ -590,6 +594,80 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ],
     );
   }
+
+  // 다이어리 비어있을 때 코드
+  // Widget _buildMyPlantsSection() {
+  //   return Container(
+  //     padding: const EdgeInsets.all(24),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(8),
+  //       color: Colors.white.withOpacity(0.8),
+  //       boxShadow: [
+  //         BoxShadow(
+  //           color: Colors.black.withOpacity(0.13),
+  //           spreadRadius: 2,
+  //           blurRadius: 8,
+  //           offset: const Offset(0, 2),
+  //         ),
+  //       ],
+  //     ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             const Text(
+  //               '다이어리',
+  //               style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+  //             ),
+  //             TextButton(
+  //               onPressed: () {},
+  //               child: Row(
+  //                 children: const [
+  //                   Text(
+  //                     '다이어리 이동하기 >',
+  //                     style: TextStyle(
+  //                       color: Colors.grey,
+  //                     ),
+  //                   ),
+  //                   SizedBox(width: 5),
+  //                 ],
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //         const SizedBox(height: 20),
+  //         const Text(
+  //           '등록된 식물이 없습니다.\n나의 반려식물을 등록해 보세요.',
+  //           textAlign: TextAlign.center,
+  //           style: TextStyle(fontSize: 16),
+  //         ),
+  //         const SizedBox(height: 20),
+  //         SizedBox(
+  //           width: double.infinity,
+  //           height: 50,
+  //           child: ElevatedButton(
+  //             onPressed: () {},
+  //             style: ElevatedButton.styleFrom(
+  //               backgroundColor: Color(0xff6bbe45),
+  //               shape: RoundedRectangleBorder(
+  //                 borderRadius: BorderRadius.circular(10),
+  //               ),
+  //             ),
+  //             child: const Text(
+  //               '다이어리 등록하기',
+  //               style: TextStyle(
+  //                 fontSize: 16,
+  //                 color: Colors.white,
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildRecommendedPlantsSection() {
     return Column(
@@ -794,6 +872,24 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
+
+  // Widget _buildPlantDictionaryPage() {
+  //   return SingleChildScrollView(
+  //     controller: _scrollController,
+  //     padding: const EdgeInsets.all(16),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         // _buildPlantCamera(),
+  //         const SizedBox(height: 50),
+  //         // _buildRecommendedPlantsSection(),
+  //         const SizedBox(height: 50),
+  //         // _buildPopularPostsSection(),
+  //         const SizedBox(height: 40),
+  //       ],
+  //     ),
+  //   );
+  // }
   Widget _buildPlantDictionaryPage() {
     return SingleChildScrollView(
       controller: _scrollController,
