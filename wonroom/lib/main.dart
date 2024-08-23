@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white, // 앱바 배경색
       ),
     ),
-    home: Community(),
+    home: Splash(),
     );
   }
 }
