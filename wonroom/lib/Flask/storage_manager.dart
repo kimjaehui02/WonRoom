@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final storage = FlutterSecureStorage();
@@ -13,6 +15,19 @@ Future<void> writeData(String key, String value) async {
     print('Error writing data: $e');
   }
 }
+
+Future<void> writeuserData(String key, Map<String, dynamic> value) async {
+  print('writeData');
+  try {
+    // value를 문자열로 변환하여 저장
+    await storage.write(key: key, value: value.toString());
+    print('Data written successfully.');
+  } catch (e) {
+    print('Error writing data: $e');
+  }
+}
+
+
 
 // 데이터 읽기 함수
 Future<String?> readData(String key) async {

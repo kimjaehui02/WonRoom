@@ -1,23 +1,15 @@
-// validators.dart
 import 'package:flutter/material.dart';
+import 'package:wonroom/DB/users/common_validators.dart';
 import 'package:wonroom/DB/users/user_service.dart';
 import 'package:wonroom/Join/controllers.dart';
 import 'package:wonroom/index.dart';
-import 'package:wonroom/join.dart';
 
-
+// 회원가입과 관련된 유효성 검사를 수행하는 클래스
 class Validators {
   // 아이디 중복 검사 및 유효성 검사
   static Future<String?> validateId(String id) async {
-    if (id.isEmpty) {
-      return '아이디를 입력해주세요.';
-    }
-
-
-
-    if (id.length < 4) {
-      return '아이디는 4자리 이상이어야 합니다.';
-    }
+    final idValid = CommonValidators.validateUserId(id);
+    if (idValid != null) return idValid;
 
     final result = await checkUserId(id);
     if (!result) {
@@ -28,37 +20,22 @@ class Validators {
 
   // 닉네임 중복 검사 및 유효성 검사
   static Future<String?> validateNickname(String? nickname) async {
-    if (nickname == null || nickname.isEmpty) {
-      return '닉네임을 입력해주세요.';
-    }
+    final nicknameValid = CommonValidators.validateNickname(nickname);
+    if (nicknameValid != null) return nicknameValid;
 
-
-
-    if (nickname.length < 3) {
-      return '닉네임은 3자리 이상이어야 합니다.';
-    }
-
-    final result = await checkUserNickname(nickname);
+    final result = await checkUserNickname(nickname!);
     if (!result) {
       return '중복된 닉네임 입니다.';
     }
-
     return '사용 가능한 닉네임 입니다.';
   }
 
   // 이메일 유효성 검사
   static Future<String?> validateEmail(String? email) async {
-    if (email == null || email.isEmpty) {
-      return '이메일을 입력해주세요.';
-    }
+    final emailValid = CommonValidators.validateEmail(email);
+    if (emailValid != null) return emailValid;
 
-    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(email)) {
-      print(email);
-      print('이메일 형식이 잘못되었습니다.');
-      return '이메일 형식이 잘못되었습니다.';
-    }
-
-    final result = await checkUserEmail(email);
+    final result = await checkUserEmail(email!);
     if (!result) {
       return '중복된 이메일 입니다.';
     }
@@ -67,18 +44,12 @@ class Validators {
 
   // 비밀번호 유효성 검사
   static String? validatePassword(String? password) {
-    if (password == null || password.length < 8) {
-      return '비밀번호는 8자리 이상이어야 합니다.';
-    }
-    return null;
+    return CommonValidators.validatePassword(password);
   }
 
   // 비밀번호 확인
   static String? validateConfirmPassword(String? confirmPassword, String password) {
-    if (confirmPassword != password) {
-      return '비밀번호가 일치하지 않습니다.';
-    }
-    return null;
+    return CommonValidators.validatePasswordConfirm(confirmPassword, password);
   }
 
   // 모든 필드의 유효성 검사
@@ -97,8 +68,8 @@ class Validators {
         emailValid == '사용 가능한 이메일 입니다.';
   }
 
-  static void showSuccessDialog(context, FormControllers _formControllers)
-  {
+  // 성공 다이얼로그 표시
+  static void showSuccessDialog(BuildContext context, FormControllers formControllers) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -131,11 +102,12 @@ class Validators {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      usersInsert(_formControllers.idController.text,
-                                  _formControllers.passwordController.text,
-                                  _formControllers.nicknameController.text,
-                                  _formControllers.emailController.text);
-                      // Navigator.of(context).pop(); // 모달 닫기
+                      usersInsert(
+                        formControllers.idController.text,
+                        formControllers.passwordController.text,
+                        formControllers.nicknameController.text,
+                        formControllers.emailController.text,
+                      );
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => Index()),
@@ -166,7 +138,8 @@ class Validators {
     );
   }
 
-  static void showErrorDialog(context, String errorMessage) {
+  // 실패 다이얼로그 표시
+  static void showErrorDialog(BuildContext context, String errorMessage) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -185,16 +158,16 @@ class Validators {
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: Colors.red, // 실패를 나타내는 색상
+                    color: Colors.red,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 16.0),
                 Text(
-                  errorMessage, // 전달된 오류 메시지를 표시합니다.
+                  errorMessage,
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.red, // 실패 메시지 색상
+                    color: Colors.red,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -203,10 +176,10 @@ class Validators {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pop(); // 모달 닫기
+                      Navigator.of(context).pop();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red, // 실패 버튼 색상
+                      backgroundColor: Colors.red,
                       padding: EdgeInsets.symmetric(vertical: 14.0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
@@ -229,5 +202,4 @@ class Validators {
       },
     );
   }
-
 }
