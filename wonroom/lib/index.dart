@@ -152,7 +152,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               child: FloatingActionButton(
                 onPressed: _scrollToTop,
                 child: Icon(Icons.arrow_upward),
-                backgroundColor: Colors.green,
+                backgroundColor: Color(0xff6bbe45),
               ),
             ),
         ],
@@ -192,7 +192,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             height: 70, // 버튼의 세로 크기
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.lightGreen[600], // 연두색
+              color: Color(0xff6bbe45), // 연두색
             ),
             child: FloatingActionButton(
               onPressed: () {},
@@ -223,13 +223,13 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             Icon(
               icon,
               size: 30,
-              color: _selectedIndex == index ? Colors.lightGreen[600] : Colors
+              color: _selectedIndex == index ? Color(0xff6bbe45) : Colors
                   .grey,
             ),
             Text(
               label,
               style: TextStyle(
-                color: _selectedIndex == index ? Colors.lightGreen[600] : Colors
+                color: _selectedIndex == index ? Color(0xff6bbe45) : Colors
                     .grey,
                 fontSize: 12,
               ),
@@ -330,7 +330,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                               iconColor: Colors.lightBlueAccent,
                               iconSize: 20,
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 15),
                             _buildActionContainer(
                               icon: 'images/potion.png',
                               text: '영양제',
@@ -541,7 +541,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   //           child: ElevatedButton(
   //             onPressed: () {},
   //             style: ElevatedButton.styleFrom(
-  //               backgroundColor: Colors.green,
+  //               backgroundColor: Color(0xff6bbe45),
   //               shape: RoundedRectangleBorder(
   //                 borderRadius: BorderRadius.circular(10),
   //               ),
