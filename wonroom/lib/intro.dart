@@ -96,10 +96,10 @@ class Intro extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       // 회원가입 버튼 클릭 시 동작
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => Join()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Join()),
+                      );
                       // Navigator.pushReplacement(
                       //   context,
                       //   MaterialPageRoute(builder: (context) => Index()),

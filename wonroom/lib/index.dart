@@ -58,6 +58,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     return Scaffold(
       resizeToAvoidBottomInset : false,
       appBar: AppBar(
+        automaticallyImplyLeading: false,  // 뒤로가기 버튼 숨기기
         title: Row(
           children: [
             IconButton(

@@ -27,15 +27,16 @@ void usersInsert(String user_id, String user_pw, String user_nick, String user_e
   }
 }
 
-void usersLogin(String user_id, String user_pw) async {
+// 로그인
+Future<Map<String, dynamic>> usersLogin(String userId, String userPw) async {
   final String url = "$baseUrl/users/login";
 
   try {
     Response response = await dio.post(
       url,
       data: {
-        "user_id": user_id,
-        "user_pw": user_pw,
+        "user_id": userId,
+        "user_pw": userPw,
       },
     );
 
@@ -50,16 +51,17 @@ void usersLogin(String user_id, String user_pw) async {
       // JSON 데이터로 응답을 처리하는 예제
       if (responseData['status'] == 'success') {
         // 로그인 성공 처리
-        await writeData('user_id', user_id);
+        return responseData; // 로그인 성공 시 응답 데이터 반환
       } else {
         // 로그인 실패 처리
-        print('Login failed: ${responseData['message']}');
+        throw Exception('Login failed: ${responseData['message']}');
       }
     } else {
-      print('Unexpected status code: ${response.statusCode}');
+      throw Exception('Unexpected status code: ${response.statusCode}');
     }
   } catch (e) {
     print("Error: $e");
+    throw Exception('Error occurred: $e'); // 예외 발생
   }
 }
 
@@ -146,6 +148,10 @@ void usersDelete() async {
   }
 }
 
+
+
+
+// <editor-fold desc="회원가입용 아이디, 닉네임, 이메일중복검사">
 // 아이디 중복 검사
 Future<bool> checkUserId(String user_id) async {
   final String url = "$baseUrl/users/check_id";
@@ -192,6 +198,7 @@ Future<bool> checkUserNickname(String user_nick) async {
   }
 }
 
+
 // 이메일 중복 검사
 Future<bool> checkUserEmail(String user_email) async {
   final String url = "$baseUrl/users/check_email";
@@ -214,3 +221,5 @@ Future<bool> checkUserEmail(String user_email) async {
     return false;
   }
 }
+// </editor-fold>
+
