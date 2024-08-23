@@ -1,15 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:wonroom/join.dart';
+import 'package:wonroom/Splash/splash_functions.dart';
+import 'package:wonroom/index.dart';
+// import 'splash_functions.dart'; // navigateToJoin 함수를 불러옵니다
 
-class Splash extends StatelessWidget {
+class Splash extends StatefulWidget {
   const Splash({super.key});
+
+  @override
+  _SplashState createState() => _SplashState();
+}
+
+class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _logoAnimation;
+  late Animation<double> _textAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 애니메이션 컨트롤러 초기화
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1500), // 애니메이션 지속 시간
+      vsync: this,
+    );
+
+    // 로고 애니메이션 정의 (페이드 인 효과)
+    _logoAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeIn,
+    );
+
+    // 텍스트 애니메이션 정의 (페이드 인 효과)
+    _textAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(0.5, 1.0, curve: Curves.easeIn),
+      ),
+    );
+
+    // 애니메이션 시작
+    _controller.forward();
+
+    // 애니메이션이 끝난 후 페이지 전환
+
+    navigateToJoin(context, duration: 3); // 3초 후 화면 이동
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          // 중앙에 위치할 텍스트들
           Expanded(
             child: Center(
               child: Padding(
@@ -17,41 +65,47 @@ class Splash extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min, // 최소한의 높이로 설정
                   children: [
-                    // 이미지 추가
-                    Image.asset(
-                      'images/스플래시2.png', // 이미지 경로 (프로젝트의 assets 폴더 내에 위치)
-                      height: 110, // 이미지의 높이 조정
-                      width: 110, // 이미지의 너비 조정
-                    ),
-                    SizedBox(height: 3), // 이미지와 텍스트 사이의 공간
-                    RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Won', // 초록색으로 할 부분
-                            style: TextStyle(
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'DMSerifDisplay',
-                              letterSpacing: 2,
-                              fontSize: 42,
-                            ),
-                          ),
-                          TextSpan(
-                            text: '-Room', // 나머지 부분
-                            style: TextStyle(
-                              color: Color(0xff595959),
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'DMSerifDisplay',
-                              letterSpacing: 1,
-                              fontSize: 42,
-                            ),
-                          ),
-                        ],
+                    // 로고 애니메이션 적용
+                    FadeTransition(
+                      opacity: _logoAnimation,
+                      child: Image.asset(
+                        'images/스플래시2.png', // 이미지 경로
+                        height: 110, // 이미지의 높이 조정
+                        width: 110, // 이미지의 너비 조정
                       ),
                     ),
-                    SizedBox(height: 10), // 두 텍스트 사이의 공간
+                    SizedBox(height: 10), // 이미지와 텍스트 사이의 공간
+                    // 텍스트 애니메이션 적용
+                    FadeTransition(
+                      opacity: _textAnimation,
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Won', // 초록색으로 할 부분
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'DMSerifDisplay',
+                                letterSpacing: 2,
+                                fontSize: 42,
+                              ),
+                            ),
+                            TextSpan(
+                              text: '-Room', // 나머지 부분
+                              style: TextStyle(
+                                color: Color(0xff595959),
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'DMSerifDisplay',
+                                letterSpacing: 1,
+                                fontSize: 42,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
