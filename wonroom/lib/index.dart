@@ -1,33 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:wonroom/myPage.dart';
+import 'package:wonroom/myPlantRegistration.dart';
+import 'package:wonroom/showFloatingActionModal.dart';
 import 'plantDictionary.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});
-
   @override
   _IndexState createState() => _IndexState();
 }
-
 class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _selectedIndex = 0;
   final ScrollController _scrollController = ScrollController();
   bool _isFabVisible = false;
-
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 5, vsync: this);
     _scrollController.addListener(_scrollListener);
   }
-
   @override
   void dispose() {
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
     super.dispose();
   }
-
   void _scrollListener() {
     if (_scrollController.offset >= 200 && !_isFabVisible) {
       setState(() {
@@ -39,7 +37,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       });
     }
   }
-
   void _onBottomNavBarItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -47,6 +44,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     if (index == 0) {
       _tabController.index = 0;
     }
+    _tabController.index = index;
   }
 
   void _scrollToTop() {
@@ -56,14 +54,13 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       curve: Curves.easeInOut,
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset : false,
       appBar: AppBar(
+        automaticallyImplyLeading: false,  // 뒤로가기 버튼 숨기기
         title: Row(
-
           children: [
             IconButton(
               icon: const Icon(Icons.search),
@@ -106,7 +103,12 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             ),
             IconButton(
               icon: const Icon(Icons.person_outline),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyPage()), // MyPage로 이동
+                );
+              },
             ),
           ],
         ),
@@ -118,8 +120,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
-
-
           indicatorColor: Colors.green,
           indicatorPadding: EdgeInsets.zero,
           indicatorWeight: 3.0,
@@ -170,15 +170,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               label: '홈',
               index: 0,
             ),
-            // _buildBottomNavBarItem(
-            //   icon: Icons.camera_alt_outlined,
-            //   label: '이미지 촬영',
-            //   index: 1,
-            // ),
             SizedBox(width: 40), // 공간을 추가하여 중앙의 FloatingActionButton과 겹치지 않도록 함
             _buildBottomNavBarItem(
-              icon: Icons.
-              book_outlined,
+              icon: Icons.book_outlined,
               label: '다이어리',
               index: 2,
             ),
@@ -197,7 +191,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               color: Color(0xff6bbe45), // 연두색
             ),
             child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                showFloatingActionModal(context);
+              },
               backgroundColor: Colors.transparent,
               elevation: 0,
               child: Icon(
@@ -208,7 +204,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
   Widget _buildBottomNavBarItem({
     required IconData icon,
     required String label,
@@ -241,7 +236,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
   Widget _buildHomePage() {
     return SingleChildScrollView(
       controller: _scrollController,
@@ -249,8 +243,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // _buildMyPlantsSection(),
           _buildMyPlantsSection(),
+          const SizedBox(height: 50),
+          _buildWeatherWidget(),
           const SizedBox(height: 50),
           _buildRecommendedPlantsSection(),
           const SizedBox(height: 50),
@@ -261,7 +256,145 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
 
-  // 다이어리 있을 때
+  Widget _buildWeatherWidget() {
+    return Center(
+      child: Container(
+        width: 300,
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.blue.withOpacity(0.2),
+              blurRadius: 8,
+              offset: Offset(0, 2),
+            ),
+          ],
+          border: Border.all(
+            color: Colors.lightBlue,
+            width: 2,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 위치와 현위치
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '중구 을지로 1가',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.location_on,
+                      color: Colors.blue,
+                      size: 16,
+                    ),
+                    SizedBox(width: 4),
+                    Text(
+                      '현위치',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            // 날씨 정보
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    Icon(
+                      Icons.wb_sunny,
+                      color: Colors.orange,
+                      size: 48,
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      '맑음',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  '30.9',
+                  style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 8),
+            // 메시지
+            Center(
+              child: Text(
+                '오늘은 광합성하기 좋은 날씨입니다',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
+            // 하단 추가 정보
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  '습도 66%',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[700],
+                  ),
+                ),
+                Text(
+                  '체감 31.9°',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[700],
+                  ),
+                ),
+                Text(
+                  '서풍 1.9m/s',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[700],
+                  ),
+                ),
+                Text(
+                  '미세 좋음',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[700],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildMyPlantsSection() {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -381,17 +514,17 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 icon: Icons.water_drop, // 변경
                 text: 'Next D-6',
               ),
-              buildStatusRow(
-                iconPath: 'images/potion.png',
-                text: 'Next D-6',
+              _buildStatusRow(
+                icon: Icons.pest_control, // 다른 아이콘 예시
+                text: 'Next D-3',
               ),
-              buildStatusRow(
-                iconPath: 'images/scissor.png',
-                text: 'Next D-6',
+              _buildStatusRow(
+                icon: Icons.science, // 다른 아이콘 예시
+                text: 'Next D-1',
               ),
-              buildStatusRow(
-                iconPath: 'images/soil.png',
-                text: 'Next D-6',
+              _buildStatusRow(
+                icon: Icons.grass, // 다른 아이콘 예시
+                text: 'Next D-5',
               ),
             ],
           ),
@@ -400,7 +533,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
 
-  // 이미지 색상변경
   Widget _buildActionContainer({
     required dynamic icon, // 변경: dynamic으로 변경하여 IconData와 String 모두 허용
     required String text,
@@ -436,31 +568,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
-  Widget buildStatusRow({
-    required String iconPath,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Image.asset(
-          iconPath,
-          color: Colors.grey, // 이미지 색상 회색으로 변경
-          width: 12,
-          height: 12,
-        ),
-        const SizedBox(width: 5),
-        Text(
-          text,
-          style: const TextStyle(
-            fontSize: 12,
-            color: Colors.grey, // 텍스트 색상 회색으로 변경
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildStatusRow({
     required dynamic icon, // 변경: dynamic으로 변경하여 IconData와 String 모두 허용
     required String text,
@@ -605,7 +712,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ],
     );
   }
-
   Widget _buildPopularPostsSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -668,8 +774,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ],
     );
   }
-
-
   Widget _buildPopularPostCard({
     required String imagePath,
     required String boardName,
@@ -744,7 +848,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
   Widget _buildPlantCard(String imagePath, String plantName) {
     return Container(
       margin: const EdgeInsets.only(right: 10),
@@ -794,30 +897,23 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // _buildPlantCamera(),
           const SizedBox(height: 50),
-          // _buildRecommendedPlantsSection(),
           const SizedBox(height: 50),
-          // _buildPopularPostsSection(),
           const SizedBox(height: 40),
         ],
       ),
     );
   }
-
-
   Widget _buildPlantClinicPage(String text) {
     return Center(
       child: Text(text),
     );
   }
-
   Widget _buildCommunityPage(String text) {
     return Center(
       child: Text(text),
     );
   }
-
   Widget _buildCustomerServicePage(String text) {
     return Center(
       child: Text(text),
