@@ -3,6 +3,7 @@ import 'package:wonroom/DB/users/common_validators.dart';
 import 'package:wonroom/DB/users/user_service.dart';
 import 'package:wonroom/Join/controllers.dart';
 import 'package:wonroom/index.dart';
+import 'package:wonroom/intro.dart';
 
 // 회원가입과 관련된 유효성 검사를 수행하는 클래스
 class Validators {
@@ -110,7 +111,7 @@ class Validators {
                       );
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => Index()),
+                        MaterialPageRoute(builder: (context) => Intro()),
                       );
                     },
                     style: ElevatedButton.styleFrom(

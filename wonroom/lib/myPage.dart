@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 
-class MyPage extends StatelessWidget {
+class MyPage extends StatefulWidget {
+  @override
+  State<MyPage> createState() => _MyPageState();
+}
+
+class _MyPageState extends State<MyPage> {
+  // 변수 선언
+  String userName = '게스트';
+  String userEmail = 'wonroom@naver.com';
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,14 +41,14 @@ class MyPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '원룸',
+                      userName,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      'wonroom@naver.com',
+                      userEmail,
                       style: TextStyle(
                         color: Colors.grey,
                       ),
