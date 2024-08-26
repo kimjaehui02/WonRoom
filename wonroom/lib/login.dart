@@ -1,12 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/Finding_Pw.dart';
+import 'package:wonroom/Login/LoginValidators.dart';
 import 'join.dart'; // Join 화면을 가져옵니다.
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   Login({super.key});
 
-  // _passwordController 선언
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  bool _obscurePassword = true;
+
+  bool _buttonAble = false;
+
+  String _idHint = '아이디를 입력해 주세요.'; // 초기 힌트 텍스트
+  String _passwordHint = '영문, 숫자, 특수문자("제외) 포함 8자리 이상'; // 초기 힌트 텍스트
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 리스너 등록
+    _idController.addListener(_onTextChanged);
+    _passwordController.addListener(_onTextChanged);
+  }
+
+  @override
+  void dispose() {
+    // 리스너 해제
+    _idController.removeListener(_onTextChanged);
+    _passwordController.removeListener(_onTextChanged);
+
+    // 컨트롤러 해제
+    _idController.dispose();
+    _passwordController.dispose();
+
+    super.dispose();
+  }
+
+  // 입력값 변경 시 호출될 함수
+  void _onTextChanged() {
+    // 여기에 입력값 변경 시 실행할 작업을 추가
+    // print('ID: ${_idController.text}');
+    // print('Password: ${_passwordController.text}');
+
+    // 예를 들어, 입력값에 따라 로그인 버튼의 활성화 상태를 조절할 수 있습니다.
+    // setState(() {
+    //   // 버튼 활성화/비활성화 로직
+    // });
+
+    print(_idController.text);
+    print(_passwordController.text);
+    // 텍스트를 입력받으면 힌트메세지를 바꿔서 어떤상황인지 알려준다
+    setState(() {
+      // 올바르게 클래스 변수 업데이트
+      _idHint = LoginValidators.validateUserId(_idController.text) ?? ' ';
+      _passwordHint = LoginValidators.validatePassword(_passwordController.text) ?? ' ';
+    });
+
+
+    print(_idHint);
+    print(_passwordHint);
+    // 둘다 문제가 없다면 실행하여 버튼 활성화를 시켜준다
+    _buttonAble = LoginValidators.buttonAble(_idController.text, _passwordController.text);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +110,7 @@ class Login extends StatelessWidget {
                       ),
                       const SizedBox(height: 8.0),
                       TextFormField(
+                        controller: _idController, // 컨트롤러를 지정합니다.
                         decoration: const InputDecoration(
                           labelText: '아이디',
                           border: OutlineInputBorder(),
@@ -55,6 +119,14 @@ class Login extends StatelessWidget {
                             color: Colors.red, // 에러 메시지의 색상
                             fontSize: 12, // 에러 메시지의 글자 크기
                           ),
+                        ),
+                      ),
+                      const SizedBox(height: 4.0), // 비밀번호 조건과 필드 사이의 간격
+                      Text(
+                        _idHint,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey[700], // 설명 텍스트 색상
                         ),
                       ),
                       const SizedBox(height: 25.0),
@@ -77,13 +149,22 @@ class Login extends StatelessWidget {
                         children: [
                           TextFormField(
                             controller: _passwordController,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               hintText: 'ex. won01room%',
                               border: OutlineInputBorder(),
                               contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
-                              suffixIcon: Icon(Icons.visibility_off_outlined),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscurePassword = !_obscurePassword;
+                                  });
+                                },
+                              ),
                             ),
-                            obscureText: true,
+                            obscureText: _obscurePassword,
                             validator: (value) {
                               if (value == null || value.length < 8) {
                                 return '비밀번호는 8자리 이상이어야 합니다.';
@@ -93,7 +174,7 @@ class Login extends StatelessWidget {
                           ),
                           const SizedBox(height: 4.0), // 비밀번호 조건과 필드 사이의 간격
                           Text(
-                            '영문, 숫자, 특수문자("제외) 포함 8자리 이상',
+                            _passwordHint,
                             style: TextStyle(
                               fontSize: 13,
                               color: Colors.grey[700], // 설명 텍스트 색상
@@ -105,11 +186,35 @@ class Login extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             // 로그인 버튼 클릭 시 실행될 코드
+                            // String? check = await LoginValidators.validateLogin(_idController.text, _passwordController.text);
+                            print("check");
+                            print("check");
+                            print("check");
+                            print("check");
+                            if(_buttonAble == true)
+                              {
+                                String check = await LoginValidators.validateLogin(_idController.text, _passwordController.text) ?? "예외상황 발생";
+                                print(check);
+                                print(check);
+                                print(check);
+                                print(check);
+                                if(check == '환영합니다.')
+                                  {
+                                    LoginValidators.showSuccessDialog(context, check);
+                                  }
+                                else
+                                  {
+                                    LoginValidators.showErrorDialog(context, check);
+                                  }
+
+
+                              }
+                            // 로그인 결과 처리
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey[400], // 회색 배경색
+                            backgroundColor: _buttonAble ? Colors.green : Colors.grey[400],
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero, // 직사각형 모양
                             ),

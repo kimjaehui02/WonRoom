@@ -16,7 +16,9 @@ migrate_working_dir/
 *.iws
 .idea/
 
-# VS Code related (optional)
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
 #.vscode/
 
 # Flutter/Dart/Pub related
@@ -39,14 +41,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-
-# Python virtual environment
-venv/
-*.venv/
-
-# Flask specific
-*.sqlite3
-*.db
-*.db-journal
-*.db-shm
-*.db-wal

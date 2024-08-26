@@ -17,6 +17,7 @@ from user_plants_controller import user_plants
 
 app = Flask(__name__)
 
+
 # 다른 파일을 가져오고나서 해당 url에 멤버를 기본으로 붙여두기
 app.register_blueprint(member, url_prefix = "/member")
 
