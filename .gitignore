@@ -50,3 +50,7 @@ venv/
 *.db-journal
 *.db-shm
 *.db-wal
+
+# 추가: 특정 경로 무시
+wonroom/build/
+wonroom/.dart_tool/
