@@ -18,6 +18,7 @@ import 'package:wonroom/notificationPage.dart';
 import 'package:wonroom/notificationNulll.dart';
 import 'package:wonroom/plantDictionary.dart';
 import 'package:wonroom/PostDetailPage.dart';
+import 'package:wonroom/pwChange.dart';
 import 'package:wonroom/splash.dart';
 import 'package:wonroom/writePage.dart';
 
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white, // 앱바 배경색
       ),
     ),
-    home: Index(),
+    home: PwChange(),
     );
   }
 }
