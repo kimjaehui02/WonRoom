@@ -180,46 +180,57 @@ class _CommunityState extends State<Community> with SingleTickerProviderStateMix
 
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 6.0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildBottomNavBarItem(
-              icon: Icons.home_outlined,
-              label: '홈',
-              index: 0,
-            ),
-            SizedBox(width: 40),
-            _buildBottomNavBarItem(
-              icon: Icons.book_outlined,
-              label: '다이어리',
-              index: 2,
-            ),
-          ],
+      floatingActionButton: Container(
+        width: 70,
+        height: 70,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Color(0xff6bbe45), // 연두색
+        ),
+        child: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: const Icon(Icons.camera_alt_outlined, color: Colors.white,),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            width: 70,
-            height: 70,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xff6bbe45),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12.withOpacity(0.1),
+              spreadRadius: 0,
+              blurRadius: 4,
+              // offset: Offset(0, 0), // 그림자를 위쪽으로 이동
             ),
-            child: FloatingActionButton(
-              onPressed: () {},
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              child: Icon(
-                  Icons.camera_alt_outlined, color: Colors.white, size: 30),
-            ),
+          ],
+        ),
+        child: BottomAppBar(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          height: 70,
+          color: Colors.white,
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 5,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              _buildBottomNavBarItem(
+                icon: Icons.home_outlined,
+                label: '홈',
+                index: 0,
+              ),
+              SizedBox(width: 40),
+              _buildBottomNavBarItem(
+                icon: Icons.
+                book_outlined,
+                label: '다이어리',
+                index: 2,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -482,7 +493,7 @@ class _CommunityState extends State<Community> with SingleTickerProviderStateMix
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Postdetailpage(post: post)),
+          MaterialPageRoute(builder: (context) => PostDetailPage(post: post)),
         );
       },
       child: Container(
