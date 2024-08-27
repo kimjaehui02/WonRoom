@@ -65,6 +65,42 @@ Future<Map<String, dynamic>> usersLogin(String userId, String userPw) async {
   }
 }
 
+// 아이디 찾기
+Future<Map<String, dynamic>> findIdByNickEmail(String userNick, String userEmail) async {
+  final String url = "$baseUrl/users/find_id_by_nick_email";
+
+  try {
+    Response response = await dio.post(
+      url,
+      data: {
+        "user_nick": userNick,
+        "user_email": userEmail,
+      },
+    );
+
+    print('Status Code: ${response.statusCode}');
+    print('Response URL: ${response.realUri}');
+    print('Response Data: ${response.data}');
+
+    // 서버 응답이 JSON 형식일 경우
+    if (response.statusCode == 200) {
+      final responseData = response.data;
+
+      if (responseData['status'] == 'success') {
+        // 조회 성공 처리
+        return responseData; // 성공 시 응답 데이터 반환
+      } else {
+        // 조회 실패 처리
+        throw Exception('Find ID failed: ${responseData['message']}');
+      }
+    } else {
+      throw Exception('Unexpected status code: ${response.statusCode}');
+    }
+  } catch (e) {
+    print("Error: $e");
+    throw Exception('Error occurred: $e'); // 예외 발생
+  }
+}
 
 /// 사용자 정보를 업데이트하는 함수
 void usersUpdate(String user_pw, String user_nick, String user_email) async {
@@ -149,8 +185,6 @@ void usersDelete() async {
 }
 
 
-
-
 // <editor-fold desc="회원가입용 아이디, 닉네임, 이메일중복검사">
 // 아이디 중복 검사
 Future<bool> checkUserId(String user_id) async {
@@ -198,7 +232,6 @@ Future<bool> checkUserNickname(String user_nick) async {
   }
 }
 
-
 // 이메일 중복 검사
 Future<bool> checkUserEmail(String user_email) async {
   final String url = "$baseUrl/users/check_email";
@@ -222,4 +255,5 @@ Future<bool> checkUserEmail(String user_email) async {
   }
 }
 // </editor-fold>
+
 

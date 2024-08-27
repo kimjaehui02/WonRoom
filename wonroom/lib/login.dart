@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/Finding_Pw.dart';
+import 'package:wonroom/Finding_Pw/Finding_Pw_functions.dart';
 import 'package:wonroom/Login/LoginValidators.dart';
 import 'join.dart'; // Join 화면을 가져옵니다.
 
@@ -233,6 +234,7 @@ class _LoginState extends State<Login> {
                           TextButton(
                             onPressed: () {
                               // 아이디 찾기 클릭 시 실행될 코드
+                              findUserId('602호고양이도둑', 'qwerqwer@naver.com');
                             },
                             child: const Text(
                               '아이디 찾기',

@@ -312,3 +312,103 @@ def delete():
         return jsonify({"status": "fail", "message": "User not found"}), 404  # 상태 코드 404 (사용자 없음)
        
 
+@users.route('/find_id_by_nick_email', methods=['POST'])
+def find_id_by_nick_email():
+    # 데이터 받아오기
+    data = request.get_json()
+    user_nick = data.get('user_nick')
+    user_email = data.get('user_email')
+
+    # DB 연결
+    db = get_db_connection()
+    cursor = db.cursor()
+
+    print("/find_id_by_nick_email")
+    print(user_nick)
+    print(user_email)
+
+    # SQL문 작성
+    sql = '''
+    SELECT user_id FROM users WHERE user_nick = %s AND user_email = %s
+    '''
+
+    try:
+        cursor.execute(sql, (user_nick, user_email))
+        user_id = cursor.fetchone()
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        db.close()
+
+    if user_id:
+        # 원래 user_id
+        original_user_id = user_id[0]
+        
+        # 검열된 user_id 생성
+        if len(original_user_id) >= 4:
+            masked_user_id = (
+                original_user_id[:-4] + '***' + original_user_id[-1]
+            )
+        else:
+            # user_id가 4자리 미만인 경우 모든 문자를 검열
+            masked_user_id = '*' * len(original_user_id)
+
+        return jsonify({
+            "status": "success",
+            "user_id": masked_user_id
+        })
+    else:
+        return jsonify({"status": "fail", "message": "사용자 정보를 찾을 수 없습니다."}), 404
+
+
+
+@users.route('/reset_password', methods=['POST'])
+def reset_password():
+    # 데이터 받아오기
+    data = request.get_json()
+    user_id = data.get('user_id')
+    user_email = data.get('user_email')
+
+    # DB 연결
+    db = get_db_connection()
+    cursor = db.cursor()
+
+    # 사용자 이메일 확인
+    sql = '''
+    SELECT user_email FROM users WHERE user_id = %s
+    '''
+    try:
+        cursor.execute(sql, (user_id,))
+        stored_email = cursor.fetchone()
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        db.close()
+
+    if stored_email and stored_email[0] == user_email:
+        # 비밀번호를 '1111'로 업데이트
+        db = get_db_connection()
+        cursor = db.cursor()
+        sql_update = '''
+        UPDATE users SET user_pw = %s WHERE user_id = %s
+        '''
+        try:
+            cursor.execute(sql_update, ('11111111', user_id))
+            db.commit()
+            row = cursor.rowcount
+        except Exception as e:
+            db.rollback()  # 오류 발생 시 롤백
+            return jsonify({"status": "fail", "message": str(e)}), 500
+        finally:
+            cursor.close()
+            db.close()
+
+        if row > 0:
+            return jsonify({"status": "success", "message": "비밀번호가 '1111'로 변경되었습니다."})
+        else:
+            return jsonify({"status": "fail", "message": "사용자를 찾을 수 없습니다."}), 404
+    else:
+        return jsonify({"status": "fail", "message": "사용자 ID 또는 이메일이 일치하지 않습니다."}), 400
+

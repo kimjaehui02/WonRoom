@@ -81,21 +81,21 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-   - family: Pretendard
-     fonts:
-       - asset: fonts/Pretendard-Thin.otf
-       - asset: fonts/Pretendard-SemiBold.otf
-       - asset: fonts/Pretendard-Medium.otf
-       - asset: fonts/Pretendard-Light.otf
-       - asset: fonts/Pretendard-ExtraLight.otf
-       - asset: fonts/Pretendard-ExtraBold.otf
-       - asset: fonts/Pretendard-Bold.otf
-       - asset: fonts/Pretendard-Black.otf
-   - family: DMSerifDisplay
-     fonts:
-       - asset: fonts/DMSerifDisplay-Regular.ttf
-         weight: 700
-       - asset: fonts/DMSerifDisplay-Italic.ttf
+    - family: Pretendard
+      fonts:
+        - asset: fonts/Pretendard-Thin.otf
+        - asset: fonts/Pretendard-SemiBold.otf
+        - asset: fonts/Pretendard-Medium.otf
+        - asset: fonts/Pretendard-Light.otf
+        - asset: fonts/Pretendard-ExtraLight.otf
+        - asset: fonts/Pretendard-ExtraBold.otf
+        - asset: fonts/Pretendard-Bold.otf
+        - asset: fonts/Pretendard-Black.otf
+    - family: DMSerifDisplay
+      fonts:
+        - asset: fonts/DMSerifDisplay-Regular.ttf
+          weight: 700
+        - asset: fonts/DMSerifDisplay-Italic.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
