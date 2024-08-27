@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 
-class PostDetailPage extends StatefulWidget {
-  final Map<String, dynamic> post;
-
-  const PostDetailPage({Key? key, required this.post}) : super(key: key);
-
+class Mycommunitymanage extends StatefulWidget {
   @override
-  _PostDetailPageState createState() => _PostDetailPageState();
+  _MycommunitymanageState createState() => _MycommunitymanageState();
 }
 
-class _PostDetailPageState extends State<PostDetailPage> {
+class _MycommunitymanageState extends State<Mycommunitymanage> {
   bool showReplyField1 = false; // 사용자1에 대한 대댓글 작성 필드
   bool showReplyField2 = false; // 사용자2에 대한 대댓글 작성 필드
   bool showReplyField3 = false; // 사용자3에 대한 대댓글 작성 필드
@@ -59,10 +55,12 @@ class _PostDetailPageState extends State<PostDetailPage> {
                           ],
                         ),
                         Spacer(),
-                        // 본인일 경우
-                        // Icon(Icons.more_vert),
-                        // 다른 사용자일 경우 보이는 아이콘
-                        Icon(Icons.share)
+                        IconButton(
+                          icon: Icon(Icons.more_vert),
+                          onPressed: () {
+                            _showBottomSheet(context); // 바텀 시트를 표시하는 함수 호출
+                          },
+                        ),
                       ],
                     ),
                     SizedBox(height: 10),
@@ -121,28 +119,6 @@ class _PostDetailPageState extends State<PostDetailPage> {
                     SizedBox(height: 16),
                     Divider(height: 32, thickness: 1.5, color: Colors.grey[300]),
                     SizedBox(height: 16),
-
-                    // 댓글 목록 비어있을 때 SizeBox
-                    // SizedBox(height: 100),
-
-                    // 댓글 목록이 비어있을 때 표시되는 메시지
-                    //   Center(
-                    //     child: Column(
-                    //       children: [
-                    //         Text(
-                    //           '작성된 댓글이 없습니다.',
-                    //           style: TextStyle(fontSize: 16, color: Colors.grey),
-                    //         ),
-                    //         SizedBox(height: 8),
-                    //         Text(
-                    //           '대화를 시작하세요.',
-                    //           style: TextStyle(fontSize: 14, color: Colors.grey),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // 댓글 목록 비어있을 때 SizeBox
-                    // SizedBox(height: 100),
 
                     Text(
                       '댓글 3',  // 댓글 수를 3으로 수정
@@ -347,7 +323,6 @@ class _PostDetailPageState extends State<PostDetailPage> {
             ),
           ),
 
-
           // Add Comment Section
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -381,4 +356,82 @@ class _PostDetailPageState extends State<PostDetailPage> {
       ),
     );
   }
+
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: Icon(Icons.edit),
+                title: Text('수정하기'),
+                onTap: () {
+                  // 수정하기 기능 추가
+                  Navigator.pop(context);
+                },
+              ),
+              Divider(),
+              ListTile(
+                leading: Icon(Icons.delete),
+                title: Text('삭제하기'),
+                onTap: () {
+                  Navigator.pop(context); // 기존 바텀 시트를 닫습니다.
+                  _showDeleteConfirmationDialog(context); // 삭제 확인 다이얼로그를 호출합니다.
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('정말 삭제하시겠습니까?'),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('삭제하기를 누르시면 해당 게시글이 삭제됩니다.'),
+              SizedBox(height: 8),
+              Text(
+                '이 작업은 취소할 수 없습니다.',
+                style: TextStyle(color: Colors.red, fontSize: 12),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // 다이얼로그 닫기
+              },
+              child: Text('취소'),
+            ),
+            TextButton(
+              onPressed: () {
+                // 삭제하기 기능 추가
+                Navigator.pop(context); // 다이얼로그 닫기
+                // 여기에서 게시글 삭제 로직을 추가하세요
+              },
+              child: Text('삭제'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+
 }
