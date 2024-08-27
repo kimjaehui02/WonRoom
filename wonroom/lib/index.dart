@@ -188,7 +188,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
           color: Color(0xff6bbe45), // 연두색
         ),
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            showFloatingActionModal(context);
+          },
           backgroundColor: Colors.transparent,
           elevation: 0,
           child: const Icon(Icons.camera_alt_outlined, color: Colors.white,),
