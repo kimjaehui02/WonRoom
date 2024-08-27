@@ -11,26 +11,26 @@ class Index extends StatefulWidget {
 }
 
 // 인기글 데이터
-// final List<Map<String, String>> data = [
-//   {
-//     'image': 'images/plant_0.jpg',
-//     'boardName': '자유게시판',
-//     'title': 'Title 1',
-//     'description': 'Description 1  DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription',
-//   },
-//   {
-//     'image': 'images/산세베리아.jpg',
-//     'boardName': '질문하기',
-//     'title': 'Title 2',
-//     'description': 'Description 2',
-//   },
-//   {
-//     'image': 'images/파키라.png',
-//     'boardName': '자유게시판',
-//     'title': 'Title 3',
-//     'description': 'Description 3',
-//   },
-// ];
+final List<Map<String, String>> data = [
+  {
+    'image': 'images/plant_0.jpg',
+    'boardName': '자유게시판',
+    'title': 'Title 1',
+    'description': 'Description 1  DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription',
+  },
+  {
+    'image': 'images/산세베리아.jpg',
+    'boardName': '질문하기',
+    'title': 'Title 2',
+    'description': 'Description 2',
+  },
+  {
+    'image': 'images/파키라.png',
+    'boardName': '자유게시판',
+    'title': 'Title 3',
+    'description': 'Description 3',
+  },
+];
 
 class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   late TabController _tabController;
