@@ -1,9 +1,9 @@
 # Python virtual environment
-PY/venv/
-PY/*.venv/
+py/venv/
+py/*.venv/
 
 # Python cache files
-PY/__pycache__/
+py/__pycache__/
 *.pyc
 
 # Flutter/Dart/Pub related
@@ -40,7 +40,3 @@ PY/__pycache__/
 # Additional paths to ignore
 wonroom/build/
 wonroom/.dart_tool/
-
-# Flutter/Dart/Pub related
-**/.dart_tool/
-**/build/
