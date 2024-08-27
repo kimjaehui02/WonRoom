@@ -1,9 +1,9 @@
-#Mon Aug 26 09:43:41 KST 2024
-base.0=C\:\\Users\\smhrd1\\Desktop\\thirdproject\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-base.1=C\:\\Users\\smhrd1\\Desktop\\thirdproject\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
-base.2=C\:\\Users\\smhrd1\\Desktop\\thirdproject\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.3=C\:\\Users\\smhrd1\\Desktop\\thirdproject\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
-base.4=C\:\\Users\\smhrd1\\Desktop\\thirdproject\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\6\\classes.dex
+#Tue Aug 27 13:40:20 KST 2024
+base.0=C\:\\Users\\smhrd\\Desktop\\project\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
+base.1=C\:\\Users\\smhrd\\Desktop\\project\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
+base.2=C\:\\Users\\smhrd\\Desktop\\project\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.3=C\:\\Users\\smhrd\\Desktop\\project\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
+base.4=C\:\\Users\\smhrd\\Desktop\\project\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\6\\classes.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=0/classes.dex

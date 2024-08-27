@@ -139,9 +139,16 @@ class PersonalInfoEditPage extends StatelessWidget {
             Center(
               child: Stack(
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: AssetImage('assets/profile_image.png'), // 프로필 이미지
+                  GestureDetector(
+                    onTap: () {
+                      // 프로필 이미지 클릭 시 실행될 코드
+                      print('프로필 이미지 클릭됨');
+                      // 여기에 프로필 이미지를 클릭했을 때 실행될 기능을 추가할 수 있습니다.
+                    },
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: AssetImage('assets/profile_image.png'), // 프로필 이미지
+                    ),
                   ),
                   Positioned(
                     bottom: 0,
@@ -168,78 +175,104 @@ class PersonalInfoEditPage extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
+              )
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '기본 정보',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Icon(Icons.person_outline),
-                      SizedBox(width: 8), // 아이콘과 텍스트 사이 간격 조절
-                      Text(
-                        '닉네임',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.person_outline),
-                      labelText: '닉네임',
-                      labelStyle: TextStyle(color: Colors.grey),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(8),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 20, left: 10),
+                    child: Text(
+                      '기본 정보',
+                      style: TextStyle(
+                        fontSize: 21,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff787878)
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Icon(Icons.email_outlined),
-                      SizedBox(width: 8), // 아이콘과 텍스트 사이 간격 조절
-                      Text(
-                        '이메일',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 6),
+                    child: Row(
+                      children: [
+                        Icon(Icons.person_outline),
+                        SizedBox(width: 8), // 아이콘과 텍스트 사이 간격 조절
+                        Text(
+                          '닉네임',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   TextField(
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.email_outlined),
-                      labelText: '이메일',
+                      // labelText: '닉네임',
                       labelStyle: TextStyle(color: Colors.grey),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 시 테두리 색상 및 두께
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0), // 비포커스 상태에서의 테두리 색상 및 두께
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 6),
+                    child: Row(
+                      children: [
+                        Icon(Icons.email_outlined),
+                        SizedBox(width: 8), // 아이콘과 텍스트 사이 간격 조절
+                        Text(
+                          '이메일',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    decoration: InputDecoration(
+                      // labelText: '이메일',
+                      labelStyle: TextStyle(color: Colors.grey),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 시 테두리 색상 및 두께
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0), // 비포커스 상태에서의 테두리 색상 및 두께
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
                     ),
                   ),
                 ],
               ),
             ),
-            Divider(thickness: 2, color: Colors.grey[300]),
-            SizedBox(height: 10),
+
+            // 구분
+            Container(
+              margin: EdgeInsets.only(top: 30, bottom: 24),
+              width: MediaQuery.of(context).size.width,
+              height: 8,
+              color: Color(0xffeeeeee),
+            ),
+
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
@@ -258,8 +291,15 @@ class PersonalInfoEditPage extends StatelessWidget {
                 // 알림 설정 변경
               },
             ),
-            Divider(thickness: 2, color: Colors.grey[300]),
-            SizedBox(height: 10),
+
+            // 구분
+            Container(
+              margin: EdgeInsets.only(top: 30, bottom: 24),
+              width: MediaQuery.of(context).size.width,
+              height: 8,
+              color: Color(0xffeeeeee),
+            ),
+
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
@@ -278,27 +318,75 @@ class PersonalInfoEditPage extends StatelessWidget {
                 // 알림 설정 변경
               },
             ),
-            Divider(thickness: 2, color: Colors.grey[300]),
-            ListTile(
-              title: Text('비밀번호 변경'),
-              trailing: Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                // 비밀번호 변경 화면으로 이동
-              },
+
+            // 구분
+            Container(
+              margin: EdgeInsets.only(top: 30, bottom: 0),
+              width: MediaQuery.of(context).size.width,
+              height: 8,
+              color: Color(0xffeeeeee),
             ),
-            ListTile(
-              title: Text('로그아웃'),
-              trailing: Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                // 로그아웃 처리
-              },
+
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 2),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Color(0xffeeeeee),
+                    width: 1,
+                  ),
+                ),
+              ),
+              child: ListTile(
+                title: Text('비밀번호 변경'),
+                trailing: Icon(Icons.arrow_forward_ios,
+                  size: 16,
+                  color: Color(0xff787878),
+                ),
+                onTap: () {
+                  // 비밀번호 변경 화면으로 이동
+                },
+              ),
             ),
-            ListTile(
-              title: Text('회원탈퇴'),
-              trailing: Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                // 회원탈퇴 처리
-              },
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 2),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Color(0xffeeeeee),
+                    width: 1,
+                  ),
+                ),
+              ),
+              child: ListTile(
+                title: Text('로그아웃'),
+                trailing: Icon(Icons.arrow_forward_ios,
+                  size: 16,
+                  color: Color(0xff787878),),
+                onTap: () {
+                  // 로그아웃 처리
+                },
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 2),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Color(0xffeeeeee),
+                    width: 1,
+                  ),
+                ),
+              ),
+              child: ListTile(
+                title: Text('회원탈퇴'),
+                trailing: Icon(Icons.arrow_forward_ios,
+                  size: 16,
+                  color: Color(0xff787878),),
+                onTap: () {
+                  // 회원탈퇴 처리
+                },
+              ),
             ),
             SizedBox(height: 40),
             Padding(
@@ -310,10 +398,10 @@ class PersonalInfoEditPage extends StatelessWidget {
                     builder: (BuildContext context) {
                       return Dialog(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -325,7 +413,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                                 ),
                                 textAlign: TextAlign.center,
                               ),
-                              SizedBox(height: 16),
+                              SizedBox(height: 5),
                               Text(
                                 '확인 버튼을 누르면 \n이전 페이지로 이동합니다.',
                                 style: TextStyle(fontSize: 16, color: Colors.grey),
@@ -342,7 +430,15 @@ class PersonalInfoEditPage extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(8), // 버튼 모서리를 둥글게 설정
                                     ),
                                   ),
-                                  child: Text('확인', style: TextStyle(fontSize: 18, color: Colors.white)),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width * 0.5,
+                                    child: Text('확인', style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    ),
+                                  ),
                                   onPressed: () {
                                     Navigator.pop(context); // 다이얼로그를 닫음
                                     Navigator.pop(context); // 이전 페이지로 이동
@@ -358,10 +454,11 @@ class PersonalInfoEditPage extends StatelessWidget {
 
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green, // 버튼 배경색을 녹색으로 설정
-                  padding: EdgeInsets.symmetric(vertical: 16), // 버튼 높이 조절
+                  backgroundColor: Color(0xff6bbe45),
+                  elevation: 0,
+                  padding: EdgeInsets.all(16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8), // 버튼 모서리를 둥글게 설정
+                    borderRadius: BorderRadius.circular(10), // 버튼 모서리를 둥글게 설정
                   ),
                 ),
                 child: Text(

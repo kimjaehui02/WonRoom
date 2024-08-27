@@ -10,6 +10,7 @@ import 'package:wonroom/intro.dart';
 import 'package:wonroom/join.dart';
 import 'package:wonroom/login.dart';
 import 'package:wonroom/myCommentsNull.dart';
+import 'package:wonroom/myPage.dart';
 import 'package:wonroom/myPlant.dart';
 import 'package:wonroom/myPlantClinic.dart';
 import 'package:wonroom/myPlantNull.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white, // 앱바 배경색
       ),
     ),
-    home: Index(),
+    home: MyPage(),
     );
   }
 }
