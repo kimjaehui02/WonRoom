@@ -40,3 +40,7 @@ PY/__pycache__/
 # Additional paths to ignore
 wonroom/build/
 wonroom/.dart_tool/
+
+# Flutter/Dart/Pub related
+**/.dart_tool/
+**/build/
