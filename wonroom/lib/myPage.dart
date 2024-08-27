@@ -136,47 +136,149 @@ class PersonalInfoEditPage extends StatelessWidget {
         padding: const EdgeInsets.all(0),
         child: ListView(
           children: [
+            SizedBox(height: 20,),
             Center(
-              child: Stack(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      // 프로필 이미지 클릭 시 실행될 코드
-                      print('프로필 이미지 클릭됨');
-                      // 여기에 프로필 이미지를 클릭했을 때 실행될 기능을 추가할 수 있습니다.
-                    },
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage('assets/profile_image.png'), // 프로필 이미지
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        // 클릭 시 실행될 코드
-                        print('프로필 이미지 변경 클릭됨');
-                        // 여기에 프로필 이미지를 변경하는 기능을 추가할 수 있습니다.
-                      },
-                      child: Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.camera_alt,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+              child: Container(
+                width: 100,
+                height: 100,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 30, bottom: 30, left: 30, right: 30),
+                                    child: Column(
+                                      crossAxisAlignment:CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          '프로필 사진 설정',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8,),
+                                        SizedBox(
+                                          width: double.infinity,
+                                          child: TextButton(
+                                            onPressed: () {
+
+                                            },
+                                            style: TextButton.styleFrom(
+                                              padding: EdgeInsets.zero,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.zero,
+                                              ),
+                                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                              minimumSize: Size.fromHeight(40),
+                                            ),
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                '앨범에서 사진 선택',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Color(0xff595959)
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 2,),
+                                        SizedBox(
+                                          width: double.infinity,
+                                          child: TextButton(
+                                            onPressed: () {
+
+                                            },
+                                            style: TextButton.styleFrom(
+                                              padding: EdgeInsets.zero,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.zero,
+                                              ),
+                                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                              minimumSize: Size.fromHeight(40),
+                                            ),
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                '기본 이미지 적용',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Color(0xff595959)
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Container(
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Color(0xffc2c2c2),
+                                    width: 2,
+                                  ),
+                                ),
+                                child: CircleAvatar(
+                                  radius: 47,
+                                  backgroundImage:
+                                      AssetImage('images/plant_0.jpg'),
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: -5,
+                                child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xff6bbe45),
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    Icons.camera_alt_outlined,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                )
+
               )
             ),
+
+            SizedBox(height: 10,),
+
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(

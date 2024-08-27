@@ -18,8 +18,10 @@ class _LoginState extends State<Login> {
 
   bool _buttonAble = false;
 
-  String _idHint = '아이디를 입력해 주세요.'; // 초기 힌트 텍스트
-  String _passwordHint = '영문, 숫자, 특수문자("제외) 포함 8자리 이상'; // 초기 힌트 텍스트
+  String _idHint = ''; // 초기 힌트 텍스트
+  String _passwordHint = ' '; // 초기 힌트 텍스트
+  // String _idHint = '아이디를 입력해 주세요.'; // 초기 힌트 텍스트
+  // String _passwordHint = '영문, 숫자, 특수문자("제외) 포함 8자리 이상'; // 초기 힌트 텍스트
 
   @override
   void initState() {
@@ -59,7 +61,13 @@ class _LoginState extends State<Login> {
     // 텍스트를 입력받으면 힌트메세지를 바꿔서 어떤상황인지 알려준다
     setState(() {
       // 올바르게 클래스 변수 업데이트
-      _idHint = LoginValidators.validateUserId(_idController.text) ?? ' ';
+      // _idHint = LoginValidators.validateUserId(_idController.text) ?? ' ';
+      if (_idController.text.isEmpty) {
+        _idHint = ' ';
+      } else {
+        _idHint = LoginValidators.validateUserId(_idController.text) ?? ' ';
+      }
+
       _passwordHint = LoginValidators.validatePassword(_passwordController.text) ?? ' ';
     });
 
@@ -129,7 +137,7 @@ class _LoginState extends State<Login> {
                           color: Colors.grey[700], // 설명 텍스트 색상
                         ),
                       ),
-                      const SizedBox(height: 25.0),
+                      const SizedBox(height: 10),
                       Row(
                         children: const <Widget>[
                           Icon(Icons.lock_outline, size: 24),
@@ -194,23 +202,23 @@ class _LoginState extends State<Login> {
                             print("check");
                             print("check");
                             if(_buttonAble == true)
+                            {
+                              String check = await LoginValidators.validateLogin(_idController.text, _passwordController.text) ?? "예외상황 발생";
+                              print(check);
+                              print(check);
+                              print(check);
+                              print(check);
+                              if(check == '환영합니다.')
                               {
-                                String check = await LoginValidators.validateLogin(_idController.text, _passwordController.text) ?? "예외상황 발생";
-                                print(check);
-                                print(check);
-                                print(check);
-                                print(check);
-                                if(check == '환영합니다.')
-                                  {
-                                    LoginValidators.showSuccessDialog(context, check);
-                                  }
-                                else
-                                  {
-                                    LoginValidators.showErrorDialog(context, check);
-                                  }
-
-
+                                LoginValidators.showSuccessDialog(context, check);
                               }
+                              else
+                              {
+                                LoginValidators.showErrorDialog(context, check);
+                              }
+
+
+                            }
                             // 로그인 결과 처리
                           },
                           style: ElevatedButton.styleFrom(
