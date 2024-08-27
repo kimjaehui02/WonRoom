@@ -996,20 +996,20 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   //     ),
   //   );
   // }
-  Widget _buildPlantDictionaryPage() {
-    return SingleChildScrollView(
-      controller: _scrollController,
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 50),
-          const SizedBox(height: 50),
-          const SizedBox(height: 40),
-        ],
-      ),
-    );
-  }
+  // Widget _buildPlantDictionaryPage() {
+  //   return SingleChildScrollView(
+  //     controller: _scrollController,
+  //     padding: const EdgeInsets.all(16),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         const SizedBox(height: 50),
+  //         const SizedBox(height: 50),
+  //         const SizedBox(height: 40),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildPlantClinicPage(String text) {
     return Center(
