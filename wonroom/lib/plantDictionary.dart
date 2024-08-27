@@ -6,6 +6,14 @@ class PlantDictionary extends StatefulWidget {
   State<PlantDictionary> createState() => _PlantDictionaryState();
 }
 
+void _scrollToTop() {
+  _scrollController.animateTo(
+    0,
+    duration: Duration(milliseconds: 500),
+    curve: Curves.easeInOut,
+  );
+}
+
 class _PlantDictionaryState extends State<PlantDictionary> {
   List<Map<String, String>> _items = [];
   ScrollController _scrollController = ScrollController();
