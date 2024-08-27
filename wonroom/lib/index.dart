@@ -8,6 +8,28 @@ class Index extends StatefulWidget {
   _IndexState createState() => _IndexState();
 }
 
+// 인기글 데이터
+final List<Map<String, String>> data = [
+  {
+    'image': 'images/plant_0.jpg',
+    'boardName': '자유게시판',
+    'title': 'Title 1',
+    'description': 'Description 1  DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription',
+  },
+  {
+    'image': 'images/산세베리아.jpg',
+    'boardName': '질문하기',
+    'title': 'Title 2',
+    'description': 'Description 2',
+  },
+  {
+    'image': 'images/파키라.png',
+    'boardName': '자유게시판',
+    'title': 'Title 3',
+    'description': 'Description 3',
+  },
+];
+
 class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _selectedIndex = 0;
@@ -17,7 +39,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     _scrollController.addListener(_scrollListener);
   }
 
@@ -123,12 +145,11 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
           indicatorColor: Colors.green,
           indicatorPadding: EdgeInsets.zero,
           indicatorWeight: 3.0,
-          tabAlignment: TabAlignment.start,
+          tabAlignment: TabAlignment.center,
           labelPadding: EdgeInsets.symmetric(horizontal: 20.0),
           tabs: const [
             Tab(text: '홈'),
             Tab(text: '식물사전'),
-            Tab(text: '식물클리닉'),
             Tab(text: '커뮤니티'),
             Tab(text: '고객센터'),
           ],
@@ -141,8 +162,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             children: [
               _buildHomePage(),
               PlantDictionary(),
-              _buildPlantDictionaryPage(),
-              _buildPlantClinicPage('식물클리닉 페이지'),
               _buildCommunityPage('커뮤니티 페이지'),
               _buildCustomerServicePage('고객센터 페이지'),
             ],
@@ -150,62 +169,76 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
           if (_isFabVisible)
             Positioned(
               right: 16,
-              bottom: 100,
+              bottom: 30,
               child: FloatingActionButton(
                 onPressed: _scrollToTop,
-                child: Icon(Icons.arrow_upward),
-                backgroundColor: Color(0xff6bbe45),
+                child: Icon(Icons.arrow_upward, color: Colors.white,),
+                backgroundColor: Colors.black.withOpacity(0.6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                elevation: 0,
               ),
             ),
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 6.0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildBottomNavBarItem(
-              icon: Icons.home_outlined,
-              label: '홈',
-              index: 0,
-            ),
-            // _buildBottomNavBarItem(
-            //   icon: Icons.camera_alt_outlined,
-            //   label: '이미지 촬영',
-            //   index: 1,
-            // ),
-            SizedBox(width: 40), // 공간을 추가하여 중앙의 FloatingActionButton과 겹치지 않도록 함
-            _buildBottomNavBarItem(
-              icon: Icons.
-              book_outlined,
-              label: '다이어리',
-              index: 2,
-            ),
-          ],
+
+      // bottom app bar
+      // extendBody: true, // Body를 appBar와 bottomNavigationBar 위로 확장
+      floatingActionButton: Container(
+        width: 70,
+        height: 70,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Color(0xff6bbe45), // 연두색
+        ),
+        child: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: const Icon(Icons.camera_alt_outlined, color: Colors.white,),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            width: 70, // 버튼의 가로 크기
-            height: 70, // 버튼의 세로 크기
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xff6bbe45), // 연두색
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12.withOpacity(0.1),
+              spreadRadius: 0,
+              blurRadius: 4,
+              // offset: Offset(0, 0), // 그림자를 위쪽으로 이동
             ),
-            child: FloatingActionButton(
-              onPressed: () {},
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              child: Icon(
-                  Icons.camera_alt_outlined, color: Colors.white, size: 30),
-            ),
+          ],
+        ),
+        child: BottomAppBar(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          height: 70,
+          color: Colors.white,
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 5,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              _buildBottomNavBarItem(
+                icon: Icons.home_outlined,
+                label: '홈',
+                index: 0,
+              ),
+              SizedBox(width: 40),
+              _buildBottomNavBarItem(
+                icon: Icons.
+                book_outlined,
+                label: '다이어리',
+                index: 2,
+              ),
+            ],
           ),
-        ],
+        ),
       ),
+
+
     );
   }
 
@@ -635,115 +668,106 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             ),
           ],
         ),
-        const SizedBox(height: 10),
+
+        // SizedBox(height: 10,),
         SizedBox(
           height: 140,
-          child: PageView(
-            controller: PageController(viewportFraction: 0.85),
-            children: [
-              _buildPopularPostCard(
-                imagePath: 'images/멕시코소철.jpg',
-                boardName: '자유게시판',
-                title: '멕시코소철 키우기 팁',
-                description: '햇빛과 물 관리만 잘하면 쉽게 키울 수 있어요.',
-                isFirstCard: true,
-              ),
-              _buildPopularPostCard(
-                imagePath: 'images/백량금.jpg',
-                boardName: '자유게시판',
-                title: '백량금은 어떤 식물인가요?',
-                description: '공기 정화에 좋은 산세베리아 소개',
-                isFirstCard: false,
-              ),
-              _buildPopularPostCard(
-                imagePath: 'images/율마.jpg',
-                boardName: '자유게시판',
-                title: '율마가 시들었어요.',
-                description: '잎이 누렇게 변했는데 이유가 뭘까요?',
-                isFirstCard: false,
-              ),
-            ],
+          child: PageView.builder(
+            itemCount: data.length,
+            controller: PageController(
+              viewportFraction: 0.9, // 카드 너비를 설정하여 페이지 간의 여백 조정
+              initialPage: 0,
+            ),
+            itemBuilder: (context, index) {
+              final item = data[index];
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 6), // 카드 사이의 여백
+                padding: EdgeInsets.only(top: 8, bottom: 8),
+                child: AspectRatio(
+                  aspectRatio: 1.0,
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.13),
+                          spreadRadius: 2,
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          height: MediaQuery.of(context).size.width * 0.25,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            image: DecorationImage(
+                              image: AssetImage(item['image']!),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Flexible(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  item['boardName']!,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  item['title']!,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Text(
+                                  item['description']!,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+            padEnds: false, // 페이지 끝에 패딩 적용 안 함
           ),
-        ),
+        )
+
+
+
+
+
+
+
       ],
     );
   }
 
-
-  Widget _buildPopularPostCard({
-    required String imagePath,
-    required String boardName,
-    required String title,
-    required String description,
-    required bool isFirstCard,
-  }) {
-    return Container(
-      margin: EdgeInsets.only(
-        left: isFirstCard ? 0 : 10,
-        right: 10,
-      ),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white.withOpacity(0.8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.13),
-            spreadRadius: 2,
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 120,
-            height: 120,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              image: DecorationImage(
-                image: AssetImage(imagePath),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  boardName,
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 12,
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  description,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildPlantCard(String imagePath, String plantName) {
     return Container(
@@ -765,41 +789,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
           ),
           const SizedBox(height: 5),
           Text(plantName),
-        ],
-      ),
-    );
-  }
-
-  // Widget _buildPlantDictionaryPage() {
-  //   return SingleChildScrollView(
-  //     controller: _scrollController,
-  //     padding: const EdgeInsets.all(16),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         // _buildPlantCamera(),
-  //         const SizedBox(height: 50),
-  //         // _buildRecommendedPlantsSection(),
-  //         const SizedBox(height: 50),
-  //         // _buildPopularPostsSection(),
-  //         const SizedBox(height: 40),
-  //       ],
-  //     ),
-  //   );
-  // }
-  Widget _buildPlantDictionaryPage() {
-    return SingleChildScrollView(
-      controller: _scrollController,
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // _buildPlantCamera(),
-          const SizedBox(height: 50),
-          // _buildRecommendedPlantsSection(),
-          const SizedBox(height: 50),
-          // _buildPopularPostsSection(),
-          const SizedBox(height: 40),
         ],
       ),
     );
