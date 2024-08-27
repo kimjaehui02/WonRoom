@@ -16,7 +16,7 @@ Future<void> writeData(String key, String value) async {
   }
 }
 
-Future<void> writeuserData(String key, Map<String, dynamic> value) async {
+Future<void> writeUserData(String key, Map<String, dynamic> value) async {
   print('writeData');
   try {
     // value를 문자열로 변환하여 저장
@@ -56,6 +56,26 @@ Future<int?> readDataAsInt(String key) async {
     }
 
     return int.tryParse(value);
+  } catch (e) {
+    print('Error reading data: $e');
+    return null;
+  }
+}
+
+Future<Map<String, dynamic>?> readUserData(String key) async {
+  print('readUserData');
+  try {
+    // 저장된 값을 읽어온다
+    String? value = await storage.read(key: key);
+    print('Data read successfully: $value');
+
+    // 값이 null일 경우 null 반환
+    if (value == null) {
+      return null;
+    }
+
+    // JSON 문자열을 Map으로 변환
+    return jsonDecode(value) as Map<String, dynamic>;
   } catch (e) {
     print('Error reading data: $e');
     return null;

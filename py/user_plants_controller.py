@@ -62,8 +62,11 @@ def select_plants_by_user():
     data = request.get_json()
     user_id = data.get('user_id')
 
-    if not user_id:
-        return jsonify({"status": "fail", "message": "User ID is required"}), 400
+
+
+    print(user_id)
+
+
 
     # 1. DB 연결
     db = pymysql.connect(

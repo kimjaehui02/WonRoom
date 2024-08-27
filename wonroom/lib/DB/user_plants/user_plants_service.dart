@@ -3,7 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:wonroom/DB/users/user_service.dart';
 
-void addPlant(int user_id, int catalog_number, String diary_title, String next_watering_date) async {
+void addPlant(String user_id, int catalog_number, String diary_title, String next_watering_date) async {
   final String url = "$baseUrl/user_plants/insert";
 
   try {
@@ -38,7 +38,7 @@ void addPlant(int user_id, int catalog_number, String diary_title, String next_w
 }
 
 
-void getPlants(int user_id) async {
+void getPlants(String user_id) async {
   final String url = "$baseUrl/user_plants/select";
 
   try {
