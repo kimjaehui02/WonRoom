@@ -18,7 +18,7 @@ class Myplant extends StatelessWidget {
             color: Colors.grey,
           ),
           onPressed: () {
-            // 뒤로가기 기능 (추후 구현 필요)
+            Navigator.pop(context);
           },
         ),
       ),
@@ -644,7 +644,11 @@ class Myplant extends StatelessWidget {
                                 ),
                               ),
 
-                              TextButton(onPressed: (){},
+                              TextButton(onPressed: (){
+                                Navigator.push(context,
+                                  MaterialPageRoute(builder: (_)=>MyPlantClinic()),
+                                );
+                              },
                                   child: Row(
                                     children: [
                                       Text(
@@ -719,9 +723,7 @@ class Myplant extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                       // 버튼
                     child: ElevatedButton(onPressed: (){
-                      Navigator.push(context,
-                        MaterialPageRoute(builder: (_)=>MyPlantClinic()),
-                      );
+
                     },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xff595959),
