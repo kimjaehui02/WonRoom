@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Mycommunitymanage extends StatefulWidget {
+class MyCommunityManage extends StatefulWidget {
   @override
-  _MycommunitymanageState createState() => _MycommunitymanageState();
+  _MyCommunityManageState createState() => _MyCommunityManageState();
 }
 
-class _MycommunitymanageState extends State<Mycommunitymanage> {
+class _MyCommunityManageState extends State<MyCommunityManage> {
   bool showReplyField1 = false; // 사용자1에 대한 대댓글 작성 필드
   bool showReplyField2 = false; // 사용자2에 대한 대댓글 작성 필드
   bool showReplyField3 = false; // 사용자3에 대한 대댓글 작성 필드
@@ -357,6 +357,7 @@ class _MycommunitymanageState extends State<Mycommunitymanage> {
     );
   }
 
+  // 수정, 삭제 팝업
   void _showBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -370,7 +371,7 @@ class _MycommunitymanageState extends State<Mycommunitymanage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: Icon(Icons.edit),
+                leading: Icon(Icons.edit_outlined),
                 title: Text('수정하기'),
                 onTap: () {
                   // 수정하기 기능 추가
@@ -379,11 +380,11 @@ class _MycommunitymanageState extends State<Mycommunitymanage> {
               ),
               Divider(),
               ListTile(
-                leading: Icon(Icons.delete),
+                leading: Icon(Icons.delete_outline_outlined),
                 title: Text('삭제하기'),
                 onTap: () {
                   Navigator.pop(context); // 기존 바텀 시트를 닫습니다.
-                  _showDeleteConfirmationDialog(context); // 삭제 확인 다이얼로그를 호출합니다.
+                  _showDeleteConfirmationSheet(context); // 삭제 확인 바텀 시트를 호출합니다.
                 },
               ),
             ],
@@ -393,44 +394,150 @@ class _MycommunitymanageState extends State<Mycommunitymanage> {
     );
   }
 
-  void _showDeleteConfirmationDialog(BuildContext context) {
-    showDialog(
+  // 삭제버튼 클릭 시 팝업
+  void _showDeleteConfirmationSheet(BuildContext context) {
+    showModalBottomSheet(
       context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (context) {
-        return AlertDialog(
-          title: Text('정말 삭제하시겠습니까?'),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('삭제하기를 누르시면 해당 게시글이 삭제됩니다.'),
-              SizedBox(height: 8),
+              SizedBox(height: 20),
               Text(
-                '이 작업은 취소할 수 없습니다.',
-                style: TextStyle(color: Colors.red, fontSize: 12),
+                '정말 삭제하시겠습니까?',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 10),
+              Text(
+                '삭제하기를 누르시면\n해당 게시글이 삭제됩니다.',
+                style: TextStyle(color: Colors.grey, fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context); // 바텀 시트 닫기
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.grey[300], // 회색 배경
+                      minimumSize: Size(170, 50), // 네모 모양의 버튼 크기
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3), // 네모 모양
+                      ),
+                    ),
+                    child: Text(
+                      '취소',
+                      style: TextStyle(
+                          color: Color(0xff787878),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context); // 삭제 확인 팝업 닫기
+                      _showDeletionSuccessDialog(context); // 삭제 완료 팝업 열기
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xff595959),
+                      minimumSize: Size(170, 50), // 네모 모양의 버튼 크기
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3), // 네모 모양
+                      ),
+                    ),
+                    child: Text(
+                      '삭제',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold
+                      ), // 흰색 글씨
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // 다이얼로그 닫기
-              },
-              child: Text('취소'),
-            ),
-            TextButton(
-              onPressed: () {
-                // 삭제하기 기능 추가
-                Navigator.pop(context); // 다이얼로그 닫기
-                // 여기에서 게시글 삭제 로직을 추가하세요
-              },
-              child: Text('삭제'),
-            ),
-          ],
         );
       },
     );
   }
+
+  void _showDeletionSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      // 사용자가 팝업 외부를 클릭해도 다이얼로그가 닫히지 않도록 설정
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0), // 패딩 조정으로 크기 키우기
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10), // 다이얼로그 모서리 둥글게 설정
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 10,),
+              Text(
+                '삭제되었습니다.',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.black),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 3),
+              Text(
+                '확인 버튼을 누르면 \n 이전 페이지로 이동합니다.',
+                style: TextStyle(color: Colors.grey, fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 15),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // 삭제 완료 다이얼로그 닫기
+                    Navigator.pop(context); // 이전 페이지로 돌아가기
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    minimumSize: Size(200, 45), // 네모 모양의 버튼 크기
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(3), // 네모 모양의 버튼
+                    ),
+                  ),
+                  child: Text(
+                    '확인',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold
+                    ), // 흰색 글씨
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+
+
+
+
+
 
 
 

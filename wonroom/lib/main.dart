@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:wonroom/CreatePost.dart';
 import 'package:wonroom/Finding_Pw.dart';
 import 'package:wonroom/Finding_Pw_Temporarily.dart';
+import 'package:wonroom/InquriryDetailsNull.dart';
 import 'package:wonroom/MyCommunityManage.dart';
 import 'package:wonroom/PlantDetailPage.dart';
 import 'package:wonroom/community.dart';
+import 'package:wonroom/customerService.dart';
 import 'package:wonroom/index.dart';
+import 'package:wonroom/inqurityDetails.dart';
 import 'package:wonroom/intro.dart';
 import 'package:wonroom/intro.dart';
 import 'package:wonroom/join.dart';
 import 'package:wonroom/login.dart';
 import 'package:wonroom/myCommentsNull.dart';
+import 'package:wonroom/myPage.dart';
 import 'package:wonroom/myPlant.dart';
 import 'package:wonroom/myPlantClinic.dart';
 import 'package:wonroom/myPlantNull.dart';
+import 'package:wonroom/myPost.dart';
+import 'package:wonroom/myPostNull.dart';
 import 'package:wonroom/notificationPage.dart';
 import 'package:wonroom/notificationNulll.dart';
 import 'package:wonroom/plantDictionary.dart';
@@ -40,7 +47,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white, // 앱바 배경색
       ),
     ),
-    home: Community(),
+    home: MyPostNull(),
     );
   }
 }
