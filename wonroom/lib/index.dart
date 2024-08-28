@@ -82,36 +82,58 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     return Scaffold(
       resizeToAvoidBottomInset : false,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(Icons.search),
-          onPressed: () {},
-        ),
-        title: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: 'Won',
-                style: TextStyle(
-                  color: Colors.green,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'DMSerifDisplay',
-                  letterSpacing: 2,
-                  fontSize: 28,
+        automaticallyImplyLeading: false,  // 뒤로가기 버튼 숨기기
+        title: Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {},
+            ),
+            SizedBox(width: 40,),
+            Expanded(
+              child: Center(
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Won',
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'DMSerifDisplay',
+                          letterSpacing: 2,
+                          fontSize: 28,
+                        ),
+                      ),
+                      TextSpan(
+                        text: '-Room',
+                        style: TextStyle(
+                          color: Color(0xff595959),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'DMSerifDisplay',
+                          letterSpacing: 1,
+                          fontSize: 28,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              TextSpan(
-                text: '-Room',
-                style: TextStyle(
-                  color: Color(0xff595959),
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'DMSerifDisplay',
-                  letterSpacing: 1,
-                  fontSize: 28,
-                ),
-              ),
-            ],
-          ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.notifications_none_outlined),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.person_outline),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyPage()), // MyPage로 이동
+                );
+              },
+            ),
+          ],
         ),
         actions: [
           IconButton(

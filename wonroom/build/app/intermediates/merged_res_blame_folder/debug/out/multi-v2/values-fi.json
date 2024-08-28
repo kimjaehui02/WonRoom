@@ -4,6 +4,7 @@
             "outputFile": "com.example.wonroom.app-mergeDebugResources-25:/values-fi/values-fi.xml",
             "map": [
                 {
+<<<<<<< HEAD
                     "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\2f6a5506f4dac22f7ab67b13b215ea43\\transformed\\core-1.13.1\\res\\values-fi\\values-fi.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
@@ -22,6 +23,9 @@
                 },
                 {
                     "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\253b2e663bdfb62e24c58c1731366987\\transformed\\jetified-play-services-base-16.0.1\\res\\values-fi\\values.xml",
+=======
+                    "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\253b2e663bdfb62e24c58c1731366987\\transformed\\jetified-play-services-base-16.0.1\\res\\values-fi\\values.xml",
+>>>>>>> ab51b2827ce2984e8cbea703c5ec353cdaed9b4f
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -38,7 +42,11 @@
                     }
                 },
                 {
+<<<<<<< HEAD
                     "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\bdf87e621b798b6e4632ce4b2956c3f3\\transformed\\jetified-play-services-basement-16.0.1\\res\\values-fi\\values.xml",
+=======
+                    "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\bdf87e621b798b6e4632ce4b2956c3f3\\transformed\\jetified-play-services-basement-16.0.1\\res\\values-fi\\values.xml",
+>>>>>>> ab51b2827ce2984e8cbea703c5ec353cdaed9b4f
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -53,6 +61,26 @@
                         "endColumns": "208",
                         "endOffsets": "2194"
                     }
+<<<<<<< HEAD
+=======
+                },
+                {
+                    "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\2f6a5506f4dac22f7ab67b13b215ea43\\transformed\\core-1.13.1\\res\\values-fi\\values-fi.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,151,253,351,456,561,673,789",
+                        "endColumns": "95,101,97,104,104,111,115,100",
+                        "endOffsets": "146,248,346,451,556,668,784,885"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,27",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,201,303,401,506,611,723,3499",
+                        "endColumns": "95,101,97,104,104,111,115,100",
+                        "endOffsets": "196,298,396,501,606,718,834,3595"
+                    }
+>>>>>>> ab51b2827ce2984e8cbea703c5ec353cdaed9b4f
                 }
             ]
         }
