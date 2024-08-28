@@ -191,7 +191,7 @@ class _MyPageState extends State<MyPage> {
 
           // 리스트 항목들
           Container(
-            padding: EdgeInsets.symmetric(vertical: 2),
+            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 8),
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
@@ -202,7 +202,8 @@ class _MyPageState extends State<MyPage> {
             ),
             child: ListTile(
               title: Text('개인 정보 변경'),
-              leading: Icon(Icons.person_outline),
+              leading: Icon(Icons.person_outline,
+                color: Color(0xff595959),),
               trailing: Icon(Icons.arrow_forward_ios,
                 size: 16,
                 color: Color(0xff787878),
@@ -219,7 +220,7 @@ class _MyPageState extends State<MyPage> {
           ),
 
           Container(
-            padding: EdgeInsets.symmetric(vertical: 2),
+            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 8),
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
@@ -230,7 +231,9 @@ class _MyPageState extends State<MyPage> {
             ),
             child: ListTile(
               title: Text('내 문의글'),
-              leading: Icon(Icons.question_answer_outlined),
+              leading: Icon(Icons.question_answer_outlined,
+                color: Color(0xff595959),
+              ),
               trailing: Icon(Icons.arrow_forward_ios,
                 size: 16,
                 color: Color(0xff787878),
@@ -242,7 +245,7 @@ class _MyPageState extends State<MyPage> {
           ),
 
           Container(
-            padding: EdgeInsets.symmetric(vertical: 2),
+            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 8),
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
@@ -253,7 +256,8 @@ class _MyPageState extends State<MyPage> {
             ),
             child: ListTile(
               title: Text('내 댓글'),
-              leading: Icon(Icons.comment_outlined),
+              leading: Icon(Icons.comment_outlined,
+                color: Color(0xff595959),),
               trailing: Icon(Icons.arrow_forward_ios,
                 size: 16,
                 color: Color(0xff787878),
@@ -265,7 +269,7 @@ class _MyPageState extends State<MyPage> {
           ),
 
           Container(
-            padding: EdgeInsets.symmetric(vertical: 2),
+            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 8),
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
@@ -276,7 +280,8 @@ class _MyPageState extends State<MyPage> {
             ),
             child: ListTile(
               title: Text('내 게시글'),
-              leading: Icon(Icons.article_outlined),
+              leading: Icon(Icons.article_outlined,
+                color: Color(0xff595959),),
               trailing: Icon(Icons.arrow_forward_ios,
                 size: 16,
                 color: Color(0xff787878),
@@ -288,7 +293,7 @@ class _MyPageState extends State<MyPage> {
           ),
 
           Container(
-            padding: EdgeInsets.symmetric(vertical: 2),
+            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 8),
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
@@ -299,7 +304,8 @@ class _MyPageState extends State<MyPage> {
             ),
             child: ListTile(
               title: Text('고객센터'),
-              leading: Icon(Icons.support_agent_outlined),
+              leading: Icon(Icons.support_agent_outlined,
+                color: Color(0xff595959),),
               trailing: Icon(Icons.arrow_forward_ios,
                 size: 16,
                 color: Color(0xff787878),
@@ -340,143 +346,123 @@ class PersonalInfoEditPage extends StatelessWidget {
           children: [
             SizedBox(height: 20,),
             Center(
-              child: Container(
-                width: 100,
-                height: 100,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    GestureDetector(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Dialog(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 30, bottom: 30, left: 30, right: 30),
-                                    child: Column(
-                                      crossAxisAlignment:CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          '프로필 사진 설정',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(height: 8,),
-                                        SizedBox(
-                                          width: double.infinity,
-                                          child: TextButton(
-                                            onPressed: () {
-
-                                            },
-                                            style: TextButton.styleFrom(
-                                              padding: EdgeInsets.zero,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.zero,
-                                              ),
-                                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                              minimumSize: Size.fromHeight(40),
-                                            ),
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                '앨범에서 사진 선택',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Color(0xff595959)
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 2,),
-                                        SizedBox(
-                                          width: double.infinity,
-                                          child: TextButton(
-                                            onPressed: () {
-
-                                            },
-                                            style: TextButton.styleFrom(
-                                              padding: EdgeInsets.zero,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.zero,
-                                              ),
-                                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                              minimumSize: Size.fromHeight(40),
-                                            ),
-                                            child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                '기본 이미지 적용',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Color(0xff595959)
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        )
-
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                          child: Stack(
-                            clipBehavior: Clip.none,
+              child: GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Dialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Container(
-                                width: 100,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Color(0xffc2c2c2),
-                                    width: 2,
-                                  ),
-                                ),
-                                child: CircleAvatar(
-                                  radius: 47,
-                                  backgroundImage:
-                                      AssetImage('images/plant_0.jpg'),
+                              Text(
+                                '프로필 사진 설정',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Positioned(
-                                bottom: 0,
-                                right: -5,
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xff6bbe45),
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: Colors.white,
-                                      width: 1,
+                              SizedBox(height: 8),
+                              TextButton(
+                                onPressed: () {
+                                  // Add functionality here
+                                },
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.zero,
+                                  ),
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                  minimumSize: Size.fromHeight(40),
+                                ),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    '앨범에서 사진 선택',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Color(0xff595959),
                                     ),
                                   ),
-                                  child: Icon(
-                                    Icons.camera_alt_outlined,
-                                    color: Colors.white,
-                                    size: 20,
+                                ),
+                              ),
+                              SizedBox(height: 2),
+                              TextButton(
+                                onPressed: () {
+                                  // Add functionality here
+                                },
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.zero,
+                                  ),
+                                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                  minimumSize: Size.fromHeight(40),
+                                ),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    '기본 이미지 적용',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Color(0xff595959),
+                                    ),
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                        )
-                      ],
-                )
-
-              )
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Color(0xffc2c2c2), // Border color
+                          width: 2, // Border width
+                        ),
+                      ),
+                      child: CircleAvatar(
+                        radius: 50, // Adjusted radius to fit the container
+                        backgroundImage: AssetImage('images/plant_0.jpg'),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: -5,
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Color(0xff6bbe45),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 1,
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.camera_alt_outlined,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
 
             SizedBox(height: 10,),
