@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.wonroom.app-mergeDebugResources-25:/values-v21/values-v21.xml",
+            "outputFile": "com.example.wonroom.app-mergeDebugResources-27:/values-v21/values-v21.xml",
             "map": [
                 {
                     "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\2f6a5506f4dac22f7ab67b13b215ea43\\transformed\\core-1.13.1\\res\\values-v21\\values-v21.xml",

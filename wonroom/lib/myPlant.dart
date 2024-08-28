@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/myPlantClinic.dart';
 
-class Myplant extends StatelessWidget {
+class Myplant extends StatefulWidget {
   const Myplant({super.key});
 
+  @override
+  State<Myplant> createState() => _MyplantState();
+}
+
+class _MyplantState extends State<Myplant> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -749,6 +754,8 @@ class Myplant extends StatelessWidget {
       ),
     );
   }
+
+
 }
 
 

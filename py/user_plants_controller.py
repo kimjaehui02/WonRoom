@@ -1,10 +1,13 @@
 from flask import Blueprint, request, jsonify
+from datetime import datetime
 # Blueprint flask 내에 있는 모듈
 # flask 서버 내 파일 관리를 도와주는 모듈
 import pymysql
 
 user_plants = Blueprint("user_plants", __name__, template_folder="templates")
 
+def format_datetime(dt):
+    return dt.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
 @user_plants.route("/insert", methods=['POST'])
 def insert_plant():
@@ -16,6 +19,7 @@ def insert_plant():
     next_watering_date = data.get('next_watering_date')
     created_at = data.get('created_at')  # 클라이언트에서 받은 시간
 
+    print("/insert")
     print(user_id)
     print(catalog_number)
     print(diary_title)
@@ -64,9 +68,6 @@ def select_plants_by_user():
 
 
 
-    print(user_id)
-
-
 
     # 1. DB 연결
     db = pymysql.connect(
@@ -78,6 +79,9 @@ def select_plants_by_user():
         port=3307                         # 포트
     )
     cursor = db.cursor()
+
+    print("/select")
+    print(user_id)
 
     # 2. SQL문 작성
     sql = '''
@@ -98,8 +102,8 @@ def select_plants_by_user():
                     "user_id": plant[1],
                     "catalog_number": plant[2],
                     "diary_title": plant[3],
-                    "next_watering_date": plant[4],
-                    "created_at": plant[5]
+                    "next_watering_date": format_datetime(plant[4]),
+                    "created_at": format_datetime(plant[5])
                 })
             return jsonify({"status": "success", "data": plants_list})
         else:
@@ -111,4 +115,52 @@ def select_plants_by_user():
         db.close()
 
 
+@user_plants.route("/update_plant", methods=['POST'])
+def update_plant():
+    # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
+    data = request.get_json()
+    plant_id = data.get('plant_id')
+    diary_title = data.get('diary_title')
+    next_watering_date = data.get('next_watering_date')
+
+    # 1. DB 연결
+    db = pymysql.connect(
+        host='project-db-cgi.smhrd.com',  # URL
+        user='plant',                     # 사용자 이름
+        password='1234',                  # 비밀번호
+        db='plant',                       # 데이터베이스 이름
+        charset='utf8',                   # 인코딩
+        port=3307                         # 포트
+    )
+    cursor = db.cursor()
+
+    print("/update_plant")
+    print(f"Plant ID: {plant_id}, Diary Title: {diary_title}, Next Watering Date: {next_watering_date}")
+
+    # 2. SQL문 작성
+    sql = '''
+    UPDATE user_plants
+    SET diary_title = %s,
+        next_watering_date = %s
+    WHERE plant_id = %s
+    '''
+
+    # 3. 업데이트 실행, 파라미터 채워주기
+    try:
+        # Prepare next_watering_date for SQL
+        if next_watering_date:
+            next_watering_date = datetime.strptime(next_watering_date, '%Y-%m-%d').date()
+
+        cursor.execute(sql, (diary_title, next_watering_date, plant_id))
+        db.commit()
+
+        if cursor.rowcount > 0:
+            return jsonify({"status": "success", "message": "Plant information updated successfully"})
+        else:
+            return jsonify({"status": "fail", "message": "Plant not found"}), 404
+    except Exception as e:
+        return jsonify({"status": "fail", "message": str(e)}), 500
+    finally:
+        cursor.close()
+        db.close()
 
