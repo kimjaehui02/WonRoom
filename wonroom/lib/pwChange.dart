@@ -329,7 +329,7 @@ class _PwChangeState extends State<PwChange> {
             left: 0,
             right: 0,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16),
               child: ElevatedButton(
                 onPressed: () {
                   String oldPassword = _oldPasswordController.text;

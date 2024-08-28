@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wonroom/intro.dart';
+import 'package:wonroom/pwChange.dart';
+import 'package:wonroom/userDeletePW.dart';
 
 class MyPage extends StatefulWidget {
   @override
@@ -32,7 +35,7 @@ class _MyPageState extends State<MyPage> {
         children: [
           // 프로필 정보
           Padding(
-            padding: const EdgeInsets.fromLTRB(30, 16, 16, 16),
+            padding: const EdgeInsets.fromLTRB(30, 16, 16, 0),
             child: Row(
               children: [
                 CircleAvatar(
@@ -61,57 +64,135 @@ class _MyPageState extends State<MyPage> {
               ],
             ),
           ),
-          SizedBox(height: 20),
-          Divider(thickness: 15, color: Colors.grey[300]),
+
+          // 구분
+          Container(
+            margin: EdgeInsets.only(top: 30, ),
+            width: MediaQuery.of(context).size.width,
+            height: 8,
+            color: Color(0xffeeeeee),
+          ),
+
+
           // 리스트 항목들
-          ListTile(
-            title: Text('개인 정보 변경'),
-            leading: Icon(Icons.person),
-            trailing: Icon(Icons.arrow_forward_ios),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PersonalInfoEditPage(),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 2),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Color(0xffeeeeee),
+                  width: 1,
                 ),
-              );
-            },
+              ),
+            ),
+            child: ListTile(
+              title: Text('개인 정보 변경'),
+              leading: Icon(Icons.person_outline),
+              trailing: Icon(Icons.arrow_forward_ios,
+                size: 16,
+                color: Color(0xff787878),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PersonalInfoEditPage(),
+                  ),
+                );
+              },
+            ),
           ),
-          Divider(),
-          ListTile(
-            title: Text('내 문의글'),
-            leading: Icon(Icons.question_answer),
-            trailing: Icon(Icons.arrow_forward_ios),
-            onTap: () {
-              // 내 문의글 클릭 시 동작
-            },
+
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 2),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Color(0xffeeeeee),
+                  width: 1,
+                ),
+              ),
+            ),
+            child: ListTile(
+              title: Text('내 문의글'),
+              leading: Icon(Icons.question_answer_outlined),
+              trailing: Icon(Icons.arrow_forward_ios,
+                size: 16,
+                color: Color(0xff787878),
+              ),
+              onTap: () {
+                // 내 문의글 클릭 시 동작
+              },
+            ),
           ),
-          Divider(),
-          ListTile(
-            title: Text('내 댓글'),
-            leading: Icon(Icons.comment),
-            trailing: Icon(Icons.arrow_forward_ios),
-            onTap: () {
-              // 내 댓글 클릭 시 동작
-            },
+
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 2),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Color(0xffeeeeee),
+                  width: 1,
+                ),
+              ),
+            ),
+            child: ListTile(
+              title: Text('내 댓글'),
+              leading: Icon(Icons.comment_outlined),
+              trailing: Icon(Icons.arrow_forward_ios,
+                size: 16,
+                color: Color(0xff787878),
+              ),
+              onTap: () {
+                // 내 댓글 클릭 시 동작
+              },
+            ),
           ),
-          Divider(),
-          ListTile(
-            title: Text('내 게시글'),
-            leading: Icon(Icons.article),
-            trailing: Icon(Icons.arrow_forward_ios),
-            onTap: () {
-              // 내 게시글 클릭 시 동작
-            },
+
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 2),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Color(0xffeeeeee),
+                  width: 1,
+                ),
+              ),
+            ),
+            child: ListTile(
+              title: Text('내 게시글'),
+              leading: Icon(Icons.article_outlined),
+              trailing: Icon(Icons.arrow_forward_ios,
+                size: 16,
+                color: Color(0xff787878),
+              ),
+              onTap: () {
+                // 내 게시글 클릭 시 동작
+              },
+            ),
           ),
-          Divider(),
-          ListTile(
-            title: Text('고객센터'),
-            leading: Icon(Icons.support_agent),
-            trailing: Icon(Icons.arrow_forward_ios),
-            onTap: () {
-              // 고객센터 클릭 시 동작
-            },
+
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 2),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Color(0xffeeeeee),
+                  width: 1,
+                ),
+              ),
+            ),
+            child: ListTile(
+              title: Text('고객센터'),
+              leading: Icon(Icons.support_agent_outlined),
+              trailing: Icon(Icons.arrow_forward_ios,
+                size: 16,
+                color: Color(0xff787878),
+              ),
+              onTap: () {
+                // 고객센터 클릭 시 동작
+              },
+            ),
           ),
         ],
       ),
@@ -452,7 +533,12 @@ class PersonalInfoEditPage extends StatelessWidget {
                   color: Color(0xff787878),
                 ),
                 onTap: () {
-                  // 비밀번호 변경 화면으로 이동
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PwChange(),
+                    ),
+                  );
                 },
               ),
             ),
@@ -473,6 +559,153 @@ class PersonalInfoEditPage extends StatelessWidget {
                   color: Color(0xff787878),),
                 onTap: () {
                   // 로그아웃 처리
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(vertical: 40, horizontal: 32),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Text(
+                              '로그아웃 하시겠습니까?',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                            SizedBox(height: 10,),
+                            Text(
+                              '로그아웃 시 알림 기능이 중지됩니다.\n그래도 로그아웃 진행하시겠습니까?',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xff787878)
+                              ),
+                            ),
+                            SizedBox(height: 30),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(right: 5),
+                                    child: SizedBox(
+                                      height: 45,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context); // 다이얼로그를 닫음
+                                        },
+                                        child: Text('취소', style: TextStyle(
+                                          color: Colors.white
+                                        ),),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Color(0xff595959),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8), // Radius 조정
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 5),
+                                    child: SizedBox(
+                                      height: 45,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return Dialog(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+                                                  child: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                      Text(
+                                                        '로그아웃 되었습니다.',
+                                                        style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                        textAlign: TextAlign.center,
+                                                      ),
+                                                      SizedBox(height: 5),
+                                                      Text(
+                                                        '확인 버튼을 누르면 \n로그인 화면으로 이동합니다.',
+                                                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                                                        textAlign: TextAlign.center,
+                                                      ),
+                                                      SizedBox(height: 24),
+                                                      Align(
+                                                        alignment: Alignment.center,
+                                                        child: ElevatedButton(
+                                                          style: ElevatedButton.styleFrom(
+                                                            backgroundColor: Colors.black,
+                                                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 32),
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(8),
+                                                            ),
+                                                          ),
+                                                          child: Container(
+                                                            width: MediaQuery.of(context).size.width * 0.5,
+                                                            child: Text(
+                                                              '확인',
+                                                              style: TextStyle(
+                                                                fontSize: 18,
+                                                                color: Colors.white,
+                                                              ),
+                                                              textAlign: TextAlign.center,
+                                                            ),
+                                                          ),
+
+                                                          onPressed: () {
+                                                            // 로그아웃 기능
+
+                                                            Navigator.of(context).popUntil((route) => route.isFirst); // 모든 페이지를 팝하여 첫 페이지로 이동
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder: (context) => Intro(), // 로그인 페이지로 이동
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: Text(
+                                          '로그아웃',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Color(0xffc2c2c2),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
                 },
               ),
             ),
@@ -493,6 +726,13 @@ class PersonalInfoEditPage extends StatelessWidget {
                   color: Color(0xff787878),),
                 onTap: () {
                   // 회원탈퇴 처리
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserDeletePw(),
+                    ),
+                  );
                 },
               ),
             ),
@@ -516,7 +756,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                               Text(
                                 '변경이 완료되었습니다.',
                                 style: TextStyle(
-                                  fontSize: 25,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 textAlign: TextAlign.center,
