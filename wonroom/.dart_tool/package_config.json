@@ -518,11 +518,7 @@
       "languageVersion": "3.4"
     }
   ],
-<<<<<<< HEAD
-  "generated": "2024-08-27T06:40:36.331916Z",
-=======
-  "generated": "2024-08-27T01:33:58.803817Z",
->>>>>>> ab51b2827ce2984e8cbea703c5ec353cdaed9b4f
+  "generated": "2024-08-28T07:45:29.418049Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
   "flutterRoot": "file:///C:/Users/smhrd/Desktop/flutter",
