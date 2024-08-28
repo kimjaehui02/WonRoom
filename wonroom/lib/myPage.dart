@@ -18,7 +18,10 @@ class _MyPageState extends State<MyPage> {
         title: Text('마이페이지', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.grey,
+          ),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -126,7 +129,10 @@ class PersonalInfoEditPage extends StatelessWidget {
         title: Text('기본 정보 변경', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.grey,
+          ),
           onPressed: () {
             Navigator.pop(context);
           },

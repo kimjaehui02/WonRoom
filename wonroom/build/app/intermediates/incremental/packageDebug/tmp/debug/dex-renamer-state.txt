@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-#Tue Aug 27 19:25:17 KST 2024
-=======
-#Tue Aug 27 16:27:05 KST 2024
->>>>>>> 0486026439430c7446f9a76816878e0da8df9311
+#Wed Aug 28 10:49:07 KST 2024
 base.0=C\:\\Users\\smhrd\\Desktop\\project\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=C\:\\Users\\smhrd\\Desktop\\project\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
 base.2=C\:\\Users\\smhrd\\Desktop\\project\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
