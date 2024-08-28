@@ -4,6 +4,9 @@
             "outputFile": "com.example.wonroom.app-mergeDebugResources-25:/values-es/values-es.xml",
             "map": [
                 {
+<<<<<<< HEAD
+                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\253b2e663bdfb62e24c58c1731366987\\transformed\\jetified-play-services-base-16.0.1\\res\\values-es\\values.xml",
+=======
                     "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\2f6a5506f4dac22f7ab67b13b215ea43\\transformed\\core-1.13.1\\res\\values-es\\values-es.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
@@ -22,6 +25,7 @@
                 },
                 {
                     "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\253b2e663bdfb62e24c58c1731366987\\transformed\\jetified-play-services-base-16.0.1\\res\\values-es\\values.xml",
+>>>>>>> ab51b2827ce2984e8cbea703c5ec353cdaed9b4f
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -38,7 +42,11 @@
                     }
                 },
                 {
+<<<<<<< HEAD
+                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\bdf87e621b798b6e4632ce4b2956c3f3\\transformed\\jetified-play-services-basement-16.0.1\\res\\values-es\\values.xml",
+=======
                     "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\bdf87e621b798b6e4632ce4b2956c3f3\\transformed\\jetified-play-services-basement-16.0.1\\res\\values-es\\values.xml",
+>>>>>>> ab51b2827ce2984e8cbea703c5ec353cdaed9b4f
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -53,6 +61,26 @@
                         "endColumns": "218",
                         "endOffsets": "2245"
                     }
+<<<<<<< HEAD
+                },
+                {
+                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\2f6a5506f4dac22f7ab67b13b215ea43\\transformed\\core-1.13.1\\res\\values-es\\values-es.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,154,256,356,454,561,667,787",
+                        "endColumns": "98,101,99,97,106,105,119,100",
+                        "endOffsets": "149,251,351,449,556,662,782,883"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,27",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,204,306,406,504,611,717,3663",
+                        "endColumns": "98,101,99,97,106,105,119,100",
+                        "endOffsets": "199,301,401,499,606,712,832,3759"
+                    }
+=======
+>>>>>>> ab51b2827ce2984e8cbea703c5ec353cdaed9b4f
                 }
             ]
         }

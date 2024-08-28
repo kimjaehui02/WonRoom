@@ -135,6 +135,22 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications_none_outlined),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.person_outline),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyPage()), // MyPage로 이동
+              );
+            },
+          ),
+        ],
+        centerTitle: true,
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,

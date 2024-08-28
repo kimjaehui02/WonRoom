@@ -20,7 +20,7 @@ class _CommunityState extends State<Community> with SingleTickerProviderStateMix
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     _tabController.index = 3; // 커뮤니티 탭을 기본으로 설정
     _scrollController.addListener(_scrollListener);
   }
@@ -132,12 +132,11 @@ class _CommunityState extends State<Community> with SingleTickerProviderStateMix
           indicatorColor: Colors.green,
           indicatorPadding: EdgeInsets.zero,
           indicatorWeight: 3.0,
-          tabAlignment: TabAlignment.start,
+          tabAlignment: TabAlignment.center,
           labelPadding: EdgeInsets.symmetric(horizontal: 20.0),
           tabs: const [
             Tab(text: '홈'),
             Tab(text: '식물사전'),
-            Tab(text: '식물클리닉'),
             Tab(text: '커뮤니티'),
             Tab(text: '고객센터'),
           ],
