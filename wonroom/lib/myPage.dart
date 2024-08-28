@@ -38,11 +38,126 @@ class _MyPageState extends State<MyPage> {
             padding: const EdgeInsets.fromLTRB(30, 16, 16, 0),
             child: Row(
               children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundImage: AssetImage('assets/profile_image.png'), // 프로필 이미지
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(30),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  '프로필 사진 설정',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                TextButton(
+                                  onPressed: () {
+                                    // Add functionality here
+                                  },
+                                  style: TextButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.zero,
+                                    ),
+                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    minimumSize: Size.fromHeight(40),
+                                  ),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      '앨범에서 사진 선택',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Color(0xff595959),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 2),
+                                TextButton(
+                                  onPressed: () {
+                                    // Add functionality here
+                                  },
+                                  style: TextButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.zero,
+                                    ),
+                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    minimumSize: Size.fromHeight(40),
+                                  ),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      '기본 이미지 적용',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Color(0xff595959),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Color(0xffc2c2c2), // Border color
+                            width: 2, // Border width
+                          ),
+                        ),
+                        child: CircleAvatar(
+                          radius: 30, // Adjusted radius to fit the container
+                          backgroundImage: AssetImage('images/plant_0.jpg'),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: -5,
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: Color(0xff6bbe45),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 1,
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.camera_alt_outlined,
+                            color: Colors.white,
+                            size: 16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(width: 16),
+
+                SizedBox(width: 20),
+
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
