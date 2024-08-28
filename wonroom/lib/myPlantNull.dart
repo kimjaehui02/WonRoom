@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wonroom/MyPlant/myPlant_functions.dart';
+import 'package:wonroom/myPlantClinic.dart';
 
 class MyplantNull extends StatelessWidget {
   const MyplantNull({super.key});
@@ -18,9 +20,12 @@ class MyplantNull extends StatelessWidget {
           ),
           onPressed: () {
             // 뒤로가기 기능 (추후 구현 필요)
+            // 이전 페이지로 돌아가기
+            Navigator.pop(context);
           },
         ),
       ),
+
       body: Container(
         color: Colors.white,
         child: Column(
@@ -33,33 +38,18 @@ class MyplantNull extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 10),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff595959), // 배경 색상
-                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20), // 내부 여백
-                            shape: RoundedRectangleBorder( // 테두리 모양
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          onPressed: () {
-                            // 버튼 클릭 시 실행될 코드
-                          },
-                          child: Text(
-                            '도감1',
-                            style: TextStyle(color: Colors.white), // 텍스트 스타일
-                          ),
-                        ),
-                      ),
-                    ],
+                    children: menuButton(4),
+
                   ),
 
                   // 도감 추가
                   ElevatedButton(
                     onPressed: () {
                       // 버튼 클릭 시 실행될 코드
+                      print("+버튼");
+                      print("+버튼");
+                      print("+버튼");
+                      print("+버튼");
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xff86b26a), // 배경 색상
@@ -110,6 +100,10 @@ class MyplantNull extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   // 도감 등록하기 버튼 클릭 시 실행될 코드
+                  print("도감 등록하기 버튼 클릭 시 실행될 코드");
+                  print("도감 등록하기 버튼 클릭 시 실행될 코드");
+                  print("도감 등록하기 버튼 클릭 시 실행될 코드");
+                  print("도감 등록하기 버튼 클릭 시 실행될 코드");
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xff6bbe45),
@@ -134,3 +128,59 @@ class MyplantNull extends StatelessWidget {
     );
   }
 }
+
+
+
+Widget buildTimelineItem(String date, bool isActive) {
+  return Column(
+    children: [
+      Container(
+        width: 16,
+        height: 16,
+        decoration: BoxDecoration(
+          color: isActive ? Colors.grey : Colors.transparent,
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Colors.grey,
+            width: 2.0,
+          ),
+        ),
+      ),
+      SizedBox(height: 5),
+      Text(
+        date,
+        style: TextStyle(
+          color: Colors.grey,
+          fontSize: 14,
+        ),
+      ),
+    ],
+  );
+}
+
+// 보존된 리스트
+// children: [
+//   Container(
+//     margin: EdgeInsets.only(right: 10),
+//     child: ElevatedButton(
+//       style: ElevatedButton.styleFrom(
+//         backgroundColor: Color(0xff595959), // 배경 색상
+//         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20), // 내부 여백
+//         shape: RoundedRectangleBorder( // 테두리 모양
+//           borderRadius: BorderRadius.circular(20),
+//         ),
+//       ),
+//       onPressed: () {
+//         // 버튼 클릭 시 실행될 코드
+//         print("도감1");
+//         print("도감1");
+//         print("도감1");
+//         print("도감1");
+//       },
+//       child: Text(
+//         '도감1',
+//         style: TextStyle(color: Colors.white), // 텍스트 스타일
+//       ),
+//     ),
+//   ),
+// ],
