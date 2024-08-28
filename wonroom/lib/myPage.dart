@@ -527,7 +527,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.black, // 버튼 배경색을 검정색으로 설정
-                                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 32), // 버튼 크기 조절
+                                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 32), // 버튼 크기 조절
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8), // 버튼 모서리를 둥글게 설정
                                     ),

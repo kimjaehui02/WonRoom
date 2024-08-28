@@ -9,9 +9,111 @@ class PwChange extends StatefulWidget {
 }
 
 class _PwChangeState extends State<PwChange> {
+  // 컨트롤러 추가
+  final TextEditingController _oldPasswordController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+
   bool _obscureOldPassword = true;
   bool _obscureNewPassword = true;
   bool _obscureConfirmPassword = true;
+
+  // 비밀번호 검증 함수
+  bool _validatePassword(String oldPassword, String newPassword, String confirmPassword) {
+    String correctOldPassword = "old_password"; // 기존 비밀번호 (임시)
+
+    // 신규 비밀번호 검증 (8자리 이상, 영문, 숫자, 특수문자 포함)
+    bool isNewPasswordValid = newPassword.length >= 8 &&
+        newPassword.contains(RegExp(r'[A-Za-z]')) &&
+        newPassword.contains(RegExp(r'[0-9]')) &&
+        newPassword.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+
+    // 비밀번호 검증 로직
+    if (oldPassword != correctOldPassword) {
+      return false;
+    } else if (!isNewPasswordValid) {
+      return false;
+    } else if (newPassword != confirmPassword) {
+      return false;
+    }
+    return true;
+  }
+
+  void _showDialog(String title, String subtitle, bool isSuccess) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 10),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 24),
+                Align(
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 32),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: Text(
+                        '확인',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context); // 다이얼로그 닫기
+                      if (isSuccess) {
+                        Navigator.pop(context); // 이전 페이지로 이동
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _oldPasswordController.dispose();
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +155,7 @@ class _PwChangeState extends State<PwChange> {
                     ),
                     SizedBox(height: 8.0),
                     TextFormField(
+                      controller: _oldPasswordController, // 컨트롤러 설정
                       decoration: InputDecoration(
                         hintText: 'ex. won01room%',
                         border: OutlineInputBorder(),
@@ -106,6 +209,7 @@ class _PwChangeState extends State<PwChange> {
                     ),
                     SizedBox(height: 8.0),
                     TextFormField(
+                      controller: _newPasswordController, // 컨트롤러 설정
                       decoration: InputDecoration(
                         hintText: 'ex. won01room%',
                         border: OutlineInputBorder(),
@@ -172,6 +276,7 @@ class _PwChangeState extends State<PwChange> {
                     ),
                     SizedBox(height: 8.0),
                     TextFormField(
+                      controller: _confirmPasswordController, // 컨트롤러 설정
                       decoration: InputDecoration(
                         hintText: 'ex. won01room%',
                         border: OutlineInputBorder(),
@@ -225,64 +330,26 @@ class _PwChangeState extends State<PwChange> {
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Dialog(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                '변경이 완료되었습니다.',
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                '확인 버튼을 누르면 \n이전 페이지로 이동합니다.',
-                                style: TextStyle(fontSize: 16, color: Colors.grey),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(height: 24),
-                              Align(
-                                alignment: Alignment.center,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.black,
-                                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 32),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width * 0.5,
-                                    child: Text('확인', style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.white,
-                                    ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
+                  String oldPassword = _oldPasswordController.text;
+                  String newPassword = _newPasswordController.text;
+                  String confirmPassword = _confirmPasswordController.text;
+
+                  bool isValid = _validatePassword(oldPassword, newPassword, confirmPassword);
+
+                  if (isValid) {
+                    _showDialog(
+                        '변경이 완료되었습니다.',
+                        '확인 버튼을 누르면 \n이전 페이지로 이동합니다.',
+                        true
+                    );
+                  } else {
+                    _showDialog(
+                        '변경에 실패했습니다.',
+                        '기존 비밀번호 또는\n신규 비밀번호를 확인해주세요.',
+                        false
+                    );
+                  }
+
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xff6bbe45),
