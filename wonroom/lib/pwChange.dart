@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wonroom/Login/LoginValidators.dart';
+// import 'package:wonroom/Login/LoginValidators.dart';
 
 class PwChange extends StatefulWidget {
   const PwChange({super.key});
@@ -10,25 +10,25 @@ class PwChange extends StatefulWidget {
 }
 
 class _PwChangeState extends State<PwChange> {
-  final TextEditingController _oldPasswordController = TextEditingController();
-  final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
-
-  // Separate obscurePassword flags for each field
+  // final TextEditingController _oldPasswordController = TextEditingController();
+  // final TextEditingController _newPasswordController = TextEditingController();
+  // final TextEditingController _confirmPasswordController = TextEditingController();
+  //
+  // // Separate obscurePassword flags for each field
   bool _obscureOldPassword = true;
   bool _obscureNewPassword = true;
   bool _obscureConfirmPassword = true;
-
-  String _passwordHint = '영문, 숫자, 특수문자("제외) 포함 8자리 이상';
-
-  @override
-  void dispose() {
-    // 컨트롤러 해제
-    _oldPasswordController.dispose();
-    _newPasswordController.dispose();
-    _confirmPasswordController.dispose();
-    super.dispose();
-  }
+  //
+  // String _passwordHint = '영문, 숫자, 특수문자("제외) 포함 8자리 이상';
+  //
+  // @override
+  // void dispose() {
+  //   // 컨트롤러 해제
+  //   _oldPasswordController.dispose();
+  //   _newPasswordController.dispose();
+  //   _confirmPasswordController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,7 @@ class _PwChangeState extends State<PwChange> {
                 ),
                 SizedBox(height: 8.0),
                 TextFormField(
-                  controller: _oldPasswordController,
+                  // controller: _oldPasswordController,
                   decoration: InputDecoration(
                     hintText: 'ex. won01room%',
                     border: OutlineInputBorder(),
@@ -122,7 +122,7 @@ class _PwChangeState extends State<PwChange> {
                 ),
                 SizedBox(height: 8.0),
                 TextFormField(
-                  controller: _newPasswordController,
+                  // controller: _newPasswordController,
                   decoration: InputDecoration(
                     hintText: 'ex. won01room%',
                     border: OutlineInputBorder(),
@@ -153,7 +153,8 @@ class _PwChangeState extends State<PwChange> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    _passwordHint,
+                    // _passwordHint,
+                    "영문, 숫자, 특수문자(제외) 포함 8자리 이상",
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.grey[700],
@@ -186,7 +187,7 @@ class _PwChangeState extends State<PwChange> {
                 ),
                 SizedBox(height: 8.0),
                 TextFormField(
-                  controller: _confirmPasswordController,
+                  // controller: _confirmPasswordController,
                   decoration: InputDecoration(
                     hintText: 'ex. won01room%',
                     border: OutlineInputBorder(),
@@ -214,6 +215,17 @@ class _PwChangeState extends State<PwChange> {
                   obscureText: _obscureConfirmPassword,
                 ),
                 const SizedBox(height: 4.0),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    // _passwordHint,
+                    "영문, 숫자, 특수문자(제외) 포함 8자리 이상",
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
               ],
             ),
           ],

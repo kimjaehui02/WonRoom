@@ -19,9 +19,15 @@ class _LoginState extends State<Login> {
   bool _buttonAble = false;
 
   String _idHint = ''; // 초기 힌트 텍스트
+<<<<<<< HEAD
   // String _passwordHint = ' '; // 초기 힌트 텍스트
   // String _idHint = '아이디를 입력해 주세요.'; // 초기 힌트 텍스트
   String _passwordHint = '영문, 숫자, 특수문자("제외) 포함 8자리 이상'; // 초기 힌트 텍스트
+=======
+  String _passwordHint = ' '; // 초기 힌트 텍스트
+  // String _idHint = '아이디를 입력해 주세요.'; // 초기 힌트 텍스트
+  // String _passwordHint = '영문, 숫자, 특수문자("제외) 포함 8자리 이상'; // 초기 힌트 텍스트
+>>>>>>> 0486026439430c7446f9a76816878e0da8df9311
 
   @override
   void initState() {
@@ -29,14 +35,22 @@ class _LoginState extends State<Login> {
 
     // 리스너 등록
     _idController.addListener(_onTextChanged);
+<<<<<<< HEAD
     // _passwordController.addListener(_onTextChanged);
+=======
+    _passwordController.addListener(_onTextChanged);
+>>>>>>> 0486026439430c7446f9a76816878e0da8df9311
   }
 
   @override
   void dispose() {
     // 리스너 해제
     _idController.removeListener(_onTextChanged);
+<<<<<<< HEAD
     // _passwordController.removeListener(_onTextChanged);
+=======
+    _passwordController.removeListener(_onTextChanged);
+>>>>>>> 0486026439430c7446f9a76816878e0da8df9311
 
     // 컨트롤러 해제
     _idController.dispose();
@@ -68,7 +82,11 @@ class _LoginState extends State<Login> {
         _idHint = LoginValidators.validateUserId(_idController.text) ?? ' ';
       }
 
+<<<<<<< HEAD
       // _passwordHint = LoginValidators.validatePassword(_passwordController.text) ?? ' ';
+=======
+      _passwordHint = LoginValidators.validatePassword(_passwordController.text) ?? ' ';
+>>>>>>> 0486026439430c7446f9a76816878e0da8df9311
     });
 
 

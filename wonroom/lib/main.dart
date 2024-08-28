@@ -42,7 +42,11 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white, // 앱바 배경색
       ),
     ),
+<<<<<<< HEAD
     home: PwChange(),
+=======
+    home: Index(),
+>>>>>>> 0486026439430c7446f9a76816878e0da8df9311
     );
   }
 }
