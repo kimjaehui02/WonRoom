@@ -21,7 +21,20 @@ class MyComments extends StatelessWidget {
           },
         ),
       ),
-      body: Container(
+      body: Column(
+        children: [
+          Container(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
 
         // 빈 화면
         // child: Expanded(

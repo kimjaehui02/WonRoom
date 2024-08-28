@@ -16,6 +16,7 @@ import 'package:wonroom/myPlantClinic.dart';
 import 'package:wonroom/myPlantNull.dart';
 import 'package:wonroom/notificationPage.dart';
 import 'package:wonroom/notificationNulll.dart';
+import 'package:wonroom/plantClinicChat.dart';
 import 'package:wonroom/plantDictionary.dart';
 import 'package:wonroom/PostDetailPage.dart';
 import 'package:wonroom/pwChange.dart';
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white, // 앱바 배경색
       ),
     ),
-      home: MyPage(),
+      home: PlantClinicChat(),
     );
   }
 }
