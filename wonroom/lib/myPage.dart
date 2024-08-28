@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/intro.dart';
+import 'package:wonroom/myComments.dart';
 import 'package:wonroom/pwChange.dart';
 import 'package:wonroom/userDeletePW.dart';
 
@@ -264,6 +265,12 @@ class _MyPageState extends State<MyPage> {
               ),
               onTap: () {
                 // 내 댓글 클릭 시 동작
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyComments(),
+                  ),
+                );
               },
             ),
           ),
