@@ -5,6 +5,9 @@
             "map": [
                 {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 한채연
                     "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\2f6a5506f4dac22f7ab67b13b215ea43\\transformed\\core-1.13.1\\res\\values-fi\\values-fi.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
@@ -23,9 +26,12 @@
                 },
                 {
                     "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\253b2e663bdfb62e24c58c1731366987\\transformed\\jetified-play-services-base-16.0.1\\res\\values-fi\\values.xml",
+<<<<<<< HEAD
 =======
                     "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\253b2e663bdfb62e24c58c1731366987\\transformed\\jetified-play-services-base-16.0.1\\res\\values-fi\\values.xml",
 >>>>>>> ab51b2827ce2984e8cbea703c5ec353cdaed9b4f
+=======
+>>>>>>> 한채연
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -43,10 +49,14 @@
                 },
                 {
 <<<<<<< HEAD
+<<<<<<< HEAD
                     "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\bdf87e621b798b6e4632ce4b2956c3f3\\transformed\\jetified-play-services-basement-16.0.1\\res\\values-fi\\values.xml",
 =======
                     "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\bdf87e621b798b6e4632ce4b2956c3f3\\transformed\\jetified-play-services-basement-16.0.1\\res\\values-fi\\values.xml",
 >>>>>>> ab51b2827ce2984e8cbea703c5ec353cdaed9b4f
+=======
+                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\bdf87e621b798b6e4632ce4b2956c3f3\\transformed\\jetified-play-services-basement-16.0.1\\res\\values-fi\\values.xml",
+>>>>>>> 한채연
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -61,6 +71,7 @@
                         "endColumns": "208",
                         "endOffsets": "2194"
                     }
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
                 },
@@ -81,6 +92,8 @@
                         "endOffsets": "196,298,396,501,606,718,834,3595"
                     }
 >>>>>>> ab51b2827ce2984e8cbea703c5ec353cdaed9b4f
+=======
+>>>>>>> 한채연
                 }
             ]
         }

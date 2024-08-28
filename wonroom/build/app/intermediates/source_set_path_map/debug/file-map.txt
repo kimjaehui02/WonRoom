@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 한채연
 com.example.wonroom.app-core-runtime-2.2.0-0 C:\Users\smhrd\.gradle\caches\transforms-3\0f877a570394a12cc35ff27489f11c26\transformed\core-runtime-2.2.0\res
 com.example.wonroom.app-jetified-play-services-base-16.0.1-1 C:\Users\smhrd\.gradle\caches\transforms-3\253b2e663bdfb62e24c58c1731366987\transformed\jetified-play-services-base-16.0.1\res
 com.example.wonroom.app-jetified-window-java-1.0.0-beta04-2 C:\Users\smhrd\.gradle\caches\transforms-3\2a215381204751055df81b6269e717b7\transformed\jetified-window-java-1.0.0-beta04\res
@@ -33,6 +36,7 @@ com.example.wonroom.app-packaged_res-30 C:\Users\smhrd\Desktop\project\WonRoom\w
 com.example.wonroom.app-packaged_res-31 C:\Users\smhrd\Desktop\project\WonRoom\wonroom\build\location\intermediates\packaged_res\debug
 com.example.wonroom.app-packaged_res-32 C:\Users\smhrd\Desktop\project\WonRoom\wonroom\build\path_provider_android\intermediates\packaged_res\debug
 com.example.wonroom.app-packaged_res-33 C:\Users\smhrd\Desktop\project\WonRoom\wonroom\build\sqflite\intermediates\packaged_res\debug
+<<<<<<< HEAD
 =======
 com.example.wonroom.app-core-runtime-2.2.0-0 C:\Users\smhrd1\.gradle\caches\transforms-3\0f877a570394a12cc35ff27489f11c26\transformed\core-runtime-2.2.0\res
 com.example.wonroom.app-jetified-play-services-base-16.0.1-1 C:\Users\smhrd1\.gradle\caches\transforms-3\253b2e663bdfb62e24c58c1731366987\transformed\jetified-play-services-base-16.0.1\res
@@ -69,3 +73,5 @@ com.example.wonroom.app-packaged_res-31 C:\Users\smhrd1\Desktop\thirdproject\Won
 com.example.wonroom.app-packaged_res-32 C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\path_provider_android\intermediates\packaged_res\debug
 com.example.wonroom.app-packaged_res-33 C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\sqflite\intermediates\packaged_res\debug
 >>>>>>> ab51b2827ce2984e8cbea703c5ec353cdaed9b4f
+=======
+>>>>>>> 한채연

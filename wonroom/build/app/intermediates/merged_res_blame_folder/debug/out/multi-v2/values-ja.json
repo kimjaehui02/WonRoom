@@ -5,6 +5,7 @@
             "map": [
                 {
 <<<<<<< HEAD
+<<<<<<< HEAD
                     "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\bdf87e621b798b6e4632ce4b2956c3f3\\transformed\\jetified-play-services-basement-16.0.1\\res\\values-ja\\values.xml",
 =======
                     "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\253b2e663bdfb62e24c58c1731366987\\transformed\\jetified-play-services-base-16.0.1\\res\\values-ja\\values.xml",
@@ -26,6 +27,9 @@
                 {
                     "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\bdf87e621b798b6e4632ce4b2956c3f3\\transformed\\jetified-play-services-basement-16.0.1\\res\\values-ja\\values.xml",
 >>>>>>> ab51b2827ce2984e8cbea703c5ec353cdaed9b4f
+=======
+                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\bdf87e621b798b6e4632ce4b2956c3f3\\transformed\\jetified-play-services-basement-16.0.1\\res\\values-ja\\values.xml",
+>>>>>>> 한채연
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -43,10 +47,14 @@
                 },
                 {
 <<<<<<< HEAD
+<<<<<<< HEAD
                     "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\2f6a5506f4dac22f7ab67b13b215ea43\\transformed\\core-1.13.1\\res\\values-ja\\values-ja.xml",
 =======
                     "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\2f6a5506f4dac22f7ab67b13b215ea43\\transformed\\core-1.13.1\\res\\values-ja\\values-ja.xml",
 >>>>>>> ab51b2827ce2984e8cbea703c5ec353cdaed9b4f
+=======
+                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\2f6a5506f4dac22f7ab67b13b215ea43\\transformed\\core-1.13.1\\res\\values-ja\\values-ja.xml",
+>>>>>>> 한채연
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -62,6 +70,9 @@
                         "endOffsets": "192,292,386,482,575,668,769,3314"
                     }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 한채연
                 },
                 {
                     "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\253b2e663bdfb62e24c58c1731366987\\transformed\\jetified-play-services-base-16.0.1\\res\\values-ja\\values.xml",
@@ -79,8 +90,11 @@
                         "endColumns": "105,165,121,107,188,121,134,127,190,102,163,120,178,149,89,88,99",
                         "endOffsets": "875,1041,1163,1271,1460,1582,1717,1845,2217,2320,2484,2605,2784,2934,3024,3113,3213"
                     }
+<<<<<<< HEAD
 =======
 >>>>>>> ab51b2827ce2984e8cbea703c5ec353cdaed9b4f
+=======
+>>>>>>> 한채연
                 }
             ]
         }
