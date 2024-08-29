@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.wonroom.app-mergeDebugResources-25:/values-sl/values-sl.xml",
+            "outputFile": "com.example.wonroom.app-mergeDebugResources-27:/values-sl/values-sl.xml",
             "map": [
                 {
                     "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\bdf87e621b798b6e4632ce4b2956c3f3\\transformed\\jetified-play-services-basement-16.0.1\\res\\values-sl\\values.xml",

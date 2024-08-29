@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:wonroom/DB/users/users_model.dart';
 
 final storage = FlutterSecureStorage();
 
@@ -16,16 +17,18 @@ Future<void> writeData(String key, String value) async {
   }
 }
 
-Future<void> writeUserData(String key, Map<String, dynamic> value) async {
-  print('writeData');
+Future<void> writeUserData(Map<String, dynamic> value) async {
+  print('writeUserData');
   try {
-    // value를 문자열로 변환하여 저장
-    await storage.write(key: key, value: value.toString());
+    // Map을 JSON 문자열로 변환하여 저장
+    String jsonString = jsonEncode(value);
+    await storage.write(key: 'userData', value: jsonString);
     print('Data written successfully.');
   } catch (e) {
     print('Error writing data: $e');
   }
 }
+
 
 
 
@@ -62,11 +65,11 @@ Future<int?> readDataAsInt(String key) async {
   }
 }
 
-Future<Map<String, dynamic>?> readUserData(String key) async {
+Future<Map<String, dynamic>?> readUserData() async {
   print('readUserData');
   try {
     // 저장된 값을 읽어온다
-    String? value = await storage.read(key: key);
+    String? value = await storage.read(key: 'userData');
     print('Data read successfully: $value');
 
     // 값이 null일 경우 null 반환
@@ -102,3 +105,47 @@ Future<void> deleteAllData() async {
     print('Error deleting all data: $e');
   }
 }
+
+// 예시로 유저 ID를 추출하는 함수
+Future<String?> getUserId() async {
+  final userData = await readUserData();
+  if (userData != null && userData.containsKey('user_id')) {
+    return userData['user_id'] as String?;
+  }
+  return null;
+}
+
+Future<void> writeUser(User user) async {
+  print('writeUser');
+  try {
+    // User 객체를 JSON 문자열로 변환하여 저장
+    String jsonString = jsonEncode(user.toJson());
+    await storage.write(key: 'userData', value: jsonString);
+    print('User data written successfully.');
+  } catch (e) {
+    print('Error writing user data: $e');
+  }
+}
+
+Future<User?> readUser() async {
+  print('readUser');
+  try {
+    // 저장된 값을 읽어온다
+    String? value = await storage.read(key: 'userData');
+    print('Data read successfully: $value');
+
+    // 값이 null일 경우 null 반환
+    if (value == null) {
+      return null;
+    }
+
+    // JSON 문자열을 Map으로 변환한 후 User 객체로 변환
+    Map<String, dynamic> json = jsonDecode(value);
+    return User.fromJson(json);
+  } catch (e) {
+    print('Error reading user data: $e');
+    return null;
+  }
+}
+
+
