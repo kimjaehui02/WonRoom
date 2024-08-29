@@ -1,6 +1,6 @@
-import 'dart:io'; // Add this import for File class
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart'; // Add this import for image picking
+import 'package:image_picker/image_picker.dart';
 
 class PlantClinicChat extends StatefulWidget {
   const PlantClinicChat({super.key});
@@ -19,7 +19,10 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.grey,
+          ),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -27,122 +30,143 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
         title: Text('식물 클리닉'),
         centerTitle: true,
       ),
-      body: Column(
+      body: Stack(
         children: [
-          // 메시지 리스트
-          Expanded(
-            child: SingleChildScrollView(
+          Column(
+            children: [
+              // 메시지 리스트
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        padding: EdgeInsets.all(16.0),
+                        itemCount: _messages.length,
+                        itemBuilder: (context, index) {
+                          final message = _messages[index];
+                          return _buildMessageBubble(
+                            message: message['text'],
+                            image: message['image'],
+                            isUser: message['isUser'],
+                          );
+                        },
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // 입력 필드 및 버튼
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 30,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: IconButton(
+                        onPressed: () async {
+                          final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+                          if (pickedFile != null) {
+                            _sendMessage(image: pickedFile.path, isUser: true);
+                          }
+                        },
+                        icon: Image.asset(
+                          'images/file_upload.png',
+                          height: 28,
+                          width: 28,
+                          fit: BoxFit.cover,
+                          color: Color(0xff595959),
+                        ),
+                        iconSize: 24,
+                        padding: EdgeInsets.all(4),
+                      ),
+                    ),
+                    SizedBox(width: 4),
+                    Expanded(
+                      child: TextField(
+                        controller: _messageController,
+                        decoration: InputDecoration(
+                          hintText: '메시지를 입력하세요',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onSubmitted: (text) {
+                          _sendMessage(text: text, isUser: true);
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 2),
+                    ElevatedButton(
+                      onPressed: () {
+                        _sendMessage(
+                          text: _messageController.text,
+                          isUser: true,
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(),
+                        padding: EdgeInsets.all(0),
+                        fixedSize: Size(50, 50),
+                        elevation: 0,
+                        backgroundColor: Colors.transparent,
+                      ),
+                      child: Icon(
+                        Icons.telegram,
+                        size: 50,
+                        color: Color(0xff999999),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          if (_messages.isEmpty)
+            Align(
+              alignment: Alignment(0, -0.2), // x, y 좌표 조정 (0은 중앙, -0.2는 살짝 위로)
               child: Column(
+                mainAxisSize: MainAxisSize.min, // Column의 크기를 내용에 맞게 조정
                 children: [
-                  ListView.builder(
-                    padding: EdgeInsets.all(16.0),
-                    itemCount: _messages.length,
-                    itemBuilder: (context, index) {
-                      final message = _messages[index];
-                      return _buildMessageBubble(
-                        message: message['text'],
-                        image: message['image'],
-                        isUser: message['isUser'],
-                      );
-                    },
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(), // Prevent ListView from scrolling independently
+                  Container(
+                    width: 200,
+                    child: Center(
+                      child: Image.asset(
+                        'images/chat-bot.png',
+                        width: 100, // 아이콘 크기
+                        height: 100, // 아이콘 크기
+                        fit: BoxFit.cover,
+                        color: Color(0xffeeeeee),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16), // 이미지와 텍스트 사이의 간격
+                  Text(
+                    '식물을 찰영하여\n식물 정보를 확인해보세요.',
+                    style: TextStyle(
+                      color: Color(0xffc2c2c2),
+                      fontSize: 16, // 텍스트 크기 조정 (선택 사항)
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
             ),
-          ),
-          // 입력 필드 및 버튼
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-            child: Row(
-              children: [
-
-                Container(
-                  width: 30,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: IconButton(
-                    onPressed: () async {
-                      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-                      if (pickedFile != null) {
-                        _sendMessage(image: pickedFile.path, isUser: true);
-                      }
-                    },
-                    icon: Image.asset(
-                      'images/file_upload.png',
-                      height: 28,
-                      width: 28,
-                      fit: BoxFit.cover,
-                      color: Color(0xff595959),
-                    ),
-                    iconSize: 24,
-                    padding: EdgeInsets.all(4),
-                  ),
-                ),
-
-                SizedBox(width: 4,),
-
-                Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    decoration: InputDecoration(
-                      hintText: '메시지를 입력하세요',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onSubmitted: (text) {
-                      _sendMessage(text: text, isUser: true);
-                    },
-                  ),
-                ),
-
-                SizedBox(width: 2,),
-
-                ElevatedButton(
-                  onPressed: () {
-                    _sendMessage(
-                      text: _messageController.text,
-                      isUser: true,
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: CircleBorder(),
-                    padding: EdgeInsets.all(0),
-                    fixedSize: Size(50, 50),
-                    elevation: 0,
-                    backgroundColor: Colors.transparent,
-                  ),
-                  child: Icon(
-                    Icons.telegram,
-                    size: 50,
-                    color: Color(0xff999999),
-                  ),
-                )
-
-
-
-
-
-
-
-
-
-              ],
-            ),
-          ),
         ],
       ),
     );
@@ -215,8 +239,7 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
                 Container(
                   constraints: BoxConstraints(
                     maxWidth: MediaQuery.of(context).size.width * 0.5,
-                    // maxHeight: MediaQuery.of(context).size.width * 0.5,
-                  ), // 이미지의 최대 너비 설정
+                  ),
                   child: Image.file(
                     File(image),
                     fit: BoxFit.cover,
@@ -238,7 +261,6 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
                     ),
                   ),
                 ),
-              // SizedBox(width: 8),
             ],
           ),
         ),
