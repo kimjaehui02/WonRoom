@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:wonroom/DB/user_plants/user_plants_model.dart';
 import 'package:wonroom/DB/user_plants/user_plants_service.dart';
@@ -780,21 +782,12 @@ class _MyplantNullState extends State<MyplantNull> {
 
 
               String? userId = await getUserId();
+              UserPlantService ser = new UserPlantService();
+              ser.deletePlant(4);
 
-              UserPlantService userPlantService = new UserPlantService();
-              UserPlant userPlant = new UserPlant(
-                  userId: "tested",
-                  catalogNumber: 0,
-                  nextWateringDate: DateTime.now(),
-                  diaryTitle: "다이어리1",
-                  createdAt: DateTime.now());
+              print("+버튼의 종료");
 
-              await userPlantService.addPlant(userPlant);
 
-              userPlantService.getPlants("tested");
-              print("+버튼");
-              print("+버튼");
-              print("+버튼");
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xff86b26a), // 배경 색상

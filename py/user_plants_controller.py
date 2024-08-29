@@ -115,12 +115,60 @@ def select_plants_by_user():
         db.close()
 
 
-@user_plants.route("/update_plant", methods=['POST'])
-def update_plant():
+
+@user_plants.route("/update_diary_title", methods=['POST'])
+def update_plant_diary_title():
     # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
     data = request.get_json()
     plant_id = data.get('plant_id')
     diary_title = data.get('diary_title')
+    # next_watering_date = data.get('next_watering_date')
+
+    # 1. DB 연결
+    db = pymysql.connect(
+        host='project-db-cgi.smhrd.com',  # URL
+        user='plant',                     # 사용자 이름
+        password='1234',                  # 비밀번호
+        db='plant',                       # 데이터베이스 이름
+        charset='utf8',                   # 인코딩
+        port=3307                         # 포트
+    )
+    cursor = db.cursor()
+
+    print("/update")
+    print(f"Plant ID: {plant_id}, Diary Title: {diary_title}")
+
+    # 2. SQL문 작성
+    sql = '''
+    UPDATE user_plants
+    SET diary_title = %s
+    WHERE plant_id = %s
+    '''
+
+    # 3. 업데이트 실행, 파라미터 채워주기
+    try:
+        # Prepare next_watering_date for SQL
+
+
+        cursor.execute(sql, (diary_title, plant_id))
+        db.commit()
+
+        if cursor.rowcount > 0:
+            return jsonify({"status": "success", "message": "Plant information updated successfully"})
+        else:
+            return jsonify({"status": "fail", "message": "Plant not found"}), 404
+    except Exception as e:
+        return jsonify({"status": "fail", "message": str(e)}), 500
+    finally:
+        cursor.close()
+        db.close()
+
+
+@user_plants.route("/update_watering_date", methods=['POST'])
+def update_plant_next_watering_date():
+    # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
+    data = request.get_json()
+    plant_id = data.get('plant_id')
     next_watering_date = data.get('next_watering_date')
 
     # 1. DB 연결
@@ -134,24 +182,24 @@ def update_plant():
     )
     cursor = db.cursor()
 
-    print("/update_plant")
-    print(f"Plant ID: {plant_id}, Diary Title: {diary_title}, Next Watering Date: {next_watering_date}")
+    print("/update")
+    print(f"Plant ID: {plant_id}, Next Watering Date: {next_watering_date}")
 
-    # 2. SQL문 작성
-    sql = '''
-    UPDATE user_plants
-    SET diary_title = %s,
-        next_watering_date = %s
-    WHERE plant_id = %s
-    '''
-
-    # 3. 업데이트 실행, 파라미터 채워주기
+    # 2. 날짜 문자열을 datetime 객체로 변환
     try:
-        # Prepare next_watering_date for SQL
         if next_watering_date:
-            next_watering_date = datetime.strptime(next_watering_date, '%Y-%m-%d').date()
+            # 문자열을 datetime 객체로 변환하고 다시 문자열로 포맷
+            next_watering_date = datetime.fromisoformat(next_watering_date.replace('Z', '+00:00')).strftime('%Y-%m-%d')
 
-        cursor.execute(sql, (diary_title, next_watering_date, plant_id))
+        # 3. SQL문 작성
+        sql = '''
+        UPDATE user_plants
+        SET next_watering_date = %s
+        WHERE plant_id = %s
+        '''
+
+        # 4. 업데이트 실행, 파라미터 채워주기
+        cursor.execute(sql, (next_watering_date, plant_id))
         db.commit()
 
         if cursor.rowcount > 0:
@@ -163,4 +211,48 @@ def update_plant():
     finally:
         cursor.close()
         db.close()
+
+
+@user_plants.route("/delete", methods=['POST'])
+def delete_plant():
+    # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
+    data = request.get_json()
+    plant_id = data.get('plant_id')
+
+    # 1. DB 연결
+    db = pymysql.connect(
+        host='project-db-cgi.smhrd.com',  # URL
+        user='plant',                     # 사용자 이름
+        password='1234',                  # 비밀번호
+        db='plant',                       # 데이터베이스 이름
+        charset='utf8',                   # 인코딩
+        port=3307                         # 포트
+    )
+    cursor = db.cursor()
+
+    print("/delete")
+    print(f"Plant ID: {plant_id}")
+
+    # 2. SQL문 작성
+    sql = '''
+    DELETE FROM user_plants
+    WHERE plant_id = %s
+    '''
+
+    # 3. 삭제 실행, 파라미터 채워주기
+    try:
+        cursor.execute(sql, (plant_id,))
+        db.commit()
+
+        if cursor.rowcount > 0:
+            return jsonify({"status": "success", "message": "Plant deleted successfully"})
+        else:
+            return jsonify({"status": "fail", "message": "Plant not found"}), 404
+    except Exception as e:
+        db.rollback()  # 오류 발생 시 롤백
+        return jsonify({"status": "fail", "message": str(e)}), 500
+    finally:
+        cursor.close()
+        db.close()
+
 

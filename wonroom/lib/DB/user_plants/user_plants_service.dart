@@ -204,13 +204,48 @@ class UserPlantService {
   }
 
   // 식물 업데이트
-  Future<void> updatePlant(UserPlant userPlant) async {
-    final String url = "$baseUrl/user_plants/update";
+  Future<void> updatePlant_diary_title(int plant_id, String diary_title) async {
+    final String url = "$baseUrl/user_plants/update_diary_title";
 
     try {
       Response response = await dio.post(
         url,
-        data: userPlant.toJson(),  // UserPlant 모델을 JSON으로 변환하여 전송
+        data: {
+          "plant_id": plant_id,
+          "diary_title": diary_title
+        },
+      );
+
+      print('Status Code: ${response.statusCode}');
+      print('Response URL: ${response.realUri}');
+      print('Response Data: ${response.data}');
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        if (responseData['status'] == 'success') {
+          print('Plant updated successfully.');
+        } else {
+          print('Plant update failed: ${responseData['message']}');
+        }
+      } else {
+        print('Unexpected status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+
+  // 식물 업데이트
+  Future<void> updatePlant_next_watering_date(int plant_id, DateTime next_watering_date) async {
+    final String url = "$baseUrl/user_plants/update_watering_date";
+
+    try {
+      Response response = await dio.post(
+        url,
+        data: {
+          "plant_id": plant_id,
+          "next_watering_date": next_watering_date.toIso8601String(),
+        },
       );
 
       print('Status Code: ${response.statusCode}');
