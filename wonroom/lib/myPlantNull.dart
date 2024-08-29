@@ -1,6 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:wonroom/DB/comments/comments_model.dart';
+import 'package:wonroom/DB/comments/comments_service.dart';
+import 'package:wonroom/DB/likes/likes_model.dart';
+import 'package:wonroom/DB/likes/likes_service.dart';
+import 'package:wonroom/DB/photos/photos_model.dart';
+import 'package:wonroom/DB/photos/photos_service.dart';
+import 'package:wonroom/DB/posts/posts_model.dart';
+import 'package:wonroom/DB/posts/posts_service.dart';
 import 'package:wonroom/DB/user_plants/user_plants_model.dart';
 import 'package:wonroom/DB/user_plants/user_plants_service.dart';
 import 'package:wonroom/Flask/storage_manager.dart';
@@ -781,10 +789,19 @@ class _MyplantNullState extends State<MyplantNull> {
               // 버튼 클릭 시 실행될 코드
               print("+버튼");
 
-              showPlantRegistrationModal(context);
+              // showPlantRegistrationModal(context);
               // String? userId = await getUserId();
-              // UserPlantService ser = new UserPlantService();
-              // ser.deletePlant(4);
+
+              // LikeService likeService = new LikeService();
+              // Like like = new Like(userId: "tested", postId: 111, createdAt: DateTime.now());
+              //
+              // // likeService.addLike(like);
+              // likeService.getLikes(3);
+              PhotoService photoService = new PhotoService();
+              Photo photo = new Photo(photoId: 2, postId: 11, category: 1, isPrimary: false, fileName: "스플래시32.png", serverPath: "미정2", fileType: "png", createdAt: DateTime.now());
+
+              // photoService.addPhoto(photo);
+              photoService.deletePhoto(2);
 
               print("+버튼의 종료");
 
