@@ -38,8 +38,29 @@ class PlantClinicChat extends StatelessWidget {
             // 질병명 섹션
             Row(
               children: [
-                Icon(Icons.local_florist, size: 24),
-                SizedBox(width: 8.0),
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Color(0xffeeeeee),
+                      width: 1,
+                    ),
+                    color: Colors.white, // 배경 색상 설정 (원하는 색상으로 조정 가능)
+                  ),
+                  child: Center(
+                    child: Image.asset(
+                      'images/chat-bot.png', // 이미지 파일 경로
+                      width: 25, // 이미지 크기 조정
+                      height: 25, // 이미지 크기 조정
+                      fit: BoxFit.cover, // 이미지가 원형에 맞게 조정되도록 설정
+                    ),
+                  ),
+                ),
+
+                SizedBox(width: 10),
+
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
