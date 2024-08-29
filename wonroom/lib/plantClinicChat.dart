@@ -54,42 +54,63 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
           ),
           // 입력 필드 및 버튼
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             child: Row(
               children: [
+
+                Container(
+                  width: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: IconButton(
+                    onPressed: () async {
+                      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+                      if (pickedFile != null) {
+                        _sendMessage(image: pickedFile.path, isUser: true);
+                      }
+                    },
+                    icon: Image.asset(
+                      'images/file_upload.png',
+                      height: 28,
+                      width: 28,
+                      fit: BoxFit.cover,
+                      color: Color(0xff595959),
+                    ),
+                    iconSize: 24,
+                    padding: EdgeInsets.all(4),
+                  ),
+                ),
+
+                SizedBox(width: 4,),
+
                 Expanded(
                   child: TextField(
                     controller: _messageController,
                     decoration: InputDecoration(
-                      hintText: '메시지를 입력하세요...',
+                      hintText: '메시지를 입력하세요',
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                     onSubmitted: (text) {
                       _sendMessage(text: text, isUser: true);
                     },
                   ),
                 ),
-                SizedBox(width: 8),
-                ElevatedButton(
-                  onPressed: () async {
-                    // Open image picker and send image
-                    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-                    if (pickedFile != null) {
-                      _sendMessage(image: pickedFile.path, isUser: true);
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  ),
-                  child: Icon(Icons.image), // Use image icon for sending images
-                ),
-                SizedBox(width: 8),
+
+                SizedBox(width: 2,),
+
                 ElevatedButton(
                   onPressed: () {
                     _sendMessage(
@@ -98,13 +119,27 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    shape: CircleBorder(),
+                    padding: EdgeInsets.all(0),
+                    fixedSize: Size(50, 50),
+                    elevation: 0,
+                    backgroundColor: Colors.transparent,
                   ),
-                  child: Text('전송'),
-                ),
+                  child: Icon(
+                    Icons.telegram,
+                    size: 50,
+                    color: Color(0xff999999),
+                  ),
+                )
+
+
+
+
+
+
+
+
+
               ],
             ),
           ),
@@ -143,12 +178,12 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
 
   Widget _buildMessageBubble({String? message, String? image, required bool isUser}) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.0), // 상하 여백 추가
+      padding: EdgeInsets.symmetric(vertical: 4.0),
       child: Align(
         alignment: isUser ? Alignment.topRight : Alignment.centerLeft,
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.75, // 메시지의 최대 너비를 전체 화면 너비의 75%로 설정
+            maxWidth: MediaQuery.of(context).size.width * 0.75,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -168,7 +203,7 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
                   ),
                   child: Center(
                     child: Image.asset(
-                      'images/chat-bot.png', // 아이콘 파일 경로
+                      'images/chat-bot.png',
                       width: 25,
                       height: 25,
                       fit: BoxFit.cover,
@@ -192,7 +227,7 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                     decoration: BoxDecoration(
-                      color: isUser ? Colors.blueAccent : Colors.grey[300],
+                      color: isUser ? Color(0xff86b26a) : Color(0xffeeeeee),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
