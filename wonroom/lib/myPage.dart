@@ -128,8 +128,9 @@ class _MyPageState extends State<MyPage> {
                           ),
                         ),
                         child: CircleAvatar(
-                          radius: 30, // Adjusted radius to fit the container
-                          backgroundImage: AssetImage('images/plant_0.jpg'),
+                          radius: 30,
+                          backgroundImage: AssetImage('images/defaultProfile.png',
+                          ),
                         ),
                       ),
                       Positioned(
