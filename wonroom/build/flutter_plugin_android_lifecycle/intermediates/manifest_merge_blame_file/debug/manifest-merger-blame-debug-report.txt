@@ -4,20 +4,8 @@
 4
 5    <uses-sdk
 6        android:minSdkVersion="19"
-<<<<<<< HEAD
-<<<<<<< HEAD
-6-->C:\Users\smhrd\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.21\android\src\main\AndroidManifest.xml
-7        android:targetSdkVersion="19" />
-7-->C:\Users\smhrd\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.21\android\src\main\AndroidManifest.xml
-=======
-6-->C:\Users\smhrd1\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.21\android\src\main\AndroidManifest.xml
-7        android:targetSdkVersion="19" />
-7-->C:\Users\smhrd1\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.21\android\src\main\AndroidManifest.xml
->>>>>>> ab51b2827ce2984e8cbea703c5ec353cdaed9b4f
-=======
 6-->C:\Users\smhrd\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.22\android\src\main\AndroidManifest.xml
 7        android:targetSdkVersion="19" />
 7-->C:\Users\smhrd\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_plugin_android_lifecycle-2.0.22\android\src\main\AndroidManifest.xml
->>>>>>> 한채연
 8
 9</manifest>

@@ -4,6 +4,179 @@ import 'package:wonroom/myPlantClinic.dart';
 class Myplant extends StatelessWidget {
   const Myplant({super.key});
 
+  // 수정, 삭제 팝업
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: Icon(Icons.edit_outlined),
+                title: Text('수정하기'),
+                onTap: () {
+                  // 수정하기 기능 추가
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.delete_outline_outlined),
+                title: Text('삭제하기'),
+                onTap: () {
+                  Navigator.pop(context); 
+                  _showDeleteConfirmationSheet(context); 
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // 삭제버튼 클릭 시 팝업
+  void _showDeleteConfirmationSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 20),
+              Text(
+                '정말 삭제하시겠습니까?',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 3),
+              Text(
+                '삭제하기를 누르시면\n해당 식물 다이어리가 삭제됩니다.',
+                style: TextStyle(color: Colors.grey, fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.grey[300],
+                      minimumSize: Size(170, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                    ),
+                    child: Text(
+                      '취소',
+                      style: TextStyle(
+                          color: Color(0xff787878),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _showDeletionSuccessDialog(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xff595959),
+                      minimumSize: Size(170, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                    ),
+                    child: Text(
+                      '삭제',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold
+                      ), // 흰색 글씨
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showDeletionSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 10,),
+              Text(
+                '삭제되었습니다.',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.black),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 3),
+              Text(
+                '확인 버튼을 누르면 \n 이전 페이지로 이동합니다.',
+                style: TextStyle(color: Colors.grey, fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 15),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    minimumSize: Size(200, 45),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                  ),
+                  child: Text(
+                    '확인',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold
+                    ), // 흰색 글씨
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,29 +283,53 @@ class Myplant extends StatelessWidget {
                   Column(
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.only(left: 50), // 오른쪽 여백 추가
+                          Flexible(
+                            flex: 1,
+                            child: Align(
+                              alignment: Alignment.centerLeft, // 왼쪽 아이콘을 왼쪽에 배치
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 32),
+                                child: IconButton(
+                                  icon: Icon(Icons.star_border_rounded, color: Color(0xff787878)),
+                                  onPressed: () {
+                                    // 아이콘 클릭 시 실행될 기능 구현
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            flex: 5, // 중앙 텍스트가 많이 차지하도록 설정
+                            child: Align(
+                              alignment: Alignment.center, // 텍스트를 중앙에 배치
                               child: Text(
                                 '몬스테라',
                                 style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                 ),
-                                textAlign: TextAlign.center, // 텍스트 중앙 정렬
+                                textAlign: TextAlign.center,
                               ),
                             ),
                           ),
-                          IconButton(
-                            padding: EdgeInsets.only(right: 16), // 오른쪽 여백 추가
-                            icon: Icon(Icons.more_vert, color: Color(0xff787878)),
-                            onPressed: () {
-                              // 아이콘 클릭 시 실행될 기능 구현
-                            },
+                          Flexible(
+                            flex: 1,
+                            child: Align(
+                              alignment: Alignment.centerRight, // 오른쪽 아이콘을 오른쪽에 배치
+                              child: Padding(
+                                padding: EdgeInsets.only(right: 32),
+                                child: IconButton(
+                                  icon: Icon(Icons.more_vert, color: Color(0xff787878)),
+                                  onPressed: () => _showBottomSheet(context),
+                                ),
+                              ),
+                            ),
                           ),
                         ],
                       ),
+
 
                       SizedBox(height: 16),
 
