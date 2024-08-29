@@ -1,35 +1,102 @@
 import 'package:dio/dio.dart';
-import 'package:wonroom/Flask/storage_manager.dart';
+import 'package:wonroom/DB/plant_management_records/plant_management_model.dart';
 
-final Dio dio = Dio();
-final String baseUrl = "http://192.168.219.81:8087/";
 
-// 식물 관리 기록 추가 요청
-Future<void> addPlantManagementRecord({
-  required int catalogNumber,          // catalogNumber는 int형
-  required String managementDate,     // 관리 날짜
-  required String managementType,     // 관리 유형
-  String? details,                    // 선택적 필드
-  required int plantId                // 필수 필드: 식물 ID
-}) async {
-  final String url = "$baseUrl/plant_management_records/insert";
+class PlantManagementService {
+  final Dio dio = Dio();
+  final String baseUrl = "http://192.168.219.81:8087/";  // 서버 URL
 
-  try {
-    Response response = await dio.post(
-      url,
-      data: {
-        "catalog_number": catalogNumber,  // catalogNumber는 int형으로 전송
-        "management_date": managementDate, // 날짜를 ISO8601 문자열로 전송
-        "management_type": managementType, // 관리 유형 (예: 'Watering', 'Pruning')
-        "details": details ?? '',          // details가 없을 경우 빈 문자열로 대체
-        "plant_id": plantId,               // 식물 ID 추가
-      },
-    );
+  // 레코드 추가 요청
+  Future<void> addRecord(PlantManagementRecord record) async {
+    final String url = "$baseUrl/plant_management/insert";
 
-    print('Status Code: ${response.statusCode}');
-    print('Response URL: ${response.realUri}');
-    print('Response Data: ${response.data}');
-  } catch (e) {
-    print("Error: $e");
+    try {
+      Response response = await dio.post(
+        url,
+        data: record.toJson(),
+      );
+
+      print('Status Code: ${response.statusCode}');
+      print('Response URL: ${response.realUri}');
+      print('Response Data: ${response.data}');
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+
+  // 레코드 조회 요청
+  Future<List<PlantManagementRecord>?> getRecords(int plantId) async {
+    final String url = "$baseUrl/plant_management/select";
+
+    try {
+      Response response = await dio.post(
+        url,
+        data: {
+          "plant_id": plantId,
+        },
+      );
+
+      print('Status Code: ${response.statusCode}');
+      print('Response URL: ${response.realUri}');
+      print('Response Data: ${response.data}');
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        if (responseData['status'] == 'success') {
+          List<dynamic> recordsJson = responseData['data'];
+          List<PlantManagementRecord> records = recordsJson
+              .map((json) => PlantManagementRecord.fromJson(json))
+              .toList();
+          print('Records retrieved successfully.');
+          return records;
+        } else {
+          print('Record retrieval failed: ${responseData['message']}');
+        }
+      } else {
+        print('Unexpected status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
+
+    return null;
+  }
+
+  // 레코드 수정 요청
+  Future<void> updateRecord(PlantManagementRecord record) async {
+    final String url = "$baseUrl/plant_management/update";
+
+    try {
+      Response response = await dio.post(
+        url,
+        data: record.toJson(),
+      );
+
+      print('Status Code: ${response.statusCode}');
+      print('Response URL: ${response.realUri}');
+      print('Response Data: ${response.data}');
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+
+  // 레코드 삭제 요청
+  Future<void> deleteRecord(int recordId) async {
+    final String url = "$baseUrl/plant_management/delete";
+
+    try {
+      Response response = await dio.post(
+        url,
+        data: {
+          "record_id": recordId,
+        },
+      );
+
+      print('Status Code: ${response.statusCode}');
+      print('Response URL: ${response.realUri}');
+      print('Response Data: ${response.data}');
+    } catch (e) {
+      print("Error: $e");
+    }
   }
 }

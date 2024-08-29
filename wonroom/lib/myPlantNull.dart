@@ -7,6 +7,8 @@ import 'package:wonroom/DB/likes/likes_model.dart';
 import 'package:wonroom/DB/likes/likes_service.dart';
 import 'package:wonroom/DB/photos/photos_model.dart';
 import 'package:wonroom/DB/photos/photos_service.dart';
+import 'package:wonroom/DB/plant_management_records/plant_management_model.dart';
+import 'package:wonroom/DB/plant_management_records/plant_management_records_service.dart';
 import 'package:wonroom/DB/posts/posts_model.dart';
 import 'package:wonroom/DB/posts/posts_service.dart';
 import 'package:wonroom/DB/user_plants/user_plants_model.dart';
@@ -792,16 +794,14 @@ class _MyplantNullState extends State<MyplantNull> {
               // showPlantRegistrationModal(context);
               // String? userId = await getUserId();
 
-              // LikeService likeService = new LikeService();
-              // Like like = new Like(userId: "tested", postId: 111, createdAt: DateTime.now());
-              //
-              // // likeService.addLike(like);
-              // likeService.getLikes(3);
-              PhotoService photoService = new PhotoService();
-              Photo photo = new Photo(photoId: 2, postId: 11, category: 1, isPrimary: false, fileName: "스플래시32.png", serverPath: "미정2", fileType: "png", createdAt: DateTime.now());
+              PlantManagementService pms = new PlantManagementService();
 
-              // photoService.addPhoto(photo);
-              photoService.deletePhoto(2);
+              ManagementType type = ManagementType.Pruning;
+              PlantManagementRecord pmr = new PlantManagementRecord
+                (recordId: 2, catalogNumber: 2, managementDate: DateTime.now(), managementType: type, details: "자세한내역인가?", plantId: 5);
+
+              // pms.addRecord(pmr);
+              pms.deleteRecord(2);
 
               print("+버튼의 종료");
 
