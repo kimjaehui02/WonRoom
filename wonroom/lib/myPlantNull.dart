@@ -6,6 +6,7 @@ import 'package:wonroom/DB/user_plants/user_plants_service.dart';
 import 'package:wonroom/Flask/storage_manager.dart';
 import 'package:wonroom/MyPlant/myPlant_functions.dart';
 import 'package:wonroom/myPlantClinic.dart';
+import 'package:wonroom/myPlantRegistration.dart';
 
 class MyplantNull extends StatefulWidget {
   const MyplantNull({super.key});
@@ -780,10 +781,10 @@ class _MyplantNullState extends State<MyplantNull> {
               // 버튼 클릭 시 실행될 코드
               print("+버튼");
 
-
-              String? userId = await getUserId();
-              UserPlantService ser = new UserPlantService();
-              ser.deletePlant(4);
+              showPlantRegistrationModal(context);
+              // String? userId = await getUserId();
+              // UserPlantService ser = new UserPlantService();
+              // ser.deletePlant(4);
 
               print("+버튼의 종료");
 
