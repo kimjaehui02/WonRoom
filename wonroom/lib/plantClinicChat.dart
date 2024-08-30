@@ -27,7 +27,7 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
             Navigator.pop(context);
           },
         ),
-        title: Text('식물 클리닉'),
+        title: Text('챗(AI)'),
         centerTitle: true,
       ),
       body: Stack(
