@@ -780,11 +780,15 @@ class _MyplantNullState extends State<MyplantNull> {
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       color: Color(0xffeeeeee),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: menuButton(4),
-
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: menuButton(5),
+              ),
+            ),
           ),
 
           // 도감 추가
@@ -805,13 +809,13 @@ class _MyplantNullState extends State<MyplantNull> {
                   content: "질의글의 내용");
 
               QueryModel queryModel2 = new QueryModel(
-                  userId: "tested1",
+                  userId: "tested",
                   createdAt: DateTime.now(),
-                  queryType: "응답2",
-                  title: "응답글의 제목2",
-                  content: "응답글의 내용2",
-                  parentQueryId: 1,
-                  queryId: 2);
+                  queryType: "질의",
+                  title: "진짜질의제목",
+                  content: "진짜질의내용",
+                  parentQueryId: null,
+                  queryId: 1);
 
 
               // await queryService.addQuery(queryModel);

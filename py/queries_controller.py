@@ -150,13 +150,13 @@ def update_query():
     # 2. SQL문 작성
     sql = '''
     UPDATE queries 
-    SET title = %s, content = %s, query_type = %s, parent_query_id = %s
-    WHERE query_id = %s AND user_id = %s
+    SET title = %s, user_id = %s, content = %s, query_type = %s, parent_query_id = %s
+    WHERE query_id = %s
     '''
 
     # 3. update 실행, 파라미터 채워주기
     try:
-        cursor.execute(sql, (title, content, query_type, parent_query_id, query_id, user_id))
+        cursor.execute(sql, (title, user_id, content, query_type, parent_query_id, query_id))
         db.commit()
 
         if cursor.rowcount > 0:
