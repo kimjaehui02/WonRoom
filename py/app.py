@@ -12,6 +12,7 @@ from posts_controller import posts
 from queries_controller import queries
 from user_controller import users
 from user_plants_controller import user_plants
+from chat_messages_controller import chat_messages
 from email_controller import email_controller, init_mail  # 이메일 컨트롤러 추가
 
 app = Flask(__name__)
@@ -30,6 +31,8 @@ app.register_blueprint(posts, url_prefix="/posts")
 app.register_blueprint(queries, url_prefix="/queries")
 app.register_blueprint(users, url_prefix="/users")
 app.register_blueprint(user_plants, url_prefix="/user_plants")
+
+app.register_blueprint(chat_messages, url_prefix="/chat_messages")
 
 # 이메일 관련 Blueprint 등록
 app.register_blueprint(email_controller, url_prefix="/email")

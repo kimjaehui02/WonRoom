@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:wonroom/DB/chat_messages/chat_messages_model.dart';
+import 'package:wonroom/DB/chat_messages/chat_messages_service.dart';
 import 'package:wonroom/DB/comments/comments_model.dart';
 import 'package:wonroom/DB/comments/comments_service.dart';
 import 'package:wonroom/DB/likes/likes_model.dart';
@@ -19,6 +21,11 @@ import 'package:wonroom/Flask/storage_manager.dart';
 import 'package:wonroom/MyPlant/myPlant_functions.dart';
 import 'package:wonroom/myPlantClinic.dart';
 import 'package:wonroom/myPlantRegistration.dart';
+import 'package:wonroom/showFloatingActionModal.dart';
+
+int inputss = 1;
+
+
 
 class MyplantNull extends StatefulWidget {
   const MyplantNull({super.key});
@@ -28,8 +35,23 @@ class MyplantNull extends StatefulWidget {
 }
 
 class _MyplantNullState extends State<MyplantNull> {
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData(); // 페이지가 처음 로드될 때 데이터를 불러옵니다.
+  }
+
+  void _loadData() {
+    // 여기에 데이터를 불러오는 코드를 작성하세요.
+    print("데이터 불러오기 작업을 수행합니다. inputss: $inputss");
+    // DB나 API에서 데이터를 불러오는 작업을 수행할 수 있습니다.
+  }
   @override
   Widget build(BuildContext context) {
+
+
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -724,14 +746,14 @@ class _MyplantNullState extends State<MyplantNull> {
                   SizedBox(height: 250,),
                   ImageIcon(AssetImage('images/info.png'),
                     size: 50,
-                    color: Color(0xffc2c2c2),
+                    color: Color(0xffeeeeee),
                   ),
                   SizedBox(height: 10,),
                   Text(
-                    '알림 내역이 없습니다. \n곧 좋은 소식 정보 알려드릴게요!',
+                    '등록된 식물이 없습니다. \n나의 반려 식물을 등록해 주세요.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Color(0xff787878),
+                      color: Color(0xffc2c2c2),
                       fontSize: 14,
                     ),
                   ),
@@ -786,7 +808,13 @@ class _MyplantNullState extends State<MyplantNull> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: menuButton(5),
+                children: menuButton(5, inputss, (index1) {
+                  setState(() {
+                    inputss = index1;
+                    // return index1;
+                  });
+
+                }),
               ),
             ),
           ),
@@ -796,33 +824,17 @@ class _MyplantNullState extends State<MyplantNull> {
             onPressed: () async{
               // 버튼 클릭 시 실행될 코드
               print("+버튼");
+              // showFloatingActionModal(context);
+              // ChatMessagesService chatMessagesService = new ChatMessagesService();
+              // ChatMessage chatMessage = new ChatMessage
+              //   (chatId: 1, chatText: "채팅내역2", speaker: true, chatTime: DateTime.now());
+              showPlantRegistrationModal(context);
+              // chatMessagesService.getChatMessages(DateTime(2000), DateTime(2100));
 
-              // showPlantRegistrationModal(context);
-              // String? userId = await getUserId();
-              QueryService queryService = new QueryService();
+              // chatMessagesService.updateChatMessage(chatMessage);
 
-              QueryModel queryModel = new QueryModel(
-                  userId: "tested",
-                  createdAt: DateTime.now(),
-                  queryType: "질의",
-                  title: "질의글의 제목",
-                  content: "질의글의 내용");
+              // chatMessagesService.deleteChatMessage(1);
 
-              QueryModel queryModel2 = new QueryModel(
-                  userId: "tested",
-                  createdAt: DateTime.now(),
-                  queryType: "질의",
-                  title: "진짜질의제목",
-                  content: "진짜질의내용",
-                  parentQueryId: null,
-                  queryId: 1);
-
-
-              // await queryService.addQuery(queryModel);
-              // await queryService.addQuery(queryModel2);
-
-              await queryService.updateQuery(queryModel2);
-              
               print("+버튼의 종료");
 
 
