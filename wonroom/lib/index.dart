@@ -288,6 +288,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
 
+  // 날씨
   Widget _buildWeatherWidget() {
     return Center(
       child: Container(
@@ -329,11 +330,11 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                       color: Colors.blue,
                       size: 16,
                     ),
-                    SizedBox(width: 4),
+                    SizedBox(width: 3),
                     Text(
                       '현위치',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 14,
                         color: Colors.grey[700],
                       ),
                     ),

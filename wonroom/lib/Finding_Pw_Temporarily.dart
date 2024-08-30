@@ -27,7 +27,7 @@ class FindingPwTemporarily extends StatelessWidget {
                 ColorFiltered(
                   colorFilter: ColorFilter.mode(
                     Color(0xFFB2FF59), // 연두색
-                    BlendMode.modulate, // 색상 혼합 모드
+                    BlendMode.srcIn, // 색상 혼합 모드
                   ),
                   child: Image.asset(
                     'images/회원가입체크.png',
@@ -35,11 +35,11 @@ class FindingPwTemporarily extends StatelessWidget {
                     height: 100, // 이미지 높이
                   ),
                 ),
-                const SizedBox(height: 16.0),
+                const SizedBox(height: 16),
                 const Text(
                   '임시 비밀번호 전송이\n 완료되었습니다.',
                   style: TextStyle(
-                    fontSize: 26.0,
+                    fontSize: 26,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -71,7 +71,7 @@ class FindingPwTemporarily extends StatelessWidget {
                   Navigator.of(context).pushReplacementNamed('/login'); // 로그인 페이지로 이동
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green, // 버튼 배경색 초록색
+                  backgroundColor: Color(0xff6FB348), // 버튼 배경색 초록색
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.zero, // 모서리 곡선 제거
                   ),
