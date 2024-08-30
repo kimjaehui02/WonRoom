@@ -24,7 +24,7 @@ import 'package:wonroom/myPlantClinic.dart';
 import 'package:wonroom/myPlantRegistration.dart';
 import 'package:wonroom/showFloatingActionModal.dart';
 
-int inputss = 1;
+
 
 
 
@@ -37,29 +37,161 @@ class MyplantNull extends StatefulWidget {
 
 class _MyplantNullState extends State<MyplantNull> {
 
-  late List<UserPlant> _userPlants;
+  // 당신의 식물 정보
+  List<UserPlant> _userPlants = [];
+  // 당신의 식물 정보의 일정들
+  List<List<PlantManagementRecord>> _PMR = [];
+
+  // 보여줄 페이지 불값
+  bool checks = true;
+
+  int plantIndex = 0;
+
+  // Table: user_plants
+  // Columns:
+  // plant_id int AI PK
+  // user_id varchar(50)
+  // catalog_number int
+  // diary_title varchar(255)
+  // next_watering_date date
+  // created_at timestamp
+
+  // 1. diary_title
+  // 식물 이름쯔음이면 되겟따
+  String diary_title = "";
 
   @override
   void initState() {
     super.initState();
-    _loadData(); // 페이지가 처음 로드될 때 데이터를 불러옵니다.
+    setState(() {
+      _loadData(); // 페이지가 처음 로드될 때 데이터를 불러옵니다.
+
+    });
   }
 
-  void _loadData() async{
-    // 여기에 데이터를 불러오는 코드를 작성하세요.
-    print("데이터 불러오기 작업을 수행합니다. inputss: $inputss");
-    User? uster = await readUser();
-    if(uster != null)
-      {
-        print(uster.getuserId());
-        UserPlantService ups = new UserPlantService();
+  void _loadData() async
+  {
+    print("데이터 불러오기 작업을 수행합니다. inputss: $plantIndex");
+    User? user = await readUser(); // user 객체 가져오기
+    print("User? user = await readUser();");
 
-        // if(ups.getPlants(uster.getuserId()) != null)
-        _userPlants =ups.getPlants(uster.getuserId());
+    if (user != null) {
+      print(user.getuserId()); // 사용자 ID 출력
+      print(user.getuserId()); // 사용자 ID 출력
+      print(user.getuserId()); // 사용자 ID 출력
 
+      String? userId = user.getuserId(); // 사용자 ID 변수에 할당
+      if (userId != null) {
+        UserPlantService ups = UserPlantService();
+
+        // 비동기 호출로 사용자 식별자에 따라 식물 목록 가져오기
+        List<UserPlant>? userPlants = await ups.getPlants(userId);
+
+        if (userPlants != null) {
+          setState(() {
+            _userPlants = userPlants; // 데이터 할당 후 상태 업데이트
+            print("성공");
+            print("성공");
+            print("성공");
+
+            _updateDoubleList();
+
+
+
+            checks = true;
+          });
+        } else {
+          print("No plants found for user ID: $userId");
+        }
+      } else {
+        print("User ID is null.");
       }
-    // DB나 API에서 데이터를 불러오는 작업을 수행할 수 있습니다.
+    } else {
+      print("User object is null.");
+    }
+
+    _updatePlant(plantIndex);
   }
+
+
+
+  void _updateDoubleList() async {
+
+    // 식물매니저서비스를 소환합니다
+    PlantManagementService pms = PlantManagementService();
+
+    // 식물 일정이 담긴 이중 리스트를 초기화합니다
+    int numbOfPlant = _userPlants.length;
+
+    // 이중 리스트 초기화 (각 식물에 대해 빈 리스트 생성)
+    _PMR = List.generate(numbOfPlant, (index) => []);
+
+    for (int i = 0; i < numbOfPlant; i++) {
+      // 식물 ID를 가져옵니다
+      int plantId = _userPlants[i].plantId ?? -1;
+
+      if (plantId == -1) {
+        // 식물 ID가 유효하지 않으면 건너뜁니다
+        continue;
+      }
+
+      try {
+        // 식물 ID로 식물 관리 기록을 가져옵니다
+
+        // PlantManagementRecord pmr2 = new PlantManagementRecord
+        //   (catalogNumber: plantId*2,
+        //     managementDate: DateTime.now(),
+        //     managementType: ManagementType.Repotting,
+        //     details: "디테일" + plantId.toString(),
+        //     plantId: plantId);
+        //
+        // pms.addRecord(pmr2);
+        List<PlantManagementRecord>? pmr = await pms.getRecords(plantId);
+
+        if (pmr != null) {
+          setState(() {
+            // 식물 관리 기록을 이중 리스트에 저장합니다
+            _PMR[i] = pmr;
+            print("결과출력!!!!");
+            print("결과출력!!!!");
+            print("결과출력!!!!");
+
+            print(i);
+            print(pmr.length);
+            print("결과출력!!!!");
+            print("결과출력!!!!");
+            print("결과출력!!!!");
+          });
+        }
+      } catch (e) {
+        print("Error loading plant management records: $e");
+      }
+    }
+
+    // 이중 리스트 초기화 후 추가적인 작업이 필요하다면 여기에 추가합니다
+    print("식물 일정 이중 리스트가 업데이트되었습니다.");
+  }
+
+
+  // 식물 일정이 담긴 이중리스트를 초기화 합니다
+  // _PMS = List.generate(userPlants.length, (index) => []);
+
+  // 지금 식물 일정들이 담긴 이중리스트를 초기화 해야 합니다
+  // 그렇기 위해서 for문이 2개가 필요하고
+  // 첫번째 포문에선 식물의갯수만큼
+  // 두번째 포문에선 인덱싱된 식물id로 셀렉트 한 일정길이만큼
+
+  // 그러면 일단 2가지의 변수를 먼저 준비해둔다
+
+
+  void _updatePlant(index)
+  {
+    setState(() {
+      diary_title = _userPlants[index].diaryTitle ?? 'Default Title';
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -83,7 +215,7 @@ class _MyplantNullState extends State<MyplantNull> {
           },
         ),
       ),
-      body: false ? _buildScrollView() : _buildContainer(),
+      body: checks ? _buildScrollView() : _buildContainer(),
     );
   }
 
@@ -107,7 +239,7 @@ class _MyplantNullState extends State<MyplantNull> {
                           child: Container(
                             padding: EdgeInsets.only(left: 50), // 오른쪽 여백 추가
                             child: Text(
-                              '몬스테라',
+                              diary_title,
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -809,6 +941,7 @@ class _MyplantNullState extends State<MyplantNull> {
     );
   }
 
+  // 상단 도감 버튼을 만듭니다
   Widget _buildEncyclopedia()
   {
     return Container(
@@ -821,12 +954,17 @@ class _MyplantNullState extends State<MyplantNull> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: menuButton(5, inputss, (index1) {
+                children: menuButton(_userPlants.length, plantIndex, (index1) {
                   setState(() {
-                    inputss = index1;
+                    plantIndex = index1;
+                    _updatePlant(plantIndex);
                     // return index1;
                   });
-
+                  print("메인쪽");
+                  print("메인쪽");
+                  print(plantIndex);
+                  print("메인쪽");
+                  print("메인쪽");
                 }),
               ),
             ),
@@ -869,6 +1007,8 @@ class _MyplantNullState extends State<MyplantNull> {
       ),
     );
   }
+
+
 
 }
 

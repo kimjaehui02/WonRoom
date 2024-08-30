@@ -24,8 +24,8 @@ class PlantManagementService {
     }
   }
 
-  // 레코드 조회 요청
-  Future<List<PlantManagementRecord>?> getRecords(int plantId) async {
+// 레코드 조회 요청
+  Future<List<PlantManagementRecord>> getRecords(int plantId) async {
     final String url = "$baseUrl/plant_management/select";
 
     try {
@@ -59,8 +59,10 @@ class PlantManagementService {
       print("Error: $e");
     }
 
-    return null;
+    // 404 또는 오류 발생 시 빈 리스트 반환
+    return [];
   }
+
 
   // 레코드 수정 요청
   Future<void> updateRecord(PlantManagementRecord record) async {

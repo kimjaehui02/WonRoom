@@ -260,6 +260,12 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "intl",
+      "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/intl-0.19.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "js",
       "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/js-0.6.7",
       "packageUri": "lib/",
@@ -560,7 +566,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2024-08-30T09:10:18.692298Z",
+  "generated": "2024-08-30T10:00:52.195601Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
   "flutterRoot": "file:///C:/Users/smhrd1/Desktop/flutter",
