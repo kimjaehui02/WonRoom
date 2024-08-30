@@ -266,6 +266,75 @@ class _MyplantState extends State<Myplant> {
                               ),
                             ),
                           ),
+                          Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white, // 배경 색상
+                                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20), // 내부 여백
+                                side: BorderSide( // 테두리 스타일
+                                  color: Color(0xffc2c2c2), // 테두리 색상
+                                  width: 1, // 테두리 두께
+                                ),
+                                shape: RoundedRectangleBorder( // 모서리 둥글게
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              onPressed: () {
+                                // 버튼 클릭 시 실행될 코드
+                              },
+                              child: Text(
+                                '도감2',
+                                style: TextStyle(color: Color(0xff787878)), // 텍스트 스타일
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white, // 배경 색상
+                                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20), // 내부 여백
+                                side: BorderSide( // 테두리 스타일
+                                  color: Color(0xffc2c2c2), // 테두리 색상
+                                  width: 1, // 테두리 두께
+                                ),
+                                shape: RoundedRectangleBorder( // 모서리 둥글게
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              onPressed: () {
+                                // 버튼 클릭 시 실행될 코드
+                              },
+                              child: Text(
+                                '도감2',
+                                style: TextStyle(color: Color(0xff787878)), // 텍스트 스타일
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white, // 배경 색상
+                                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20), // 내부 여백
+                                side: BorderSide( // 테두리 스타일
+                                  color: Color(0xffc2c2c2), // 테두리 색상
+                                  width: 1, // 테두리 두께
+                                ),
+                                shape: RoundedRectangleBorder( // 모서리 둥글게
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              onPressed: () {
+                                // 버튼 클릭 시 실행될 코드
+                              },
+                              child: Text(
+                                '도감2',
+                                style: TextStyle(color: Color(0xff787878)), // 텍스트 스타일
+                              ),
+                            ),
+                          ),
 
                           // 추가 버튼들을 여기에 더 추가할 수 있습니다.
                         ],
