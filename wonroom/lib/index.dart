@@ -278,6 +278,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // 다이어리 빈곳 유무를 교체할 때 쓰는곳
           if (false)
             _buildMyPlantsSection()
           else
@@ -435,6 +436,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
 
+  // 다이어리 있을 때 코드
   Widget _buildMyPlantsSection() {
     return Container(
       padding: const EdgeInsets.all(16),
