@@ -46,9 +46,12 @@ class MyPlantClinic extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('24.08.12',
-                          style: TextStyle(fontSize: 14, color: Color(0xff787878)
-                          )
+                      Padding(
+                        padding: const EdgeInsets.only(left: 3),
+                        child: Text('24.08.12',
+                            style: TextStyle(fontSize: 14, color: Color(0xff787878)
+                            )
+                        ),
                       ),
 
                       Text('시들음병',

@@ -5,8 +5,11 @@
             "map": [
                 {
 <<<<<<< HEAD
+<<<<<<< HEAD
                     "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\f302e75fb7efd781bcf1a29281c188da\\transformed\\jetified-window-1.0.0-beta04\\res\\values\\values.xml",
 =======
+=======
+>>>>>>> main
                     "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\7628447021ddaf60af1b9170edc954e9\\transformed\\lifecycle-runtime-2.6.2\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -78,6 +81,12 @@
                 },
                 {
                     "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\f302e75fb7efd781bcf1a29281c188da\\transformed\\jetified-window-1.0.0-beta04\\res\\values\\values.xml",
+<<<<<<< HEAD
+>>>>>>> main
+=======
+=======
+                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\f302e75fb7efd781bcf1a29281c188da\\transformed\\jetified-window-1.0.0-beta04\\res\\values\\values.xml",
+>>>>>>> 오준하2
 >>>>>>> main
                     "from": {
                         "startLines": "2,7,8,9,10,11,19,23,34,51",
@@ -115,6 +124,11 @@
                 },
                 {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+                    "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\5a47ec11e88a4c5989e745f27b201179\\transformed\\coordinatorlayout-1.0.0\\res\\values\\values.xml",
+=======
+>>>>>>> main
                     "source": "C:\\Users\\smhrd\\Desktop\\wonroom\\WonRoom\\wonroom\\android\\app\\src\\main\\res\\values\\styles.xml",
                     "from": {
                         "startLines": "3,14",
@@ -135,8 +149,12 @@
                 },
                 {
                     "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\5a47ec11e88a4c5989e745f27b201179\\transformed\\coordinatorlayout-1.0.0\\res\\values\\values.xml",
+<<<<<<< HEAD
 =======
                     "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\5a47ec11e88a4c5989e745f27b201179\\transformed\\coordinatorlayout-1.0.0\\res\\values\\values.xml",
+>>>>>>> main
+=======
+>>>>>>> 오준하2
 >>>>>>> main
                     "from": {
                         "startLines": "2,102,3,13",

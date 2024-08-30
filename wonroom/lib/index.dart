@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/myPage.dart';
 import 'package:wonroom/myPlantNull.dart';
+import 'package:wonroom/myPlant.dart';
 import 'package:wonroom/myPlantRegistration.dart';
+import 'package:wonroom/plantClinicChat.dart';
 import 'package:wonroom/showFloatingActionModal.dart';
 import 'plantDictionary.dart';
 
@@ -160,8 +162,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             children: [
               _buildHomePage(),
               _buildPlantDictionaryPage(),
-              PlantDictionary(),
-              _buildPlantClinicPage('식물클리닉 페이지'),
+              // PlantDictionary(),
+              // _buildPlantClinicPage('식물클리닉 페이지'),
               _buildCommunityPage('커뮤니티 페이지'),
               _buildCustomerServicePage('고객센터 페이지'),
             ],
@@ -198,7 +200,10 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
           },
           backgroundColor: Colors.transparent,
           elevation: 0,
-          child: const Icon(Icons.camera_alt_outlined, color: Colors.white,),
+          child: const Icon(Icons.camera_alt_outlined,
+            color: Colors.white,
+            size: 32,
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -224,16 +229,29 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               _buildBottomNavBarItem(
-                icon: Icons.home_outlined,
-                label: '홈',
+                icon: ColorFiltered(
+                  colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+                  child: Image.asset(
+                    'images/diary.png',
+                    width: 26,
+                    height: 26,
+                  ),
+                ),
+                label: '다이어리',
                 index: 0,
               ),
               SizedBox(width: 40),
               _buildBottomNavBarItem(
-                icon: Icons.
-                book_outlined,
-                label: '다이어리',
-                index: 2,
+                icon: ColorFiltered(
+                  colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+                  child: Image.asset(
+                    'images/chat-bot.png',
+                    width: 30,
+                    height: 30,
+                  ),
+                ),
+                label: '챗(AI)',
+                index: 1,
               ),
             ],
           ),
@@ -244,29 +262,36 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
   Widget _buildBottomNavBarItem({
-    required IconData icon,
+    required Widget icon,
+    // required dynamic icon,
     required String label,
     required int index,
   }) {
     return Expanded(
       child: InkWell(
         onTap: () {
-          _onBottomNavBarItemTapped(index);
+          // _onBottomNavBarItemTapped(index);
+          if (index == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Myplant()),
+            );
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PlantClinicChat()),
+            );
+          }
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              icon,
-              size: 30,
-              color: _selectedIndex == index ? Color(0xff6bbe45) : Colors
-                  .grey,
-            ),
+            icon,
             Text(
               label,
               style: TextStyle(
-                color: _selectedIndex == index ? Color(0xff6bbe45) : Colors
-                    .grey,
+                // color: _selectedIndex == index ? Color(0xff6bbe45) : Colors.grey,
+                color: Colors.grey,
                 fontSize: 12,
               ),
             ),
@@ -283,17 +308,17 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 다이어리 빈곳 유무를 교체할 때 쓰는곳
-          if (false)
-            _buildMyPlantsSection()
-          else
-            _buildMyPlantsSectionNull(),
+          // if (false)
+            _buildMyPlantsSection(),
+          // else
+          //   _buildMyPlantsSectionNull(),
 
 
-          const SizedBox(height: 50),
+          const SizedBox(height: 30),
           _buildWeatherWidget(),
-          const SizedBox(height: 50),
+          const SizedBox(height: 30),
           _buildRecommendedPlantsSection(),
-          const SizedBox(height: 50),
+          const SizedBox(height: 30),
           _buildPopularPostsSection(),
           const SizedBox(height: 40),
         ],
@@ -303,24 +328,24 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
 
   // 날씨
   Widget _buildWeatherWidget() {
+    const double iconSize = 100; // 아이콘 사이즈
+    const double temperatureFontSize = 48; // 온도 텍스트 폰트 사이즈
+    const double infoFontSize = 14; // 정보 텍스트 폰트 사이즈
+
     return Center(
       child: Container(
-        width: 300,
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(8),
+          color: Colors.white.withOpacity(0.8),
           boxShadow: [
             BoxShadow(
-              color: Colors.blue.withOpacity(0.2),
+              color: Colors.black.withOpacity(0.13),
+              spreadRadius: 2,
               blurRadius: 8,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
-          border: Border.all(
-            color: Colors.lightBlue,
-            width: 2,
-          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -339,7 +364,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 Row(
                   children: [
                     Icon(
-                      Icons.location_on,
+                      Icons.location_searching,
                       color: Colors.blue,
                       size: 16,
                     ),
@@ -348,6 +373,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                       '현위치',
                       style: TextStyle(
                         fontSize: 14,
+                        fontWeight: FontWeight.bold,
                         color: Colors.grey[700],
                       ),
                     ),
@@ -355,44 +381,48 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 15),
             // 날씨 정보
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start, // 텍스트 상단 정렬
               children: [
+                SizedBox(width: 45),
+                Icon(
+                  Icons.wb_sunny,
+                  color: Colors.orange,
+                  size: iconSize,
+                ),
+                SizedBox(width: 25), // 아이콘과 텍스트 사이의 간격 조정
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      Icons.wb_sunny,
-                      color: Colors.orange,
-                      size: 48,
-                    ),
-                    SizedBox(height: 8),
                     Text(
                       '맑음',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
+                        height: 2, // 줄 높이를 2로 설정
+                      ),
+                    ),
+                    Text(
+                      '30.9',
+                      style: TextStyle(
+                        fontSize: temperatureFontSize,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        height: 1, // 줄 높이를 1로 설정
                       ),
                     ),
                   ],
                 ),
-                Text(
-                  '30.9',
-                  style: TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
               ],
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 10),
             // 메시지
             Center(
               child: Text(
-                '오늘은 광합성하기 좋은 날씨입니다',
+                '" 오늘은 광합성하기 좋은 날씨입니다 "',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.black,
@@ -402,38 +432,74 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             ),
             SizedBox(height: 16),
             // 하단 추가 정보
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  '습도 66%',
+            Center(
+              child: RichText(
+                text: TextSpan(
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: infoFontSize,
                     color: Colors.grey[700],
                   ),
+                  children: [
+                    TextSpan(
+                      text: '습도 ',
+                    ),
+                    TextSpan(
+                      text: '66% ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' |  ', // 구분 기호
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                    TextSpan(
+                      text: '체감 ',
+                    ),
+                    TextSpan(
+                      text: '31.9° ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' |  ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                    TextSpan(
+                      text: '서풍 ',
+                    ),
+                    TextSpan(
+                      text: '1.9m/s ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' |  ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                    TextSpan(
+                      text: '미세 ',
+                    ),
+                    TextSpan(
+                      text: '좋음',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  '체감 31.9°',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[700],
-                  ),
-                ),
-                Text(
-                  '서풍 1.9m/s',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[700],
-                  ),
-                ),
-                Text(
-                  '미세 좋음',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[700],
-                  ),
-                ),
-              ],
+              ),
             ),
           ],
         ),
@@ -500,51 +566,91 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                       '몬스테라',
                       style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 15),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 8, // 각 버튼 사이의 가로 간격
+                      runSpacing: 2, // 줄 바꿈 시의 세로 간격
                       children: [
-                        Row(
-                          children: [
-                            _buildActionContainer(
-                              icon: Icons.water_drop, // 변경
-                              text: '물주기',
-                              iconColor: Colors.lightBlueAccent,
-                              iconSize: 20,
+                        OutlinedButton.icon(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.water_drop,
+                            size: 16,
+                            color: Colors.lightBlueAccent,
+                          ),
+                          label: Text(
+                            "물주기",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff787878),
                             ),
-                            const SizedBox(width: 15),
-                            _buildActionContainer(
-                              icon: 'images/potion.png',
-                              text: '영양제',
-                              iconSize: 20,
-                            ),
-                          ],
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            side: BorderSide(color: Color(0xffc2c2c2)),
+                          ),
                         ),
-                        const SizedBox(height: 5),
-                        Row(
-                          children: [
-                            _buildActionContainer(
-                              icon: 'images/scissor.png',
-                              text: '가지치기',
-                              iconSize: 20,
+                        OutlinedButton.icon(
+                          onPressed: () {},
+                          icon: Image.asset(
+                            'images/potion.png',
+                            width: 16,
+                            height: 16,
+                          ),
+                          label: Text(
+                            "영양제",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff787878),
                             ),
-                            const SizedBox(width: 10),
-                            _buildActionContainer(
-                              icon: 'images/soil.png',
-                              text: '분갈이',
-                              iconSize: 20,
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            side: BorderSide(color: Color(0xffc2c2c2)),
+                          ),
+                        ),
+                        OutlinedButton.icon(
+                          onPressed: () {},
+                          icon: Image.asset(
+                            'images/scissor.png',
+                            width: 16,
+                            height: 16,
+                          ),
+                          label: Text(
+                            "가지치기",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff787878),
                             ),
-                          ],
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            side: BorderSide(color: Color(0xffc2c2c2)),
+                          ),
+                        ),
+                        OutlinedButton.icon(
+                          onPressed: () {},
+                          icon: Image.asset(
+                            'images/soil.png',
+                            width: 16,
+                            height: 16,
+                          ),
+                          label: Text(
+                            "분갈이",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xff787878)),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            side: BorderSide(color: Color(0xffc2c2c2)),
+                          ),
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-              // IconButton(
-              //   icon: const Icon(Icons.more_vert),
-              //   onPressed: () {},
-              // ),
             ],
           ),
           const SizedBox(height: 20),
@@ -558,19 +664,19 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _buildStatusRow(
-                icon: Icons.water_drop, // 변경
+                icon: Icons.water_drop,
                 text: 'Next D-6',
               ),
               _buildStatusRow(
-                icon: Icons.pest_control, // 다른 아이콘 예시
+                icon: 'images/potion.png',
                 text: 'Next D-3',
               ),
               _buildStatusRow(
-                icon: Icons.science, // 다른 아이콘 예시
+                icon: 'images/scissor.png',
                 text: 'Next D-1',
               ),
               _buildStatusRow(
-                icon: Icons.grass, // 다른 아이콘 예시
+                icon: 'images/soil.png',
                 text: 'Next D-5',
               ),
             ],
@@ -579,6 +685,13 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
+
+
+
+
+
+
+
 
   Widget _buildActionContainer({
     required dynamic icon, // 변경: dynamic으로 변경하여 IconData와 String 모두 허용
@@ -616,7 +729,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
   Widget _buildStatusRow({
-    required dynamic icon, // 변경: dynamic으로 변경하여 IconData와 String 모두 허용
+    required dynamic icon, // IconData 또는 String (이미지 경로)
     required String text,
   }) {
     return Row(
@@ -628,10 +741,13 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             color: Colors.grey,
           )
         else if (icon is String && icon.endsWith('.png'))
-          Image.asset(
-            icon,
-            width: 12,
-            height: 12,
+          ColorFiltered(
+            colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+            child: Image.asset(
+              icon,
+              width: 12,
+              height: 12,
+            ),
           ),
         const SizedBox(width: 5),
         Text(
@@ -641,6 +757,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ],
     );
   }
+
 
   // 다이어리 비어있을 때 코드
   Widget _buildMyPlantsSectionNull() {

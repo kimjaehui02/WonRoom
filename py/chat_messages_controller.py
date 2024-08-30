@@ -1,32 +1,27 @@
 from flask import Blueprint, request, jsonify
 import pymysql
+from datetime import datetime
 
-queries = Blueprint("queries", __name__, template_folder="templates")
+chat_messages = Blueprint("chat_messages", __name__, template_folder="templates")
 
 def format_datetime(dt):
     return dt.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
-@queries.route("/insert", methods=['POST'])
-def insert_query():
+@chat_messages.route("/insert", methods=['POST'])
+def insert_chat_message():
     # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
     data = request.get_json()
-    user_id = data.get('user_id')
-    created_at = data.get('created_at')
-    query_type = data.get('query_type')
-    title = data.get('title')
-    content = data.get('content')
-    parent_query_id = data.get('parent_query_id', None)  # 선택적 필드
+    chat_text = data.get('chat_text')
+    speaker = data.get('speaker')
+    chat_time = data.get('chat_time', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))  # 기본값은 현재 시간
 
     print("/insert")
-    print(user_id)
-    print(created_at)
-    print(query_type)
-    print(title)
-    print(content)
-    print(parent_query_id)
+    print(chat_text)
+    print(speaker)
+    print(chat_time)
 
     # 입력 데이터 검증
-    if not all([user_id, created_at, query_type, title, content]):
+    if not chat_text or speaker is None:
         return jsonify({"status": "fail", "message": "Missing required fields"}), 400
 
     # 1. DB 연결
@@ -42,31 +37,34 @@ def insert_query():
 
     # 2. SQL문 작성
     sql = '''
-    INSERT INTO queries (user_id, created_at, query_type, title, content, parent_query_id)
-    VALUES (%s, %s, %s, %s, %s, %s)
+    INSERT INTO chat_messages (chat_text, speaker, chat_time)
+    VALUES (%s, %s, %s)
     '''
 
     # 3. insert 실행, 파라미터 채워주기
     try:
-        cursor.execute(sql, (user_id, created_at, query_type, title, content, parent_query_id))
+        cursor.execute(sql, (chat_text, speaker, chat_time))
         db.commit()
         
+        # 성공 여부를 체크하여 응답
         if cursor.rowcount > 0:
-            return jsonify({"status": "success", "message": "Query inserted successfully"})
+            return jsonify({"status": "success", "message": "Chat message inserted successfully"})
         else:
             return jsonify({"status": "fail", "message": "Insert failed"}), 500
     except Exception as e:
-        db.rollback()
+        db.rollback()  # 오류 발생 시 롤백
         return jsonify({"status": "fail", "message": "An error occurred"}), 500
     finally:
         cursor.close()
         db.close()
 
-@queries.route("/select", methods=['POST'])
-def select_query():
+
+@chat_messages.route("/select", methods=['POST'])
+def select_chat_messages():
     # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
     data = request.get_json()
-    user_id = data.get('user_id')
+    chat_time_start = data.get('chat_time_start')
+    chat_time_end = data.get('chat_time_end')
 
     # 1. DB 연결
     db = pymysql.connect(
@@ -80,60 +78,56 @@ def select_query():
     cursor = db.cursor()
 
     print("/select")
-    print(user_id)
+    print(chat_time_start)
+    print(chat_time_end)
 
     # 2. SQL문 작성
     sql = '''
-    SELECT * FROM queries WHERE user_id = %s
+    SELECT * FROM chat_messages
+    WHERE chat_time BETWEEN %s AND %s
     '''
 
     # 3. select 실행, 파라미터 채워주기
     try:
-        cursor.execute(sql, (user_id,))
-        queries = cursor.fetchall()
+        cursor.execute(sql, (chat_time_start, chat_time_end))
+        messages = cursor.fetchall()
 
-        if queries:
-            # 모든 질의 정보를 JSON 형식으로 변환
-            queries_list = []
-            for query in queries:
-                queries_list.append({
-                    "query_id": query[0],
-                    "user_id": query[1],
-                    "created_at": format_datetime(query[2]),
-                    "query_type": query[3],
-                    "title": query[4],
-                    "content": query[5],
-                    "parent_query_id": query[6],
+        if messages:
+            # 모든 채팅 메시지를 JSON 형식으로 변환
+            messages_list = []
+            for message in messages:
+                messages_list.append({
+                    "chat_id": message[0],
+                    "chat_text": message[1],
+                    "speaker": message[2],
+                    "chat_time": format_datetime(message[3]),
                 })
-            return jsonify({"status": "success", "data": queries_list})
+            return jsonify({"status": "success", "data": messages_list})
         else:
-            return jsonify({"status": "fail", "message": "No queries found for this user"}), 404
+            return jsonify({"status": "fail", "message": "No messages found"}), 404
     except Exception as e:
         return jsonify({"status": "fail", "message": str(e)}), 500
     finally:
         cursor.close()
         db.close()
 
-@queries.route("/update", methods=['POST'])
-def update_query():
+
+@chat_messages.route("/update", methods=['POST'])
+def update_chat_message():
     # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
     data = request.get_json()
-    query_id = data.get('query_id')
-    user_id = data.get('user_id')
-    title = data.get('title')
-    content = data.get('content')
-    query_type = data.get('query_type')
-    parent_query_id = data.get('parent_query_id', None)  # 선택적 필드
+    chat_id = data.get('chat_id')
+    chat_text = data.get('chat_text')
+    speaker = data.get('speaker')
+    chat_time = data.get('chat_time', None)  # 선택적 필드
 
     print("/update")
-    print(query_id)
-    print(user_id)
-    print(title)
-    print(content)
-    print(query_type)
-    print(parent_query_id)
+    print(chat_id)
+    print(chat_text)
+    print(speaker)
+    print(chat_time)
 
-    if not query_id or not user_id or not title or not content or not query_type:
+    if not chat_id or not chat_text or speaker is None:
         return jsonify({"status": "fail", "message": "Missing required fields"}), 400
 
     # 1. DB 연결
@@ -149,35 +143,36 @@ def update_query():
 
     # 2. SQL문 작성
     sql = '''
-    UPDATE queries 
-    SET title = %s, user_id = %s, content = %s, query_type = %s, parent_query_id = %s
-    WHERE query_id = %s
+    UPDATE chat_messages
+    SET chat_text = %s, speaker = %s, chat_time = %s
+    WHERE chat_id = %s
     '''
 
     # 3. update 실행, 파라미터 채워주기
     try:
-        cursor.execute(sql, (title, user_id, content, query_type, parent_query_id, query_id))
+        cursor.execute(sql, (chat_text, speaker, chat_time, chat_id))
         db.commit()
 
         if cursor.rowcount > 0:
-            return jsonify({"status": "success", "message": "Query updated successfully"})
+            return jsonify({"status": "success", "message": "Chat message updated successfully"})
         else:
-            return jsonify({"status": "fail", "message": "Query not found or no changes made"}), 404
+            return jsonify({"status": "fail", "message": "Chat message not found or no changes made"}), 404
     except Exception as e:
-        db.rollback()
+        db.rollback()  # 오류 발생 시 롤백
         return jsonify({"status": "fail", "message": str(e)}), 500
     finally:
         cursor.close()
         db.close()
 
-@queries.route("/delete", methods=['POST'])
-def delete_query():
+
+@chat_messages.route("/delete", methods=['POST'])
+def delete_chat_message():
     # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
     data = request.get_json()
-    query_id = data.get('query_id')
+    chat_id = data.get('chat_id')
 
-    if not query_id:
-        return jsonify({"status": "fail", "message": "Missing query_id"}), 400
+    if not chat_id:
+        return jsonify({"status": "fail", "message": "Missing chat_id"}), 400
 
     # 1. DB 연결
     db = pymysql.connect(
@@ -191,24 +186,24 @@ def delete_query():
     cursor = db.cursor()
 
     print("/delete")
-    print(query_id)
+    print(chat_id)
 
     # 2. SQL문 작성
     sql = '''
-    DELETE FROM queries WHERE query_id = %s
+    DELETE FROM chat_messages WHERE chat_id = %s
     '''
 
     # 3. delete 실행, 파라미터 채워주기
     try:
-        cursor.execute(sql, (query_id,))
+        cursor.execute(sql, (chat_id,))
         db.commit()
 
         if cursor.rowcount > 0:
-            return jsonify({"status": "success", "message": "Query deleted successfully"})
+            return jsonify({"status": "success", "message": "Chat message deleted successfully"})
         else:
-            return jsonify({"status": "fail", "message": "Query not found"}), 404
+            return jsonify({"status": "fail", "message": "Chat message not found"}), 404
     except Exception as e:
-        db.rollback()
+        db.rollback()  # 오류 발생 시 롤백
         return jsonify({"status": "fail", "message": str(e)}), 500
     finally:
         cursor.close()

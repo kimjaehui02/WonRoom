@@ -17,14 +17,16 @@ void showFloatingActionModal(BuildContext context) {
     ),
     builder: (BuildContext context) {
       return Container(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.only(left: 40, right: 40, top: 32, bottom: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ListTile(
-              leading: Icon(Icons.camera_alt),
-              title: Text('식물 정보 검색하기'),
+            GestureDetector(
               onTap: () async {
                 Navigator.pop(context);
                 final XFile? image = await _picker.pickImage(source: ImageSource.camera);
@@ -46,11 +48,22 @@ void showFloatingActionModal(BuildContext context) {
                   };
                 }
               },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Row(
+                  children: [
+                    Icon(Icons.camera_alt_outlined,color: Color(0xff787878)),
+                    SizedBox(width: 16), // 텍스트와 아이콘 사이 간격
+                    Text('식물 정보 검색하기', style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xff333333)
+                    ),),
+                  ],
+                ),
+              ),
             ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.local_florist),
-              title: Text('식물 병해충 검색하기'),
+
+            GestureDetector(
               onTap: () async {
                 Navigator.pop(context);
                 final XFile? image = await _picker.pickImage(source: ImageSource.camera);
@@ -61,15 +74,43 @@ void showFloatingActionModal(BuildContext context) {
                   await sendImageToServer(base64Image, 'plant_pest');
                 }
               },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Row(
+                  children: [
+                    Icon(Icons.local_florist,color: Color(0xff787878)),
+                    SizedBox(width: 16), // 텍스트와 아이콘 사이 간격
+                    Text('식물 병해충 검색하기', style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xff333333)
+                    ),),
+                  ],
+                ),
+              ),
             ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.grass),
-              title: Text('도감 등록하기'),
+
+            GestureDetector(
               onTap: () async {
                 Navigator.pop(context);
                 showPlantRegistrationModal(context);
               },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Row(
+                  children: [
+                    Image.asset('images/diary.png',
+                        width: 22,
+                        height: 22,
+                        color: Color(0xff787878)
+                    ),
+                    SizedBox(width: 16), // 텍스트와 아이콘 사이 간격
+                    Text('다이어리 등록하기', style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xff333333)
+                    ),),
+                  ],
+                ),
+              ),
             ),
           ],
         ),

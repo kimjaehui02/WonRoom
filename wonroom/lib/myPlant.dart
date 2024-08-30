@@ -336,6 +336,8 @@ class _MyplantState extends State<Myplant> {
                             ),
                           ),
 
+
+
                           // 추가 버튼들을 여기에 더 추가할 수 있습니다.
                         ],
                       ),
@@ -511,7 +513,7 @@ class _MyplantState extends State<Myplant> {
                                       height: 18,
                                     ),
                                     label: Text(
-                                      "영양제",
+                                      "영양재",
                                       style: TextStyle(color: Color(0xff787878)),
                                     ),
                                     style: OutlinedButton.styleFrom(
@@ -839,7 +841,7 @@ class _MyplantState extends State<Myplant> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 20),
+                                SizedBox(height: 16),
                                 Container(
                                   child: Column(
                                     children: [
@@ -884,7 +886,7 @@ class _MyplantState extends State<Myplant> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 20),
+                                SizedBox(height: 16),
                                 Container(
                                   child: Column(
                                     children: [
