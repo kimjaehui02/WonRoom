@@ -4,11 +4,7 @@
             "outputFile": "com.example.wonroom.app-mergeDebugResources-27:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-<<<<<<< HEAD
-                    "source": "C:\\Users\\smhrd1\\Desktop\\thirdproject\\WonRoom\\wonroom\\android\\app\\src\\main\\res\\values-night\\styles.xml",
-=======
                     "source": "C:\\Users\\smhrd\\Desktop\\project\\WonRoom\\wonroom\\android\\app\\src\\main\\res\\values-night\\styles.xml",
->>>>>>> 전다혜
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
