@@ -36,14 +36,14 @@ class MyPostNull extends StatelessWidget {
                     SizedBox(height: 250,),
                     ImageIcon(AssetImage('images/info.png'),
                       size: 50,
-                      color: Color(0xffc2c2c2),
+                      color: Color(0xffeeeeee),
                     ),
                     SizedBox(height: 10,),
                     Text(
                       '작성하신 게시글이 없습니다. \n다른 식집사분들과 소통하여\n 정보를 얻어보세요.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Color(0xff787878),
+                        color: Color(0xffc2c2c2),
                         fontSize: 14,
                       ),
                     ),

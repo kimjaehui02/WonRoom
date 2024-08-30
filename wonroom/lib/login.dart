@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/Finding_Pw.dart';
+import 'package:wonroom/Finding_Pw/Finding_Pw_functions.dart';
 import 'package:wonroom/Login/LoginValidators.dart';
+import 'package:wonroom/findingId.dart';
 import 'join.dart'; // Join 화면을 가져옵니다.
 
 class Login extends StatefulWidget {
@@ -239,15 +241,15 @@ class _LoginState extends State<Login> {
                             // 로그인 결과 처리
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: _buttonAble ? Colors.green : Color(0xff787878),
+                            backgroundColor: _buttonAble ? Colors.green : Colors.grey,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6)
+                              borderRadius: BorderRadius.circular(3)
                             ),
                             padding: const EdgeInsets.symmetric(vertical: 10), // 버튼 높이 설정
                           ),
                           child: const Text(
                             '로그인',
-                            style: TextStyle(color: Colors.white, fontSize: 22), // 흰색 글씨
+                            style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold), // 흰색 글씨
                           ),
                         ),
                       ),
@@ -258,6 +260,11 @@ class _LoginState extends State<Login> {
                           TextButton(
                             onPressed: () {
                               // 아이디 찾기 클릭 시 실행될 코드
+                              findUserId('602호고양이도둑', 'qwerqwer@naver.com');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => FindingId()),
+                              );
                             },
                             child: const Text(
                               '아이디 찾기',
@@ -291,15 +298,15 @@ class _LoginState extends State<Login> {
                             );
                           },
                           style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Color(0xff6bbe45), width: 2), // 테두리 색상과 두께
+                            side: BorderSide(color: Color(0xff6bbe45), width: 1.5), // 테두리 색상과 두께
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6)
+                              borderRadius: BorderRadius.circular(3),
                             ),
                             padding: const EdgeInsets.symmetric(vertical: 10), // 버튼 높이 설정
                           ),
                           child: const Text(
                             '회원가입',
-                            style: TextStyle(color: Color(0xff6bbe45), fontSize: 22), // 초록색 글씨
+                            style: TextStyle(color: Color(0xff6bbe45), fontSize: 22, fontWeight: FontWeight.bold), // 초록색 글씨
                           ),
                         ),
                       ),

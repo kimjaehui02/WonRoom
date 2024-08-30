@@ -5,7 +5,8 @@ List<int> intList = List<int>.generate(6, (index) => index++, growable: false);
 
 class PlantDetailPage extends StatelessWidget {
   final PageController _pageController = PageController();
-
+  final String analysisResult;
+  PlantDetailPage({required this.analysisResult});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +76,8 @@ class PlantDetailPage extends StatelessWidget {
                     '• 큰 잎과 독특한 구멍이 있는 열대 식물입니다.\n'
                     '• 실내에서 쉽게 키울 수 있어 인기가 많습니다.\n'
                     '• 공기 정화 능력도 뛰어납니다.\n'
-                    '• 인테리어에 포인트를 주기에 좋습니다.',
+                    '• 인테리어에 포인트를 주기에 좋습니다.\n'
+                    '${analysisResult}',
                     style: TextStyle(fontSize: 16, color: Color(0xff595959)),
                   ),
                   SizedBox(height: 20),

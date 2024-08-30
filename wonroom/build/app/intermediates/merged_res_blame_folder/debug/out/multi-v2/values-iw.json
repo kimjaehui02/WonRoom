@@ -1,10 +1,27 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.wonroom.app-mergeDebugResources-25:/values-iw/values-iw.xml",
+            "outputFile": "com.example.wonroom.app-mergeDebugResources-27:/values-iw/values-iw.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\253b2e663bdfb62e24c58c1731366987\\transformed\\jetified-play-services-base-16.0.1\\res\\values-iw\\values.xml",
+                    "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\bdf87e621b798b6e4632ce4b2956c3f3\\transformed\\jetified-play-services-basement-16.0.1\\res\\values-iw\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "247",
+                        "endColumns": "176",
+                        "endOffsets": "423"
+                    },
+                    "to": {
+                        "startLines": "17",
+                        "startColumns": "4",
+                        "startOffsets": "1925",
+                        "endColumns": "176",
+                        "endOffsets": "2097"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\253b2e663bdfb62e24c58c1731366987\\transformed\\jetified-play-services-base-16.0.1\\res\\values-iw\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -21,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\2f6a5506f4dac22f7ab67b13b215ea43\\transformed\\core-1.13.1\\res\\values-iw\\values-iw.xml",
+                    "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\2f6a5506f4dac22f7ab67b13b215ea43\\transformed\\core-1.13.1\\res\\values-iw\\values-iw.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -35,23 +52,6 @@
                         "startOffsets": "105,199,301,398,495,596,696,3361",
                         "endColumns": "93,101,96,96,100,99,105,100",
                         "endOffsets": "194,296,393,490,591,691,797,3457"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\bdf87e621b798b6e4632ce4b2956c3f3\\transformed\\jetified-play-services-basement-16.0.1\\res\\values-iw\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "247",
-                        "endColumns": "176",
-                        "endOffsets": "423"
-                    },
-                    "to": {
-                        "startLines": "17",
-                        "startColumns": "4",
-                        "startOffsets": "1925",
-                        "endColumns": "176",
-                        "endOffsets": "2097"
                     }
                 }
             ]

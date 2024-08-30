@@ -1,108 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/myPlantClinic.dart';
 
-class Myplant extends StatelessWidget {
+class Myplant extends StatefulWidget {
   const Myplant({super.key});
 
-  // 수정, 삭제 팝업
-  void _showBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: Icon(Icons.edit_outlined),
-                title: Text('수정하기'),
-                onTap: () {
-                  // 수정하기 기능 추가
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.delete_outline_outlined),
-                title: Text('삭제하기'),
-                onTap: () {
-                  Navigator.pop(context); 
-                  _showDeleteConfirmationSheet(context); 
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 
-  // 삭제버튼 클릭 시 팝업
-  void _showDeleteConfirmationSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 20),
-              Text(
-                '정말 삭제하시겠습니까?',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 3),
-              Text(
-                '삭제하기를 누르시면\n해당 식물 다이어리가 삭제됩니다.',
-                style: TextStyle(color: Colors.grey, fontSize: 16),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton(
+
+
+
+  @override
+  State<Myplant> createState() => _MyplantState();
+}
+
+class _MyplantState extends State<Myplant> {
+
+  @override
+  Widget build(BuildContext context) {
+
+    void _showDeletionSuccessDialog(BuildContext context) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 10,),
+                Text(
+                  '삭제되었습니다.',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.black),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 3),
+                Text(
+                  '확인 버튼을 누르면 \n 이전 페이지로 이동합니다.',
+                  style: TextStyle(color: Colors.grey, fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 15),
+                Center(
+                  child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.grey[300],
-                      minimumSize: Size(170, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3),
-                      ),
-                    ),
-                    child: Text(
-                      '취소',
-                      style: TextStyle(
-                          color: Color(0xff787878),
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _showDeletionSuccessDialog(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xff595959),
-                      minimumSize: Size(170, 50),
+                      backgroundColor: Colors.black,
+                      minimumSize: Size(200, 45),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(3),
                       ),
                     ),
                     child: Text(
-                      '삭제',
+                      '확인',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -110,75 +67,134 @@ class Myplant extends StatelessWidget {
                       ), // 흰색 글씨
                     ),
                   ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
 
-  void _showDeletionSuccessDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 10,),
-              Text(
-                '삭제되었습니다.',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.black),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 3),
-              Text(
-                '확인 버튼을 누르면 \n 이전 페이지로 이동합니다.',
-                style: TextStyle(color: Colors.grey, fontSize: 16),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 15),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
+
+    // 삭제버튼 클릭 시 팝업
+    void _showDeleteConfirmationSheet(BuildContext context) {
+      showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 20),
+                Text(
+                  '정말 삭제하시겠습니까?',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 3),
+                Text(
+                  '삭제하기를 누르시면\n해당 식물 다이어리가 삭제됩니다.',
+                  style: TextStyle(color: Colors.grey, fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.grey[300],
+                        minimumSize: Size(170, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                      ),
+                      child: Text(
+                        '취소',
+                        style: TextStyle(
+                            color: Color(0xff787878),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        _showDeletionSuccessDialog(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xff595959),
+                        minimumSize: Size(170, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                      ),
+                      child: Text(
+                        '삭제',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                        ), // 흰색 글씨
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+
+
+    // 수정, 삭제 팝업
+    void _showBottomSheet(BuildContext context) {
+      showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: Icon(Icons.edit_outlined),
+                  title: Text('수정하기'),
+                  onTap: () {
+                    // 수정하기 기능 추가
                     Navigator.pop(context);
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    minimumSize: Size(200, 45),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  ),
-                  child: Text(
-                    '확인',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold
-                    ), // 흰색 글씨
-                  ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+                ListTile(
+                  leading: Icon(Icons.delete_outline_outlined),
+                  title: Text('삭제하기'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _showDeleteConfirmationSheet(context);
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
 
-  @override
-  Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -224,6 +240,75 @@ class Myplant extends StatelessWidget {
                               child: Text(
                                 '도감1',
                                 style: TextStyle(color: Colors.white), // 텍스트 스타일
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white, // 배경 색상
+                                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20), // 내부 여백
+                                side: BorderSide( // 테두리 스타일
+                                  color: Color(0xffc2c2c2), // 테두리 색상
+                                  width: 1, // 테두리 두께
+                                ),
+                                shape: RoundedRectangleBorder( // 모서리 둥글게
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              onPressed: () {
+                                // 버튼 클릭 시 실행될 코드
+                              },
+                              child: Text(
+                                '도감2',
+                                style: TextStyle(color: Color(0xff787878)), // 텍스트 스타일
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white, // 배경 색상
+                                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20), // 내부 여백
+                                side: BorderSide( // 테두리 스타일
+                                  color: Color(0xffc2c2c2), // 테두리 색상
+                                  width: 1, // 테두리 두께
+                                ),
+                                shape: RoundedRectangleBorder( // 모서리 둥글게
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              onPressed: () {
+                                // 버튼 클릭 시 실행될 코드
+                              },
+                              child: Text(
+                                '도감2',
+                                style: TextStyle(color: Color(0xff787878)), // 텍스트 스타일
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white, // 배경 색상
+                                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20), // 내부 여백
+                                side: BorderSide( // 테두리 스타일
+                                  color: Color(0xffc2c2c2), // 테두리 색상
+                                  width: 1, // 테두리 두께
+                                ),
+                                shape: RoundedRectangleBorder( // 모서리 둥글게
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              onPressed: () {
+                                // 버튼 클릭 시 실행될 코드
+                              },
+                              child: Text(
+                                '도감2',
+                                style: TextStyle(color: Color(0xff787878)), // 텍스트 스타일
                               ),
                             ),
                           ),
@@ -952,6 +1037,8 @@ class Myplant extends StatelessWidget {
       ),
     );
   }
+
+
 }
 
 

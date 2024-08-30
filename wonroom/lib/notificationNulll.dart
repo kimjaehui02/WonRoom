@@ -64,14 +64,14 @@ class NotificationNull extends StatelessWidget {
                     SizedBox(height: 250,),
                     ImageIcon(AssetImage('images/info.png'),
                       size: 50,
-                      color: Color(0xffc2c2c2),
+                      color: Color(0xffeeeeee),
                     ),
                     SizedBox(height: 10,),
                     Text(
                       '알림 내역이 없습니다. \n곧 좋은 소식 정보 알려드릴게요!',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Color(0xff787878),
+                        color: Color(0xffc2c2c2),
                         fontSize: 14,
                       ),
                     ),

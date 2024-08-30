@@ -7,6 +7,8 @@ import 'package:wonroom/MyCommunityManage.dart';
 import 'package:wonroom/PlantDetailPage.dart';
 import 'package:wonroom/community.dart';
 import 'package:wonroom/customerService.dart';
+import 'package:wonroom/findingId.dart';
+import 'package:wonroom/findingIdSuccess.dart';
 import 'package:wonroom/index.dart';
 import 'package:wonroom/inqurityDetails.dart';
 import 'package:wonroom/intro.dart';
@@ -29,8 +31,8 @@ import 'package:wonroom/PostDetailPage.dart';
 import 'package:wonroom/pwChange.dart';
 import 'package:wonroom/search.dart';
 import 'package:wonroom/splash.dart';
+import 'package:wonroom/writeInquiry.dart';
 import 'package:wonroom/writePage.dart';
-
 
 void main() {
   runApp(const MyApp());
