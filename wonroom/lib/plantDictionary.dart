@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/PlantDetailPage.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
 class PlantDictionary extends StatefulWidget {
   @override
   State<PlantDictionary> createState() => _PlantDictionaryState();
@@ -97,16 +99,26 @@ class _PlantDictionaryState extends State<PlantDictionary> {
                     return Center(child: CircularProgressIndicator());
                   }
                   return GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      final String plantName = "식물이름";
+                      String analysisResult = await sendNameToServer(plantName, 'plant_name');
+
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PlantDetailPage(
-                            // plantName: _items[index]["name"]!,
-                            // plantImage: _items[index]["image"]!,
-                          ),
+                          builder: (context) => PlantDetailPage(analysisResult: analysisResult),
                         ),
                       );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => PlantDetailPage(
+                      //       // plantName: _items[index]["name"]!,
+                      //       // plantImage: _items[index]["image"]!,
+                      //     ),
+                      //   ),
+                      // );
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -179,3 +191,16 @@ class _PlantDictionaryState extends State<PlantDictionary> {
 //     );
 //   }
 // }
+Future<String> sendNameToServer(String plantName, String category) async {
+  var response = await http.post(
+    Uri.parse('https://your-server-url/plantDetail'),
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode({'name': plantName, 'category': category}),
+  );
+
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body)['result'];
+  } else {
+    throw Exception('이미지 분석 실패: ${response.statusCode}');
+  }
+}
