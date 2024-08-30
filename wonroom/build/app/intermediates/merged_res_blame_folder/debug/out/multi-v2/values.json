@@ -4,6 +4,7 @@
             "outputFile": "com.example.wonroom.app-mergeDebugResources-27:/values/values.xml",
             "map": [
                 {
+<<<<<<< HEAD
                     "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\7628447021ddaf60af1b9170edc954e9\\transformed\\lifecycle-runtime-2.6.2\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -75,6 +76,9 @@
                 },
                 {
                     "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\f302e75fb7efd781bcf1a29281c188da\\transformed\\jetified-window-1.0.0-beta04\\res\\values\\values.xml",
+=======
+                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\f302e75fb7efd781bcf1a29281c188da\\transformed\\jetified-window-1.0.0-beta04\\res\\values\\values.xml",
+>>>>>>> 오준하2
                     "from": {
                         "startLines": "2,7,8,9,10,11,19,23,34,51",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",
@@ -110,7 +114,30 @@
                     }
                 },
                 {
+<<<<<<< HEAD
                     "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\5a47ec11e88a4c5989e745f27b201179\\transformed\\coordinatorlayout-1.0.0\\res\\values\\values.xml",
+=======
+                    "source": "C:\\Users\\smhrd\\Desktop\\wonroom\\WonRoom\\wonroom\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "from": {
+                        "startLines": "3,14",
+                        "startColumns": "4,4",
+                        "startOffsets": "176,832",
+                        "endLines": "7,16",
+                        "endColumns": "12,12",
+                        "endOffsets": "483,998"
+                    },
+                    "to": {
+                        "startLines": "144,148",
+                        "startColumns": "4,4",
+                        "startOffsets": "10124,10305",
+                        "endLines": "147,150",
+                        "endColumns": "12,12",
+                        "endOffsets": "10300,10469"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\5a47ec11e88a4c5989e745f27b201179\\transformed\\coordinatorlayout-1.0.0\\res\\values\\values.xml",
+>>>>>>> 오준하2
                     "from": {
                         "startLines": "2,102,3,13",
                         "startColumns": "4,4,4,4",

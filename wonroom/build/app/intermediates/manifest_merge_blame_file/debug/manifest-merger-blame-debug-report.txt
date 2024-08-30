@@ -13,8 +13,13 @@
 13         to allow setting breakpoints, to provide hot reload, etc.
 14    -->
 15    <uses-permission android:name="android.permission.INTERNET" />
+<<<<<<< HEAD
 15-->C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\android\app\src\debug\AndroidManifest.xml:6:5-66
 15-->C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\android\app\src\debug\AndroidManifest.xml:6:22-64
+=======
+15-->C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\android\app\src\debug\AndroidManifest.xml:6:5-66
+15-->C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\android\app\src\debug\AndroidManifest.xml:6:22-64
+>>>>>>> 오준하2
 16    <!--
 17     Required to query activities that can process text, see:
 18         https://developer.android.com/training/package-visibility and
@@ -23,6 +28,7 @@
 21         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin.
 22    -->
 23    <queries>
+<<<<<<< HEAD
 23-->C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\android\app\src\main\AndroidManifest.xml:39:5-44:15
 24        <intent>
 24-->C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\android\app\src\main\AndroidManifest.xml:40:9-43:18
@@ -33,15 +39,35 @@
 27            <data android:mimeType="text/plain" />
 27-->C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\android\app\src\main\AndroidManifest.xml:42:13-50
 27-->C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\android\app\src\main\AndroidManifest.xml:42:19-48
+=======
+23-->C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\android\app\src\main\AndroidManifest.xml:39:5-44:15
+24        <intent>
+24-->C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\android\app\src\main\AndroidManifest.xml:40:9-43:18
+25            <action android:name="android.intent.action.PROCESS_TEXT" />
+25-->C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\android\app\src\main\AndroidManifest.xml:41:13-72
+25-->C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\android\app\src\main\AndroidManifest.xml:41:21-70
+26
+27            <data android:mimeType="text/plain" />
+27-->C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\android\app\src\main\AndroidManifest.xml:42:13-50
+27-->C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\android\app\src\main\AndroidManifest.xml:42:19-48
+>>>>>>> 오준하2
 28        </intent>
 29    </queries>
 30
 31    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<<<<<<< HEAD
 31-->[:location] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-81
 31-->[:location] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:9:22-78
 32    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 32-->[:location] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:10:5-79
 32-->[:location] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:10:22-76
+=======
+31-->[:location] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-81
+31-->[:location] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:9:22-78
+32    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+32-->[:location] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:10:5-79
+32-->[:location] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:10:22-76
+>>>>>>> 오준하2
 33
 34    <permission
 34-->[androidx.core:core:1.13.1] C:\Users\smhrd1\.gradle\caches\transforms-3\2f6a5506f4dac22f7ab67b13b215ea43\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
@@ -96,6 +122,7 @@
 78            android:value="2" />
 79
 80        <provider
+<<<<<<< HEAD
 80-->[:image_picker_android] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:11:9-19:20
 81            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
 81-->[:image_picker_android] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-82
@@ -144,6 +171,56 @@
 104-->[:location] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:16:13-37
 105            android:foregroundServiceType="location" />
 105-->[:location] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:17:13-53
+=======
+80-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:11:9-19:20
+81            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+81-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-82
+82            android:authorities="com.example.wonroom.flutter.image_provider"
+82-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-74
+83            android:exported="false"
+83-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-37
+84            android:grantUriPermissions="true" >
+84-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-47
+85            <meta-data
+85-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:16:13-18:75
+86                android:name="android.support.FILE_PROVIDER_PATHS"
+86-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:17:17-67
+87                android:resource="@xml/flutter_image_picker_file_paths" />
+87-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:18:17-72
+88        </provider> <!-- Trigger Google Play services to install the backported photo picker module. -->
+89        <service
+89-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:21:9-33:19
+90            android:name="com.google.android.gms.metadata.ModuleDependencies"
+90-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:22:13-78
+91            android:enabled="false"
+91-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:23:13-36
+92            android:exported="false" >
+92-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:24:13-37
+93            <intent-filter>
+93-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:26:13-28:29
+94                <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
+94-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:27:17-94
+94-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:27:25-91
+95            </intent-filter>
+96
+97            <meta-data
+97-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:30:13-32:36
+98                android:name="photopicker_activity:0:required"
+98-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:31:17-63
+99                android:value="" />
+99-->[:image_picker_android] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:32:17-33
+100        </service>
+101        <service
+101-->[:location] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:13:9-17:56
+102            android:name="com.lyokone.location.FlutterLocationService"
+102-->[:location] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-71
+103            android:enabled="true"
+103-->[:location] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-35
+104            android:exported="false"
+104-->[:location] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:16:13-37
+105            android:foregroundServiceType="location" />
+105-->[:location] C:\Users\smhrd\Desktop\wonroom\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:17:13-53
+>>>>>>> 오준하2
 106
 107        <uses-library
 107-->[androidx.window:window:1.0.0-beta04] C:\Users\smhrd1\.gradle\caches\transforms-3\f302e75fb7efd781bcf1a29281c188da\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
