@@ -33,6 +33,7 @@ dependencies:
   dio: ^5.1.1  # dio의 최신 버전을 사용
   location: ^4.3.0
   http: ^1.2.2
+  shared_preferences: ^2.3.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -81,21 +82,21 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-   - family: Pretendard
-     fonts:
-       - asset: fonts/Pretendard-Thin.otf
-       - asset: fonts/Pretendard-SemiBold.otf
-       - asset: fonts/Pretendard-Medium.otf
-       - asset: fonts/Pretendard-Light.otf
-       - asset: fonts/Pretendard-ExtraLight.otf
-       - asset: fonts/Pretendard-ExtraBold.otf
-       - asset: fonts/Pretendard-Bold.otf
-       - asset: fonts/Pretendard-Black.otf
-   - family: DMSerifDisplay
-     fonts:
-       - asset: fonts/DMSerifDisplay-Regular.ttf
-         weight: 700
-       - asset: fonts/DMSerifDisplay-Italic.ttf
+    - family: Pretendard
+      fonts:
+        - asset: fonts/Pretendard-Thin.otf
+        - asset: fonts/Pretendard-SemiBold.otf
+        - asset: fonts/Pretendard-Medium.otf
+        - asset: fonts/Pretendard-Light.otf
+        - asset: fonts/Pretendard-ExtraLight.otf
+        - asset: fonts/Pretendard-ExtraBold.otf
+        - asset: fonts/Pretendard-Bold.otf
+        - asset: fonts/Pretendard-Black.otf
+    - family: DMSerifDisplay
+      fonts:
+        - asset: fonts/DMSerifDisplay-Regular.ttf
+          weight: 700
+        - asset: fonts/DMSerifDisplay-Italic.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -147,7 +147,7 @@
     },
     {
       "name": "flutter_plugin_android_lifecycle",
-      "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.21",
+      "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.22",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
@@ -327,7 +327,7 @@
     },
     {
       "name": "mime",
-      "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/mime-1.0.5",
+      "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/mime-1.0.6",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
@@ -398,10 +398,58 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "shared_preferences",
+      "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences-2.3.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "shared_preferences_android",
+      "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences_android-2.3.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "shared_preferences_foundation",
+      "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences_foundation-2.5.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "shared_preferences_linux",
+      "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences_linux-2.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "shared_preferences_platform_interface",
+      "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences_platform_interface-2.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "shared_preferences_web",
+      "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences_web-2.4.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "shared_preferences_windows",
+      "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences_windows-2.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///C:/Users/smhrd1/Desktop/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "3.2"
+    },
+    {
+      "name": "smooth_page_indicator",
+      "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/smooth_page_indicator-1.2.0+3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "source_span",
@@ -512,7 +560,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2024-08-22T08:37:58.142717Z",
+  "generated": "2024-08-30T01:39:15.144175Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
   "flutterRoot": "file:///C:/Users/smhrd1/Desktop/flutter",

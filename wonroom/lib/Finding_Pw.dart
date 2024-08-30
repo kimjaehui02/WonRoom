@@ -27,9 +27,8 @@ class FindingPw extends StatelessWidget {
                   Text(
                     '아이디 또는 이메일을 확인해주세요.',
                     style: TextStyle(
-                      fontSize: 18.0, // 내용 텍스트 크기
-                      color: Colors.grey
-                    ),
+                        fontSize: 18.0, // 내용 텍스트 크기
+                        color: Colors.grey),
                     textAlign: TextAlign.center, // 내용 텍스트 가운데 정렬
                   ),
                 ],
@@ -41,7 +40,8 @@ class FindingPw extends StatelessWidget {
           ),
           actions: <Widget>[
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0), // 버튼의 패딩 조절
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0, vertical: 4.0), // 버튼의 패딩 조절
               child: SizedBox(
                 width: double.infinity,
                 child: TextButton(
@@ -49,9 +49,13 @@ class FindingPw extends StatelessWidget {
                     Navigator.of(context).pop(); // 다이얼로그 닫기
                   },
                   style: TextButton.styleFrom(
-                    backgroundColor: Colors.black, // 버튼 배경색
-                    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 24.0), // 버튼 여백 조정
-                    foregroundColor: Colors.white, // 버튼 텍스트 색상
+                    backgroundColor: Colors.black,
+                    // 버튼 배경색
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 24.0),
+                    // 버튼 여백 조정
+                    foregroundColor: Colors.white,
+                    // 버튼 텍스트 색상
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.zero, // 버튼 직사각형 모서리
                     ),
@@ -108,7 +112,8 @@ class FindingPw extends StatelessWidget {
                     TextFormField(
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12.0, vertical: 10.0),
                         errorStyle: TextStyle(
                           color: Colors.red, // 에러 메시지의 색상
                           fontSize: 12, // 에러 메시지의 글자 크기
@@ -131,7 +136,8 @@ class FindingPw extends StatelessWidget {
                     TextFormField(
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12.0, vertical: 10.0),
                       ),
                     ),
                     const SizedBox(height: 30.0), // 필드와 버튼 사이의 간격
@@ -149,19 +155,25 @@ class FindingPw extends StatelessWidget {
                   _showErrorDialog(context); // 비밀번호 찾기 버튼 클릭 시 다이얼로그 표시, 오류 시
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FindingPwTemporarily()),
+                    MaterialPageRoute(
+                        builder: (context) => FindingPwTemporarily()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xff6bbe45), // 버튼 배경색
-                  padding: const EdgeInsets.symmetric(vertical: 12.0), // 버튼 위아래 여백 조정
+                  backgroundColor: Color(0xff6bbe45),
+                  // 버튼 배경색
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  // 버튼 위아래 여백 조정
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.zero, // 직사각형 모양
                   ),
                 ),
                 child: const Text(
                   '비밀번호 찾기',
-                  style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold), // 버튼 텍스트 색상과 크기
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold), // 버튼 텍스트 색상과 크기
                 ),
               ),
             ),

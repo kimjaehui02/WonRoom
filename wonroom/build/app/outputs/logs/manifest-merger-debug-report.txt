@@ -40,6 +40,7 @@ MERGED from [:flutter_plugin_android_lifecycle] C:\Users\smhrd1\Desktop\thirdpro
 MERGED from [:flutter_secure_storage] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\flutter_secure_storage\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-11:12
 MERGED from [:location] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-20:12
 MERGED from [:path_provider_android] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [:shared_preferences_android] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:sqflite] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\sqflite\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\smhrd1\.gradle\caches\transforms-3\2a215381204751055df81b6269e717b7\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:17:1-23:12
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\smhrd1\.gradle\caches\transforms-3\f302e75fb7efd781bcf1a29281c188da\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:17:1-33:12
@@ -70,6 +71,8 @@ MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\sm
 MERGED from [androidx.core:core:1.13.1] C:\Users\smhrd1\.gradle\caches\transforms-3\2f6a5506f4dac22f7ab67b13b215ea43\transformed\core-1.13.1\AndroidManifest.xml:17:1-30:12
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.2] C:\Users\smhrd1\.gradle\caches\transforms-3\7628447021ddaf60af1b9170edc954e9\transformed\lifecycle-runtime-2.6.2\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\smhrd1\.gradle\caches\transforms-3\93b9d15e098df96a93b7a4fb1262fd3b\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.datastore:datastore-preferences:1.0.0] C:\Users\smhrd1\.gradle\caches\transforms-3\e75666861c19ddc5e1b02c228a732c3d\transformed\jetified-datastore-preferences-1.0.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.datastore:datastore:1.0.0] C:\Users\smhrd1\.gradle\caches\transforms-3\ea5100a471779cdfb4c61328eadd49f2\transformed\jetified-datastore-1.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.security:security-crypto:1.1.0-alpha06] C:\Users\smhrd1\.gradle\caches\transforms-3\76c70f1f6f807ebce8147e0833e38095\transformed\jetified-security-crypto-1.1.0-alpha06\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\smhrd1\.gradle\caches\transforms-3\ff532de12e996d0fab19ca20e85a058f\transformed\exifinterface-1.3.7\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\smhrd1\.gradle\caches\transforms-3\e852edee255e4ba7fa4d5b58ba237ddb\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:17:1-55:12
@@ -126,6 +129,8 @@ MERGED from [:location] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\bui
 MERGED from [:location] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\location\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:path_provider_android] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:path_provider_android] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:shared_preferences_android] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:shared_preferences_android] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\shared_preferences_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:sqflite] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\sqflite\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:sqflite] C:\Users\smhrd1\Desktop\thirdproject\WonRoom\wonroom\build\sqflite\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\smhrd1\.gradle\caches\transforms-3\2a215381204751055df81b6269e717b7\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41
@@ -186,6 +191,10 @@ MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.2] C:\Users\smhrd1\.gradle
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.2] C:\Users\smhrd1\.gradle\caches\transforms-3\7628447021ddaf60af1b9170edc954e9\transformed\lifecycle-runtime-2.6.2\AndroidManifest.xml:5:5-44
 MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\smhrd1\.gradle\caches\transforms-3\93b9d15e098df96a93b7a4fb1262fd3b\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\smhrd1\.gradle\caches\transforms-3\93b9d15e098df96a93b7a4fb1262fd3b\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.datastore:datastore-preferences:1.0.0] C:\Users\smhrd1\.gradle\caches\transforms-3\e75666861c19ddc5e1b02c228a732c3d\transformed\jetified-datastore-preferences-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.datastore:datastore-preferences:1.0.0] C:\Users\smhrd1\.gradle\caches\transforms-3\e75666861c19ddc5e1b02c228a732c3d\transformed\jetified-datastore-preferences-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.datastore:datastore:1.0.0] C:\Users\smhrd1\.gradle\caches\transforms-3\ea5100a471779cdfb4c61328eadd49f2\transformed\jetified-datastore-1.0.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.datastore:datastore:1.0.0] C:\Users\smhrd1\.gradle\caches\transforms-3\ea5100a471779cdfb4c61328eadd49f2\transformed\jetified-datastore-1.0.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.security:security-crypto:1.1.0-alpha06] C:\Users\smhrd1\.gradle\caches\transforms-3\76c70f1f6f807ebce8147e0833e38095\transformed\jetified-security-crypto-1.1.0-alpha06\AndroidManifest.xml:20:5-44
 MERGED from [androidx.security:security-crypto:1.1.0-alpha06] C:\Users\smhrd1\.gradle\caches\transforms-3\76c70f1f6f807ebce8147e0833e38095\transformed\jetified-security-crypto-1.1.0-alpha06\AndroidManifest.xml:20:5-44
 MERGED from [androidx.exifinterface:exifinterface:1.3.7] C:\Users\smhrd1\.gradle\caches\transforms-3\ff532de12e996d0fab19ca20e85a058f\transformed\exifinterface-1.3.7\AndroidManifest.xml:20:5-22:41

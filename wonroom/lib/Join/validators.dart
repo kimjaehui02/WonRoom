@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/DB/users/common_validators.dart';
 import 'package:wonroom/DB/users/user_service.dart';
+import 'package:wonroom/DB/users/users_model.dart';
 import 'package:wonroom/Join/controllers.dart';
 import 'package:wonroom/index.dart';
+import 'package:wonroom/intro.dart';
 
 // 회원가입과 관련된 유효성 검사를 수행하는 클래스
 class Validators {
@@ -102,15 +104,19 @@ class Validators {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      usersInsert(
-                        formControllers.idController.text,
-                        formControllers.passwordController.text,
-                        formControllers.nicknameController.text,
-                        formControllers.emailController.text,
-                      );
+
+                      UserService userService = new UserService();
+                      User user = new User(userId:  formControllers.idController.text,
+                          userPw:  formControllers.passwordController.text,
+                          userNick:  formControllers.nicknameController.text,
+                          userEmail:  formControllers.emailController.text,
+                          regDate:  DateTime.now());
+
+                      userService.usersInsert(user);
+
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => Index()),
+                        MaterialPageRoute(builder: (context) => Intro()),
                       );
                     },
                     style: ElevatedButton.styleFrom(

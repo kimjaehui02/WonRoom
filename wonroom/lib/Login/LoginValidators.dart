@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/DB/users/common_validators.dart';
 import 'package:wonroom/DB/users/user_service.dart';
+import 'package:wonroom/DB/users/users_model.dart';
 import 'package:wonroom/Flask/storage_manager.dart';
 import 'package:wonroom/Join/controllers.dart';
 import 'package:wonroom/index.dart';
+import 'package:wonroom/intro.dart';
 
 // 로그인 관련 유효성 검사 클래스를 정의합니다.
 class LoginValidators {
@@ -61,11 +63,20 @@ class LoginValidators {
     // 로그인 검사 시도
     try {
       print("final result = await usersLogin(id, pw);");
-      final result = await usersLogin(id, pw);
+      UserService userService = new UserService();
+      User user = new User(
+          userId: id,
+          userPw: pw,
+          userNick: null,
+          userEmail: null,
+          regDate: DateTime.now());
+
+      final result = await userService.usersLogin(id, pw);
 
       // 로그인 성공 여부 확인
       if (result["status"] == "success") {
-        writeuserData('userData', result);
+        writeUserData(result);
+
         return '환영합니다.';
       } else {
         return '로그인 정보가 없습니다.';
