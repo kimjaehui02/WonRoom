@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class User {
-  String? userId;
+  final String? userId;
   String? userPw;
   String? userNick;
   String? userEmail;
@@ -30,4 +30,12 @@ class User {
     "user_email": userEmail,
     "reg_date": regDate.toIso8601String(),
   };
+
+  String? getuserId()
+  {
+    return userId;
+  }
+
+
 }
+

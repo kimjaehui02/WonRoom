@@ -17,6 +17,7 @@ import 'package:wonroom/DB/queries/queries_model.dart';
 import 'package:wonroom/DB/queries/queries_service.dart';
 import 'package:wonroom/DB/user_plants/user_plants_model.dart';
 import 'package:wonroom/DB/user_plants/user_plants_service.dart';
+import 'package:wonroom/DB/users/users_model.dart';
 import 'package:wonroom/Flask/storage_manager.dart';
 import 'package:wonroom/MyPlant/myPlant_functions.dart';
 import 'package:wonroom/myPlantClinic.dart';
@@ -36,15 +37,27 @@ class MyplantNull extends StatefulWidget {
 
 class _MyplantNullState extends State<MyplantNull> {
 
+  late List<UserPlant> _userPlants;
+
   @override
   void initState() {
     super.initState();
     _loadData(); // 페이지가 처음 로드될 때 데이터를 불러옵니다.
   }
 
-  void _loadData() {
+  void _loadData() async{
     // 여기에 데이터를 불러오는 코드를 작성하세요.
     print("데이터 불러오기 작업을 수행합니다. inputss: $inputss");
+    User? uster = await readUser();
+    if(uster != null)
+      {
+        print(uster.getuserId());
+        UserPlantService ups = new UserPlantService();
+
+        // if(ups.getPlants(uster.getuserId()) != null)
+        _userPlants =ups.getPlants(uster.getuserId());
+
+      }
     // DB나 API에서 데이터를 불러오는 작업을 수행할 수 있습니다.
   }
   @override
