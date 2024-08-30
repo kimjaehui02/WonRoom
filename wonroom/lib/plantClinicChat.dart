@@ -59,8 +59,16 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
               ),
 
               // 입력 필드 및 버튼
-              Padding(
+              Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: Color(0xffeeeeee),
+                      width: 1,
+                    ),
+                  ),
+                ),
                 child: Row(
                   children: [
                     Container(
@@ -70,11 +78,8 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: IconButton(
-                        onPressed: () async {
-                          final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-                          if (pickedFile != null) {
-                            _sendMessage(image: pickedFile.path, isUser: true);
-                          }
+                        onPressed: () {
+                          _showImagePickerOptions(context);
                         },
                         icon: Image.asset(
                           'images/file_upload.png',
@@ -171,6 +176,84 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
       ),
     );
   }
+
+  void _showImagePickerOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+      ),
+      backgroundColor: Colors.white,
+      builder: (BuildContext context) {
+        return Container(
+          padding: EdgeInsets.only(left: 40, right: 40, top: 32, bottom: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '이미지 선택',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+              SizedBox(height: 10),
+              GestureDetector(
+                onTap: () async {
+                  Navigator.pop(context);
+                  final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+                  if (pickedFile != null) {
+                    _sendMessage(image: pickedFile.path, isUser: true);
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Row(
+                    children: [
+                      Icon(Icons.photo_library_outlined, color: Color(0xff787878)),
+                      SizedBox(width: 16), // 텍스트와 아이콘 사이 간격
+                      Text('갤러리에서 선택', style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xff333333),
+                      ),),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () async {
+                  Navigator.pop(context);
+                  final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+                  if (pickedFile != null) {
+                    _sendMessage(image: pickedFile.path, isUser: true);
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Row(
+                    children: [
+                      Icon(Icons.camera_alt_outlined, color: Color(0xff787878)),
+                      SizedBox(width: 16), // 텍스트와 아이콘 사이 간격
+                      Text('카메라로 촬영', style: TextStyle(
+                        fontSize: 16,
+                        color: Color(0xff333333),
+                      ),),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
 
   void _sendMessage({String? text, String? image, required bool isUser}) {
     setState(() {
