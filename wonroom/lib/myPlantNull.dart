@@ -11,6 +11,8 @@ import 'package:wonroom/DB/plant_management_records/plant_management_model.dart'
 import 'package:wonroom/DB/plant_management_records/plant_management_records_service.dart';
 import 'package:wonroom/DB/posts/posts_model.dart';
 import 'package:wonroom/DB/posts/posts_service.dart';
+import 'package:wonroom/DB/queries/queries_model.dart';
+import 'package:wonroom/DB/queries/queries_service.dart';
 import 'package:wonroom/DB/user_plants/user_plants_model.dart';
 import 'package:wonroom/DB/user_plants/user_plants_service.dart';
 import 'package:wonroom/Flask/storage_manager.dart';
@@ -793,16 +795,30 @@ class _MyplantNullState extends State<MyplantNull> {
 
               // showPlantRegistrationModal(context);
               // String? userId = await getUserId();
+              QueryService queryService = new QueryService();
 
-              PlantManagementService pms = new PlantManagementService();
+              QueryModel queryModel = new QueryModel(
+                  userId: "tested",
+                  createdAt: DateTime.now(),
+                  queryType: "질의",
+                  title: "질의글의 제목",
+                  content: "질의글의 내용");
 
-              ManagementType type = ManagementType.Pruning;
-              PlantManagementRecord pmr = new PlantManagementRecord
-                (recordId: 2, catalogNumber: 2, managementDate: DateTime.now(), managementType: type, details: "자세한내역인가?", plantId: 5);
+              QueryModel queryModel2 = new QueryModel(
+                  userId: "tested1",
+                  createdAt: DateTime.now(),
+                  queryType: "응답2",
+                  title: "응답글의 제목2",
+                  content: "응답글의 내용2",
+                  parentQueryId: 1,
+                  queryId: 2);
 
-              // pms.addRecord(pmr);
-              pms.deleteRecord(2);
 
+              // await queryService.addQuery(queryModel);
+              // await queryService.addQuery(queryModel2);
+
+              await queryService.updateQuery(queryModel2);
+              
               print("+버튼의 종료");
 
 
