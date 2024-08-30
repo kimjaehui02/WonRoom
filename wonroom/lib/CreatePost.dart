@@ -175,8 +175,7 @@ class CreatePost extends StatelessWidget {
                         ),
                       ),
                       style: OutlinedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: Colors.grey[300],
+                        backgroundColor: Color(0xffEEEEEE),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(3),
                         ),
@@ -199,11 +198,11 @@ class CreatePost extends StatelessWidget {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 16),
                         backgroundColor: Color(0xff6bbe45),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(3),
                         ),
+                        side: BorderSide.none,
                       ),
                     ),
                   ),

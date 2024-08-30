@@ -2,21 +2,21 @@ import 'dart:convert';
 
 // Post 모델 클래스
 class Posts {
-  final int postId;
+  int? postId;
   final String postTitle;
   final String postContent;
   final String userId;
   final DateTime createdAt;
-  final String imageUrl;
+  String? imageUrl;
 
   // 생성자
   Posts({
-    required this.postId,
+    this.postId,
     required this.postTitle,
     required this.postContent,
     required this.userId,
     required this.createdAt,
-    required this.imageUrl,
+    this.imageUrl,
   });
 
   // JSON에서 Post 객체로 변환

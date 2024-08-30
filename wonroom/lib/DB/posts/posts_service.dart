@@ -29,7 +29,7 @@ class PostService {
   }
 
   // 게시글 조회 요청 (예시)
-  Future<List<Posts>?> getPosts(int userId) async {
+  Future<List<Posts>?> getPosts(String userId) async {
     final String url = "$baseUrl/posts/select";
 
     try {
@@ -69,7 +69,7 @@ class PostService {
     final String url = "$baseUrl/posts/update";
 
     try {
-      Response response = await dio.put(
+      Response response = await dio.post(
         url,
         data: post.toJson(),  // Post 모델을 JSON으로 변환하여 전송
       );
@@ -87,7 +87,7 @@ class PostService {
     final String url = "$baseUrl/posts/delete";
 
     try {
-      Response response = await dio.delete(
+      Response response = await dio.post(
         url,
         data: {
           "post_id": postId,

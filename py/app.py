@@ -7,7 +7,7 @@ from dbConnect import member
 from comments_controller import comments
 from likes_controller import likes
 from photos_controller import photos
-from plant_management_records_controller import plant_management_records
+from plant_management_controller import plant_management
 from posts_controller import posts
 from queries_controller import queries
 from user_controller import users
@@ -24,7 +24,8 @@ app.register_blueprint(member, url_prefix="/member")
 app.register_blueprint(comments, url_prefix="/comments")
 app.register_blueprint(likes, url_prefix="/likes")
 app.register_blueprint(photos, url_prefix="/photos")
-app.register_blueprint(plant_management_records, url_prefix="/plant_management_records")
+app.register_blueprint(plant_management, url_prefix="/plant_management")
+
 app.register_blueprint(posts, url_prefix="/posts")
 app.register_blueprint(queries, url_prefix="/queries")
 app.register_blueprint(users, url_prefix="/users")

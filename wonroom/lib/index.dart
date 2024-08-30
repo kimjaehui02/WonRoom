@@ -138,6 +138,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
+
+
           indicatorColor: Colors.green,
           indicatorPadding: EdgeInsets.zero,
           indicatorWeight: 3.0,
@@ -157,7 +159,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             controller: _tabController,
             children: [
               _buildHomePage(),
+              _buildPlantDictionaryPage(),
               PlantDictionary(),
+              _buildPlantClinicPage('식물클리닉 페이지'),
               _buildCommunityPage('커뮤니티 페이지'),
               _buildCustomerServicePage('고객센터 페이지'),
             ],
@@ -278,6 +282,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // 다이어리 빈곳 유무를 교체할 때 쓰는곳
           if (false)
             _buildMyPlantsSection()
           else
@@ -296,6 +301,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
 
+  // 날씨
   Widget _buildWeatherWidget() {
     return Center(
       child: Container(
@@ -337,11 +343,11 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                       color: Colors.blue,
                       size: 16,
                     ),
-                    SizedBox(width: 4),
+                    SizedBox(width: 3),
                     Text(
                       '현위치',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 14,
                         color: Colors.grey[700],
                       ),
                     ),
@@ -435,6 +441,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
 
+  // 다이어리 있을 때 코드
   Widget _buildMyPlantsSection() {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -987,6 +994,20 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
+  Widget _buildPlantDictionaryPage() {
+    return SingleChildScrollView(
+      controller: _scrollController,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 50),
+          const SizedBox(height: 50),
+          const SizedBox(height: 40),
+        ],
+      ),
+    );
+  }
 
   // Widget _buildPlantDictionaryPage() {
   //   return SingleChildScrollView(
@@ -1020,16 +1041,19 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   //   );
   // }
 
+
   Widget _buildPlantClinicPage(String text) {
     return Center(
       child: Text(text),
     );
   }
+
   Widget _buildCommunityPage(String text) {
     return Center(
       child: Text(text),
     );
   }
+
   Widget _buildCustomerServicePage(String text) {
     return Center(
       child: Text(text),

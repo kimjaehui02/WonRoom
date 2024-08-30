@@ -1,6 +1,18 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:wonroom/DB/comments/comments_model.dart';
+import 'package:wonroom/DB/comments/comments_service.dart';
+import 'package:wonroom/DB/likes/likes_model.dart';
+import 'package:wonroom/DB/likes/likes_service.dart';
+import 'package:wonroom/DB/photos/photos_model.dart';
+import 'package:wonroom/DB/photos/photos_service.dart';
+import 'package:wonroom/DB/plant_management_records/plant_management_model.dart';
+import 'package:wonroom/DB/plant_management_records/plant_management_records_service.dart';
+import 'package:wonroom/DB/posts/posts_model.dart';
+import 'package:wonroom/DB/posts/posts_service.dart';
+import 'package:wonroom/DB/queries/queries_model.dart';
+import 'package:wonroom/DB/queries/queries_service.dart';
 import 'package:wonroom/DB/user_plants/user_plants_model.dart';
 import 'package:wonroom/DB/user_plants/user_plants_service.dart';
 import 'package:wonroom/Flask/storage_manager.dart';
@@ -781,11 +793,32 @@ class _MyplantNullState extends State<MyplantNull> {
               // 버튼 클릭 시 실행될 코드
               print("+버튼");
 
-              showPlantRegistrationModal(context);
+              // showPlantRegistrationModal(context);
               // String? userId = await getUserId();
-              // UserPlantService ser = new UserPlantService();
-              // ser.deletePlant(4);
+              QueryService queryService = new QueryService();
 
+              QueryModel queryModel = new QueryModel(
+                  userId: "tested",
+                  createdAt: DateTime.now(),
+                  queryType: "질의",
+                  title: "질의글의 제목",
+                  content: "질의글의 내용");
+
+              QueryModel queryModel2 = new QueryModel(
+                  userId: "tested1",
+                  createdAt: DateTime.now(),
+                  queryType: "응답2",
+                  title: "응답글의 제목2",
+                  content: "응답글의 내용2",
+                  parentQueryId: 1,
+                  queryId: 2);
+
+
+              // await queryService.addQuery(queryModel);
+              // await queryService.addQuery(queryModel2);
+
+              await queryService.updateQuery(queryModel2);
+              
               print("+버튼의 종료");
 
 

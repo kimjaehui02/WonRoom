@@ -15,6 +15,8 @@ class UserPlant {
     required this.createdAt,
   });
 
+
+
   // JSON to UserPlant conversion
   factory UserPlant.fromJson(Map<String, dynamic> json) {
     return UserPlant(
