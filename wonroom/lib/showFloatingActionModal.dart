@@ -37,8 +37,8 @@ void showFloatingActionModal(BuildContext context) {
                     Icon(Icons.camera_alt_outlined,color: Color(0xff787878)),
                     SizedBox(width: 16), // 텍스트와 아이콘 사이 간격
                     Text('식물 정보 검색하기', style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xff333333)
+                        fontSize: 16,
+                        color: Color(0xff333333)
                     ),),
                   ],
                 ),
@@ -58,7 +58,7 @@ void showFloatingActionModal(BuildContext context) {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Row(
                   children: [
-                    Icon(Icons.local_florist,color: Color(0xff787878)),
+                    Icon(Icons.eco_outlined,color: Color(0xff787878)),
                     SizedBox(width: 16), // 텍스트와 아이콘 사이 간격
                     Text('식물 병해충 검색하기', style: TextStyle(
                         fontSize: 16,
