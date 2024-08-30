@@ -251,6 +251,8 @@ class Myplant extends StatelessWidget {
                             ),
                           ),
 
+
+
                           // 추가 버튼들을 여기에 더 추가할 수 있습니다.
                         ],
                       ),
@@ -754,7 +756,7 @@ class Myplant extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 20),
+                                SizedBox(height: 16),
                                 Container(
                                   child: Column(
                                     children: [
@@ -799,7 +801,7 @@ class Myplant extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 20),
+                                SizedBox(height: 16),
                                 Container(
                                   child: Column(
                                     children: [

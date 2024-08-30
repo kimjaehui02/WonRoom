@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/myPage.dart';
+import 'package:wonroom/myPlant.dart';
 import 'package:wonroom/myPlantRegistration.dart';
+import 'package:wonroom/plantClinicChat.dart';
 import 'package:wonroom/showFloatingActionModal.dart';
 import 'plantDictionary.dart';
 
@@ -191,7 +193,10 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
           onPressed: () {},
           backgroundColor: Colors.transparent,
           elevation: 0,
-          child: const Icon(Icons.camera_alt_outlined, color: Colors.white,),
+          child: const Icon(Icons.camera_alt_outlined,
+            color: Colors.white,
+            size: 32,
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -217,16 +222,29 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               _buildBottomNavBarItem(
-                icon: Icons.home_outlined,
-                label: '홈',
+                icon: ColorFiltered(
+                  colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+                  child: Image.asset(
+                    'images/diary.png',
+                    width: 26,
+                    height: 26,
+                  ),
+                ),
+                label: '다이어리',
                 index: 0,
               ),
               SizedBox(width: 40),
               _buildBottomNavBarItem(
-                icon: Icons.
-                book_outlined,
-                label: '다이어리',
-                index: 2,
+                icon: ColorFiltered(
+                  colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+                  child: Image.asset(
+                    'images/chat-bot.png',
+                    width: 30,
+                    height: 30,
+                  ),
+                ),
+                label: '챗(AI)',
+                index: 1,
               ),
             ],
           ),
@@ -237,29 +255,36 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
   Widget _buildBottomNavBarItem({
-    required IconData icon,
+    required Widget icon,
+    // required dynamic icon,
     required String label,
     required int index,
   }) {
     return Expanded(
       child: InkWell(
         onTap: () {
-          _onBottomNavBarItemTapped(index);
+          // _onBottomNavBarItemTapped(index);
+          if (index == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Myplant()),
+            );
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PlantClinicChat()),
+            );
+          }
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              icon,
-              size: 30,
-              color: _selectedIndex == index ? Color(0xff6bbe45) : Colors
-                  .grey,
-            ),
+            icon,
             Text(
               label,
               style: TextStyle(
-                color: _selectedIndex == index ? Color(0xff6bbe45) : Colors
-                    .grey,
+                // color: _selectedIndex == index ? Color(0xff6bbe45) : Colors.grey,
+                color: Colors.grey,
                 fontSize: 12,
               ),
             ),
