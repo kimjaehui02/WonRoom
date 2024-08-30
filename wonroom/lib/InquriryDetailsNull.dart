@@ -14,19 +14,20 @@ class _InquriryDetailsNullState extends State<InquriryDetailsNull> {
   // 버튼의 스타일을 반환하는 함수
   ButtonStyle _buttonStyle(bool isSelected) {
     return ElevatedButton.styleFrom(
-      backgroundColor: isSelected ? Color(0xff787878) : Colors.white, // 선택된 버튼 색상
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 23), // 내부 여백
+      backgroundColor: isSelected ? Color(0xff595959) : Colors.white, // 선택된 버튼 색상
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20), // 내부 여백
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
-        side: BorderSide(color: Colors.grey, width: 1), // 테두리 색상
+        side: BorderSide(color: Color(0xffcccccc), width: 1), // 테두리 색상
       ),
+      elevation: 0,
     );
   }
 
   // 버튼의 텍스트 스타일을 반환하는 함수
   TextStyle _buttonTextStyle(bool isSelected) {
     return TextStyle(
-      color: isSelected ? Colors.white : Color(0xff595959), // 텍스트 색상
+      color: isSelected ? Colors.white : Colors.grey, // 텍스트 색상
       fontSize: 16,
     );
   }
