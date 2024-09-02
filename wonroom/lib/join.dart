@@ -202,7 +202,7 @@ class _JoinState extends State<Join> {
                     }
                   else
                   {
-                    Validators.showErrorDialog(context, '사용자 정보가 올바르지 않습니다. 다시 시도해주세요.');
+                    Validators.showErrorDialog(context, '입력 양식이 채워졌는지\n확인해주세요.');
 
                   }
 
