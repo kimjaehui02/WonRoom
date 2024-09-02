@@ -316,7 +316,12 @@ class _JoinState extends State<Join> {
           controller: _formControllers.passwordController,
           decoration: InputDecoration(
             hintText: 'ex. won01room%',
-            border: OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 시 테두리 색상 및 두께
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0), // 비포커스 상태에서의 테두리 색상 및 두께
+            ),
             contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
             suffixIcon: IconButton(
               icon: Icon(
@@ -376,7 +381,12 @@ class _JoinState extends State<Join> {
           controller: _formControllers.passwordConfirmController,
           decoration: InputDecoration(
             hintText: 'ex. won01room%',
-            border: OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 시 테두리 색상 및 두께
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0), // 비포커스 상태에서의 테두리 색상 및 두께
+            ),
             contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
             suffixIcon: IconButton(
               icon: Icon(
@@ -426,7 +436,6 @@ class _JoinState extends State<Join> {
           focusNode: _formControllers.nicknameFocusNode,
           decoration: InputDecoration(
             hintText: 'ex. 원룸',
-            border: OutlineInputBorder(),
             contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0),
@@ -486,6 +495,7 @@ class _JoinState extends State<Join> {
           ),
         ),
         SizedBox(height: 8.0),
+
         TextFormField(
           controller: _formControllers.emailController,
           focusNode: _formControllers.emailFocusNode,
@@ -493,7 +503,20 @@ class _JoinState extends State<Join> {
             // labelText: '이메일',
             hintText: 'ex. wonroom@naver.com',
             errorText: _emailValidationMessage == '사용 가능한 이메일 입니다.' ? null : _emailValidationMessage,
-            border: OutlineInputBorder(),
+
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 시 테두리 색상 및 두께
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0), // 비포커스 상태에서의 테두리 색상 및 두께
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red, width: 2.0), // 에러 발생 시 테두리 색상 및 두께
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 및 에러 발생 시 테두리 색상 및 두께
+            ),
+
             contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
             errorStyle: TextStyle(
               color: Colors.red,
