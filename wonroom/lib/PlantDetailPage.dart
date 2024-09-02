@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
+// 
 List<int> intList = List<int>.generate(6, (index) => index++, growable: false);
 
 class PlantDetailPage extends StatelessWidget {
