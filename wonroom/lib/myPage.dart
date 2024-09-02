@@ -496,7 +496,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 6),
                     child: Row(
                       children: [
-                        Icon(Icons.person_outline),
+                        Icon(Icons.account_circle_outlined),
                         SizedBox(width: 8), // 아이콘과 텍스트 사이 간격 조절
                         Text(
                           '닉네임',
@@ -515,11 +515,11 @@ class PersonalInfoEditPage extends StatelessWidget {
                       labelStyle: TextStyle(color: Colors.grey),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 시 테두리 색상 및 두께
-                        borderRadius: BorderRadius.circular(8),
+                        // borderRadius: BorderRadius.circular(8),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0), // 비포커스 상태에서의 테두리 색상 및 두께
-                        borderRadius: BorderRadius.circular(8),
+                        // borderRadius: BorderRadius.circular(8),
                       ),
                       contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
                     ),
@@ -550,11 +550,11 @@ class PersonalInfoEditPage extends StatelessWidget {
                       labelStyle: TextStyle(color: Colors.grey),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 시 테두리 색상 및 두께
-                        borderRadius: BorderRadius.circular(8),
+                        // borderRadius: BorderRadius.circular(8),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0), // 비포커스 상태에서의 테두리 색상 및 두께
-                        borderRadius: BorderRadius.circular(8),
+                        // borderRadius: BorderRadius.circular(8),
                       ),
                       contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
                     ),

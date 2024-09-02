@@ -96,7 +96,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               TextSpan(
                 text: 'Won',
                 style: TextStyle(
-                  color: Colors.green,
+                  color: Color(0xff779d60),
                   fontWeight: FontWeight.bold,
                   fontFamily: 'DMSerifDisplay',
                   letterSpacing: 2,

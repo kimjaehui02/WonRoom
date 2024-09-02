@@ -155,7 +155,10 @@ class _JoinState extends State<Join> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.chevron_left),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.grey,
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -185,37 +188,40 @@ class _JoinState extends State<Join> {
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: _formControllers.isButtonEnabled ? () async {
-                bool test = await Validators.validateAll(_formControllers.idController.text,
-                    _formControllers.nicknameController.text,
-                    _formControllers.emailController.text);
-                if(test)
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _formControllers.isButtonEnabled ? () async {
+                  bool test = await Validators.validateAll(_formControllers.idController.text,
+                      _formControllers.nicknameController.text,
+                      _formControllers.emailController.text);
+                  if(test)
+                    {
+                      // 회원가입 처리 로직
+                      Validators.showSuccessDialog(context, _formControllers);
+                    }
+                  else
                   {
-                    // 회원가입 처리 로직
-                    Validators.showSuccessDialog(context, _formControllers);
+                    Validators.showErrorDialog(context, '사용자 정보가 올바르지 않습니다. 다시 시도해주세요.');
+
                   }
-                else
-                {
-                  Validators.showErrorDialog(context, '사용자 정보가 올바르지 않습니다. 다시 시도해주세요.');
 
-                }
-
-              } : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: _formControllers.isButtonEnabled ? Colors.green : Colors.grey[400],
-                minimumSize: Size(double.infinity, 48),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
+                } : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _formControllers.isButtonEnabled ? Color(0xff6bbe45) : Colors.grey[400],
+                  minimumSize: Size(double.infinity, 48),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(3)
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-              ),
-              child: Text(
-                '확인',
-                style: TextStyle(
-                  fontSize: 19,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                child: Text(
+                  '확인',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold
+                  ),
                 ),
               ),
             ),
@@ -229,38 +235,48 @@ class _JoinState extends State<Join> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Icon(Icons.person_outline, size: 24),
-            SizedBox(width: 8.0),
-            Text(
-              '아이디',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+        Padding(
+          padding: const EdgeInsets.only(left: 6),
+          child: Row(
+            children: [
+              Icon(Icons.person_outline, size: 24),
+              SizedBox(width: 8.0),
+              Text(
+                '아이디',
+                style: TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        SizedBox(height: 8.0),
+        SizedBox(height: 10),
         TextFormField(
           controller: _formControllers.idController,
           focusNode: _formControllers.idFocusNode,
           decoration: InputDecoration(
-            labelText: '아이디',
+            // labelText: '아이디',
+            hintText: 'ex. wonroom',
             errorText: _formControllers.isIdDuplicate ? _idValidationMessage ?? '' : null,
-            border: OutlineInputBorder(),
+            // border: OutlineInputBorder(),
             contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
             errorStyle: TextStyle(
               color: Colors.red,
               fontSize: 12,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 시 테두리 색상 및 두께
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0), // 비포커스 상태에서의 테두리 색상 및 두께
             ),
           ),
           // onChanged: (_) => _updateIdValidation(),
         ),
         if (_idValidationMessage != null)
           Padding(
-            padding: const EdgeInsets.only(top: 8.0),
+            padding: const EdgeInsets.only(top: 8.0, left: 10),
             child: Text(
               _idValidationMessage!,
               style: TextStyle(
@@ -278,20 +294,24 @@ class _JoinState extends State<Join> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Icon(Icons.lock_outline, size: 24),
-            SizedBox(width: 8.0),
-            Text(
-              '비밀번호',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+        Padding(
+          padding: const EdgeInsets.only(left: 6),
+          child: Row(
+            children: [
+              Icon(Icons.lock_outline, size: 24),
+              SizedBox(width: 8.0),
+              Text(
+                '비밀번호',
+                style: TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        SizedBox(height: 8.0),
+
+        SizedBox(height: 10),
         TextFormField(
           controller: _formControllers.passwordController,
           decoration: InputDecoration(
@@ -301,6 +321,7 @@ class _JoinState extends State<Join> {
             suffixIcon: IconButton(
               icon: Icon(
                 _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                color: Color(0xffc2c2c2),
               ),
               onPressed: () {
                 setState(() {
@@ -314,11 +335,14 @@ class _JoinState extends State<Join> {
           validator: (value) => Validators.validatePassword(value),
         ),
         SizedBox(height: 4.0),
-        Text(
-          '영문, 숫자, 특수문자("제외) 포함 8자리 이상',
-          style: TextStyle(
-            fontSize: 13,
-            color: Colors.grey[700],
+        Padding(
+          padding: const EdgeInsets.only(top: 4, left: 10),
+          child: Text(
+            '영문, 숫자, 특수문자("제외) 포함 8자리 이상',
+            style: TextStyle(
+              fontSize: 13,
+              color: Colors.grey[700],
+            ),
           ),
         ),
         SizedBox(height: 25.0),
@@ -330,20 +354,24 @@ class _JoinState extends State<Join> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Icon(Icons.lock_outline, size: 24),
-            SizedBox(width: 8.0),
-            Text(
-              '비밀번호 확인',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+        Padding(
+          padding: const EdgeInsets.only(left: 6),
+          child: Row(
+            children: [
+              Icon(Icons.lock_outline, size: 24),
+              SizedBox(width: 8), // 아이콘과 텍스트 사이 간격 조절
+              Text(
+                '비밀번호 확인',
+                style: TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        SizedBox(height: 8.0),
+
+        SizedBox(height: 10),
         TextFormField(
           controller: _formControllers.passwordConfirmController,
           decoration: InputDecoration(
@@ -353,6 +381,7 @@ class _JoinState extends State<Join> {
             suffixIcon: IconButton(
               icon: Icon(
                 _obscureConfirmPassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                color: Color(0xffc2c2c2),
               ),
               onPressed: () {
                 setState(() {
@@ -370,37 +399,47 @@ class _JoinState extends State<Join> {
     );
   }
 
+
   Widget _buildNicknameField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Icon(Icons.account_circle_outlined, size: 24),
-            SizedBox(width: 8.0),
-            Text(
-              '닉네임',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+        Padding(
+          padding: const EdgeInsets.only(left: 6),
+          child: Row(
+            children: [
+              Icon(Icons.account_circle_outlined, size: 24),
+              SizedBox(width: 8.0),
+              Text(
+                '닉네임',
+                style: TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        SizedBox(height: 8.0),
+        SizedBox(height: 10),
         TextFormField(
           controller: _formControllers.nicknameController,
           focusNode: _formControllers.nicknameFocusNode,
           decoration: InputDecoration(
-            labelText: '닉네임',
+            hintText: 'ex. 원룸',
             border: OutlineInputBorder(),
             contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
+            ),
           ),
-          onChanged: (_) => _updateNicknameValidation(),
+          // onChanged: (_) => _updateNicknameValidation(),
         ),
         if (_nicknameValidationMessage == '사용 가능한 닉네임 입니다.')
           Padding(
-            padding: const EdgeInsets.only(top: 8.0),
+            padding: const EdgeInsets.only(top: 8.0, left: 10),
             child: Text(
               _nicknameValidationMessage!,
               style: TextStyle(
@@ -411,7 +450,7 @@ class _JoinState extends State<Join> {
           )
         else
           Padding(
-            padding: const EdgeInsets.only(top: 8.0),
+            padding: const EdgeInsets.only(top: 8.0, left: 10),
             child: Text(
               _nicknameValidationMessage ?? '', // 기본값을 설정하거나 빈 문자열을 사용
               style: TextStyle(
@@ -421,7 +460,7 @@ class _JoinState extends State<Join> {
             ),
           ),
 
-        SizedBox(height: 25.0),
+        // SizedBox(height: 25.0),
       ],
     );
   }
@@ -430,25 +469,29 @@ class _JoinState extends State<Join> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Row(
-          children: <Widget>[
-            Icon(Icons.local_post_office_outlined, size: 24),
-            SizedBox(width: 8.0),
-            Text(
-              '이메일',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+        Padding(
+          padding: const EdgeInsets.only(left: 6),
+          child: Row(
+            children: [
+              Icon(Icons.local_post_office_outlined, size: 24),
+              SizedBox(width: 8.0),
+              Text(
+                '이메일',
+                style: TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         SizedBox(height: 8.0),
         TextFormField(
           controller: _formControllers.emailController,
           focusNode: _formControllers.emailFocusNode,
           decoration: InputDecoration(
-            labelText: '이메일',
+            // labelText: '이메일',
+            hintText: 'ex. wonroom@naver.com',
             errorText: _emailValidationMessage == '사용 가능한 이메일 입니다.' ? null : _emailValidationMessage,
             border: OutlineInputBorder(),
             contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
@@ -461,7 +504,7 @@ class _JoinState extends State<Join> {
         ),
         if (_emailValidationMessage == '사용 가능한 이메일 입니다.')
           Padding(
-            padding: const EdgeInsets.only(top: 8.0),
+            padding: const EdgeInsets.only(top: 8.0, left: 10),
             child: Text(
               _emailValidationMessage!,
               style: TextStyle(
