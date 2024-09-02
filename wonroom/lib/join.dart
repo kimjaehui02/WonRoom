@@ -188,8 +188,9 @@ class _JoinState extends State<Join> {
                 ),
               ),
             ),
-            SizedBox(
+            Container(
               width: double.infinity,
+              margin: EdgeInsets.only(bottom: 20),
               child: ElevatedButton(
                 onPressed: _formControllers.isButtonEnabled ? () async {
                   bool test = await Validators.validateAll(_formControllers.idController.text,
@@ -271,6 +272,12 @@ class _JoinState extends State<Join> {
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0), // 비포커스 상태에서의 테두리 색상 및 두께
             ),
+            // errorBorder: OutlineInputBorder(
+            //   borderSide: BorderSide(color: Colors.red, width: 2.0), // 에러 발생 시 테두리 색상 및 두께
+            // ),
+            // focusedErrorBorder: OutlineInputBorder(
+            //   borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 및 에러 발생 시 테두리 색상 및 두께
+            // ),
           ),
           // onChanged: (_) => _updateIdValidation(),
         ),
@@ -322,6 +329,12 @@ class _JoinState extends State<Join> {
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0), // 비포커스 상태에서의 테두리 색상 및 두께
             ),
+            // errorBorder: OutlineInputBorder(
+            //   borderSide: BorderSide(color: Colors.red, width: 2.0), // 에러 발생 시 테두리 색상 및 두께
+            // ),
+            // focusedErrorBorder: OutlineInputBorder(
+            //   borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 및 에러 발생 시 테두리 색상 및 두께
+            // ),
             contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
             suffixIcon: IconButton(
               icon: Icon(
@@ -387,6 +400,12 @@ class _JoinState extends State<Join> {
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0), // 비포커스 상태에서의 테두리 색상 및 두께
             ),
+            // errorBorder: OutlineInputBorder(
+            //   borderSide: BorderSide(color: Colors.red, width: 2.0), // 에러 발생 시 테두리 색상 및 두께
+            // ),
+            // focusedErrorBorder: OutlineInputBorder(
+            //   borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 및 에러 발생 시 테두리 색상 및 두께
+            // ),
             contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
             suffixIcon: IconButton(
               icon: Icon(
@@ -443,6 +462,12 @@ class _JoinState extends State<Join> {
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
             ),
+            // errorBorder: OutlineInputBorder(
+            //   borderSide: BorderSide(color: Colors.red, width: 2.0), // 에러 발생 시 테두리 색상 및 두께
+            // ),
+            // focusedErrorBorder: OutlineInputBorder(
+            //   borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 및 에러 발생 시 테두리 색상 및 두께
+            // ),
           ),
           // onChanged: (_) => _updateNicknameValidation(),
         ),
