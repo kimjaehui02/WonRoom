@@ -544,7 +544,12 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Myplant()),
+                  );
+                },
                 child: const Text(
                   '다이어리 이동하기 >',
                   style: TextStyle(color: Color(0xff787878)),
@@ -792,7 +797,12 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Myplant()),
+                  );
+                },
                 child: Row(
                   children: const [
                     Text(
@@ -859,7 +869,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             ),
             TextButton(
               onPressed: () {
-                // 더보기 버튼 클릭 시 동작할 코드 작성
+                _tabController.index = 1;
               },
               child: Row(
                 children: const [
@@ -902,7 +912,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             ),
             TextButton(
               onPressed: () {
-                // 더보기 버튼 클릭 시 동작할 코드 작성
+                _tabController.index = 2;
               },
               child: Row(
                 children: const [
@@ -936,6 +946,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
+                      // 임시로 디테일 페이지로 이동
                       builder: (context) => PostDetailPage(post: {}),
                     ),
                   );

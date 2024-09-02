@@ -57,7 +57,6 @@ class FindingId extends StatelessWidget {
                     ),
 
                     onPressed: () {
-                      // 로그아웃 기능
 
                       Navigator.of(context).pop();
                     },
