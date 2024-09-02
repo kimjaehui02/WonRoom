@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wonroom/PlantDetailPage.dart'; // 이 파일이 실제로 존재해야 합니다.
+import 'package:wonroom/PlantDetailPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -109,26 +109,34 @@ class _PlantDictionaryState extends State<PlantDictionary> {
                       }
                       return GestureDetector(
                         onTap: () async {
-                          final String plantName = _items[index]["name"]!;
-                          try {
-                            String analysisResult =
-                            await sendNameToServer(plantName, 'plant_name');
-
+                          // final String plantName = _items[index]["name"]!;
+                          // try {
+                          //   String analysisResult =
+                          //   await sendNameToServer(plantName, 'plant_name');
+                          //
+                          //   Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           PlantDetailPage(analysisResult: analysisResult),
+                          //     ),
+                          //   );
+                          // } catch (e) {
+                          //   // Handle error
+                          //   // ScaffoldMessenger.of(context).showSnackBar(
+                          //   //   SnackBar(
+                          //   //     content: Text('Failed to fetch plant details.'),
+                          //   //   ),
+                          //   // );
+                          //   print("Failed to fetch plant details");
+                          // }
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    PlantDetailPage(analysisResult: analysisResult),
+                                    PlantDetailPage(),
                               ),
                             );
-                          } catch (e) {
-                            // Handle error
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Failed to fetch plant details.'),
-                              ),
-                            );
-                          }
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -156,13 +164,17 @@ class _PlantDictionaryState extends State<PlantDictionary> {
                               ),
                             ),
                             SizedBox(height: 8),
-                            Text(
-                              _items[index]["name"]!,
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: Text(
+                                _items[index]["name"]!,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.left,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),

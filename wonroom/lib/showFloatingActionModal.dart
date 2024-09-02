@@ -39,7 +39,7 @@ void showFloatingActionModal(BuildContext context) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PlantDetailPage(analysisResult: analysisResult),
+                        builder: (context) => PlantDetailPage(),
                       ),
                     );
                   } else {

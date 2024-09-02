@@ -5,8 +5,8 @@ List<int> intList = List<int>.generate(6, (index) => index++, growable: false);
 
 class PlantDetailPage extends StatelessWidget {
   final PageController _pageController = PageController();
-  final String analysisResult;
-  PlantDetailPage({required this.analysisResult});
+  String analysisResult = "플랜테라";
+  // PlantDetailPage({required this.analysisResult});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
