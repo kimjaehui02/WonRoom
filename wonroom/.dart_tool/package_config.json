@@ -525,7 +525,7 @@
     },
     {
       "name": "uuid",
-      "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/uuid-4.4.2",
+      "rootUri": "file:///C:/Users/smhrd1/AppData/Local/Pub/Cache/hosted/pub.dev/uuid-4.5.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
@@ -566,7 +566,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2024-08-31T06:32:21.845548Z",
+  "generated": "2024-09-02T00:04:10.785884Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
   "flutterRoot": "file:///C:/Users/smhrd1/Desktop/flutter",

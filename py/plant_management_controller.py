@@ -23,9 +23,10 @@ def insert_record():
     print(details)
     print(plant_id)
 
-    # 입력 데이터 검증
-    if not all([catalog_number, management_date, management_type, details, plant_id]):
-        return jsonify({"status": "fail", "message": "Missing required fields"}), 400
+    # # 입력 데이터 검증
+    # if not all([catalog_number, management_date, management_type, details, plant_id]):
+    #     print("asdasdas")
+    #     return jsonify({"status": "fail", "message": "Missing required fields"}), 400
 
     # 1. DB 연결
     db = pymysql.connect(
@@ -59,7 +60,6 @@ def insert_record():
     finally:
         cursor.close()
         db.close()
-
 @plant_management.route("/select", methods=['POST'])
 def select_records():
     # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
@@ -80,9 +80,11 @@ def select_records():
     print("/select")
     print(plant_id)
 
-    # 2. SQL문 작성
+    # 2. SQL문 작성 (날짜가 빠른 순서로 정렬)
     sql = '''
-    SELECT * FROM plant_management_records WHERE plant_id = %s
+    SELECT * FROM plant_management_records
+    WHERE plant_id = %s
+    ORDER BY management_date ASC
     '''
 
     # 3. select 실행, 파라미터 채워주기
@@ -110,6 +112,7 @@ def select_records():
     finally:
         cursor.close()
         db.close()
+
 
 @plant_management.route("/update", methods=['POST'])
 def update_record():

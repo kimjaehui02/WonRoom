@@ -24,7 +24,7 @@ import 'package:wonroom/myPlantClinic.dart';
 import 'package:wonroom/myPlantRegistration.dart';
 import 'package:wonroom/showFloatingActionModal.dart';
 
-
+import 'package:intl/intl.dart';
 
 
 
@@ -42,9 +42,16 @@ class _MyplantNullState extends State<MyplantNull> {
   // 당신의 식물 정보의 일정들
   List<List<PlantManagementRecord>> _PMR = [];
 
-  // 보여줄 페이지 불값
-  bool checks = true;
+  // 당신의 식물 정보의 위젯들
+  List<Widget> actionContainers = [];
 
+  // 현재 값이 존재하는지 아닌지
+  bool checks = false;
+
+  // 현재 로딩이 완료되었는지 아닌디
+  bool _isLoading = false;
+
+  // 지금 보고 있는 식물의 인덱스값
   int plantIndex = 0;
 
   // Table: user_plants
@@ -60,6 +67,11 @@ class _MyplantNullState extends State<MyplantNull> {
   // 식물 이름쯔음이면 되겟따
   String diary_title = "";
 
+  // 2. 일정 라벨링
+  // 리스트 - 맵 - 리스트
+  // 인덱스(식물별) - 일정종류 - 일정 낱개
+  List<Map<ManagementType, List<PlantManagementRecord>>> sortedGroupedRecords = [{}];
+
   @override
   void initState() {
     super.initState();
@@ -69,6 +81,16 @@ class _MyplantNullState extends State<MyplantNull> {
     });
   }
 
+  void _loading() async
+  {
+    setState(() {
+      _loadData(); // 페이지가 처음 로드될 때 데이터를 불러옵니다.
+
+    });
+  }
+
+  // db연결을 이용해 값을 최신화 합니다
+  // 자주 부르면 안됩니다
   void _loadData() async
   {
     print("데이터 불러오기 작업을 수행합니다. inputss: $plantIndex");
@@ -97,8 +119,8 @@ class _MyplantNullState extends State<MyplantNull> {
             _updateDoubleList();
 
 
-
             checks = true;
+            _isLoading = true;
           });
         } else {
           print("No plants found for user ID: $userId");
@@ -115,6 +137,9 @@ class _MyplantNullState extends State<MyplantNull> {
 
 
 
+  // db연결을 이용해 값을 최신화 합니다
+  // 자주 부르면 안됩니다
+  // 그중에서도 일정을 최신화 해줍니다
   void _updateDoubleList() async {
 
     // 식물매니저서비스를 소환합니다
@@ -126,15 +151,34 @@ class _MyplantNullState extends State<MyplantNull> {
     // 이중 리스트 초기화 (각 식물에 대해 빈 리스트 생성)
     _PMR = List.generate(numbOfPlant, (index) => []);
 
+
+    // sortedGroupedRecords를 빈 Map으로 초기화
+    sortedGroupedRecords = List.generate(
+        numbOfPlant,
+            (index) => {
+          ManagementType.Watering: [],
+          ManagementType.Pruning: [],
+          ManagementType.Repotting: [],
+          ManagementType.Fertilizing: [],
+          ManagementType.Diagnosis: [],
+        }
+    );
+
+    print("");
+    print("for (int i = 0; i < numbOfPlant; i++) {");
     for (int i = 0; i < numbOfPlant; i++) {
       // 식물 ID를 가져옵니다
+      print("int plantId = _userPlants[i].plantId ?? -1;");
       int plantId = _userPlants[i].plantId ?? -1;
 
+      print("if (plantId == -1) {");
       if (plantId == -1) {
         // 식물 ID가 유효하지 않으면 건너뜁니다
+        print("continue;");
         continue;
       }
 
+      print("try {");
       try {
         // 식물 ID로 식물 관리 기록을 가져옵니다
 
@@ -146,28 +190,34 @@ class _MyplantNullState extends State<MyplantNull> {
         //     plantId: plantId);
         //
         // pms.addRecord(pmr2);
+        print("List<PlantManagementRecord>? pmr = await pms.getRecords(plantId);");
         List<PlantManagementRecord>? pmr = await pms.getRecords(plantId);
 
+        print("if (pmr != null) {");
         if (pmr != null) {
-          setState(() {
-            // 식물 관리 기록을 이중 리스트에 저장합니다
-            _PMR[i] = pmr;
-            print("결과출력!!!!");
-            print("결과출력!!!!");
-            print("결과출력!!!!");
 
-            print(i);
-            print(pmr.length);
-            print("결과출력!!!!");
-            print("결과출력!!!!");
-            print("결과출력!!!!");
-          });
+          print("_PMR[i] = pmr;");
+          _PMR[i] = pmr;
+
+          print("sortedGroupedRecords[i] = sortAndGroupRecords(_PMR[i]);");
+          // 식물 관리 기록을 더 쉽게 관리하기위해 매핑합니다
+          sortedGroupedRecords[i] = sortAndGroupRecords(_PMR[i]);
+
+
+
         }
       } catch (e) {
         print("Error loading plant management records: $e");
       }
     }
 
+
+
+    print(sortedGroupedRecords.length);
+    print(sortedGroupedRecords.length);
+    print(sortedGroupedRecords.length);
+    print(sortedGroupedRecords.length);
+    _updatePlant(plantIndex);
     // 이중 리스트 초기화 후 추가적인 작업이 필요하다면 여기에 추가합니다
     print("식물 일정 이중 리스트가 업데이트되었습니다.");
   }
@@ -184,10 +234,51 @@ class _MyplantNullState extends State<MyplantNull> {
   // 그러면 일단 2가지의 변수를 먼저 준비해둔다
 
 
+  // db연결 없이 이미 가진 값들로 화면을 최신화합니다
   void _updatePlant(index)
   {
     setState(() {
       diary_title = _userPlants[index].diaryTitle ?? 'Default Title';
+
+
+      print(sortedGroupedRecords[0].length);
+      print(sortedGroupedRecords[1].length);
+      print(sortedGroupedRecords[2].length);
+      print(sortedGroupedRecords[index].length);
+      print("asdasdasdasdasd");
+      // print(sortedGroupedRecords[index][ManagementType.Repotting]);
+      // print(sortedGroupedRecords[index][ManagementType.Repotting]?[0].getFormattedDate());
+
+      List<PlantAction> plantActions = [
+        PlantAction(
+          label: "물주기",
+          icon: Icons.water_drop,
+          actionDate: sortedGroupedRecords[index][ManagementType.Watering]?[0].getFormattedDate() ?? "--.--",
+        ),
+        PlantAction(
+          label: "영양제",
+          imageAsset: 'images/potion.png', // 영양제 아이콘
+          actionDate: sortedGroupedRecords[index][ManagementType.Fertilizing]?[0].getFormattedDate() ?? "--.--",
+        ),
+        PlantAction(
+          label: "가지치기",
+          imageAsset: 'images/scissor.png', // 가지치기 아이콘
+          actionDate: sortedGroupedRecords[index][ManagementType.Pruning]?[0].getFormattedDate() ?? "--.--",
+        ),
+        PlantAction(
+          label: "분갈이",
+          imageAsset: 'images/soil.png', // 분갈이 아이콘
+          actionDate: sortedGroupedRecords[index][ManagementType.Repotting]?[0].getFormattedDate() ?? "--.--",
+        ),
+        PlantAction(
+          label: "진단",
+          icon: Icons.eco,
+          actionDate: sortedGroupedRecords[index][ManagementType.Diagnosis]?[0].getFormattedDate() ?? "--.--",
+        ),
+      ];
+
+      actionContainers = buildPlantActionContainers(plantActions, _userPlants[index].plantId, _loading);
+
 
     });
   }
@@ -219,8 +310,9 @@ class _MyplantNullState extends State<MyplantNull> {
     );
   }
 
-  // SingleChildScrollView를 반환합니다.
-  Widget _buildScrollView() {
+  // 데이터가 잘 있으면 그제서야 반환합니다
+  Widget _buildScrollView()
+  {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -276,251 +368,7 @@ class _MyplantNullState extends State<MyplantNull> {
                     Container(
                       padding: EdgeInsets.only(left: 24, right: 24),
                       child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Color(0xffeeeeee),
-                                  width: 1,
-                                ),
-                              ),
-                            ),
-
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                OutlinedButton.icon(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.water_drop,
-                                    size: 18,
-                                    color: Colors.lightBlueAccent,
-                                  ),
-                                  label: Text(
-                                    "물주기",
-                                    style: TextStyle(color: Color(0xff787878)),
-                                  ),
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(color: Color(0xffc2c2c2)),
-                                  ),
-                                ),
-                                SizedBox(width: 20),
-                                RichText(
-                                  text: TextSpan(
-                                    text: '다음 권장 날짜 : ',
-                                    style: TextStyle(
-                                      color: Color(0xffc2c2c2),
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: "09.12",
-                                        style: TextStyle(
-                                          color: Color(0xff787878),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Color(0xffeeeeee),
-                                  width: 1,
-                                ),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                OutlinedButton.icon(
-                                  onPressed: () {},
-                                  icon: Image.asset(
-                                    'images/potion.png', // 영양제 아이콘
-                                    width: 18,
-                                    height: 18,
-                                  ),
-                                  label: Text(
-                                    "영양제",
-                                    style: TextStyle(color: Color(0xff787878)),
-                                  ),
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(color: Color(0xffc2c2c2)),
-                                  ),
-                                ),
-                                SizedBox(width: 20),
-                                RichText(
-                                  text: TextSpan(
-                                    text: '다음 권장 날짜 : ',
-                                    style: TextStyle(
-                                      color: Color(0xffc2c2c2),
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: "09.12",
-                                        style: TextStyle(
-                                          color: Color(0xff787878),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Color(0xffeeeeee),
-                                  width: 1,
-                                ),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                OutlinedButton.icon(
-                                  onPressed: () {},
-                                  icon: Image.asset(
-                                    'images/scissor.png', // 가지치기 아이콘
-                                    width: 18,
-                                    height: 18,
-                                  ),
-                                  label: Text(
-                                    "가지치기",
-                                    style: TextStyle(color: Color(0xff787878)),
-                                  ),
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(color: Color(0xffc2c2c2)),
-                                  ),
-                                ),
-                                SizedBox(width: 20),
-                                RichText(
-                                  text: TextSpan(
-                                    text: '마지막 활동 날짜 : ',
-                                    style: TextStyle(
-                                      color: Color(0xffc2c2c2),
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: "09.12",
-                                        style: TextStyle(
-                                          color: Color(0xff787878),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Color(0xffeeeeee),
-                                  width: 1,
-                                ),
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                OutlinedButton.icon(
-                                  onPressed: () {},
-                                  icon: Image.asset(
-                                    'images/soil.png', // 분갈이 아이콘
-                                    width: 18,
-                                    height: 18,
-                                  ),
-                                  label: Text(
-                                    "분갈이",
-                                    style: TextStyle(color: Color(0xff787878)),
-                                  ),
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(color: Color(0xffc2c2c2)),
-                                  ),
-                                ),
-                                SizedBox(width: 20),
-                                RichText(
-                                  text: TextSpan(
-                                    text: '마지막 활동 날짜 : ',
-                                    style: TextStyle(
-                                      color: Color(0xffc2c2c2),
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: "09.12",
-                                        style: TextStyle(
-                                          color: Color(0xff787878),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                OutlinedButton.icon(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.eco,
-                                    size: 18,
-                                    color: Colors.lightGreen,
-                                  ),
-                                  label: Text(
-                                    "진단",
-                                    style: TextStyle(color: Color(0xff787878)),
-                                  ),
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(color: Color(0xffc2c2c2)),
-                                  ),
-                                ),
-                                SizedBox(width: 20),
-                                RichText(
-                                  text: TextSpan(
-                                    text: '마지막 진단 날짜 : ',
-                                    style: TextStyle(
-                                      color: Color(0xffc2c2c2),
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: "09.12",
-                                        style: TextStyle(
-                                          color: Color(0xff787878),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                        ],
+                        children: actionContainers,
                       ),
                     ),
 
@@ -873,8 +721,9 @@ class _MyplantNullState extends State<MyplantNull> {
     );
   }
 
-  // Container를 반환합니다.
-  Widget _buildContainer() {
+  // 데이터가 없는경우 반환합니다
+  Widget _buildContainer()
+  {
     return Container(
       color: Colors.white,
       child: Column(
@@ -965,7 +814,7 @@ class _MyplantNullState extends State<MyplantNull> {
                   print(plantIndex);
                   print("메인쪽");
                   print("메인쪽");
-                }),
+                }, _userPlants),
               ),
             ),
           ),
