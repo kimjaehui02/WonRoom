@@ -139,6 +139,10 @@ void showPlantRegistrationModal(BuildContext context) {
                           height: 45,
                           child: ElevatedButton(
                             onPressed: () {
+                              // 로그인 안된 상태일때
+
+
+                              // 로그인 상태일때
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -253,7 +257,10 @@ Widget _buildImageButton({
         icon: Icon(icon, color: Color(0xff787878)),
         label: Text(
           label,
-          style: TextStyle(color: Color(0xff333333)),
+          style: TextStyle(
+            color: Color(0xff333333),
+            fontSize: 16,
+          ),
         ),
         style: TextButton.styleFrom(
           padding: EdgeInsets.symmetric(vertical: 10),
