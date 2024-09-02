@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/PlantDetailPage.dart';
 import 'package:wonroom/PostDetailPage.dart';
+import 'package:wonroom/community.dart';
 import 'package:wonroom/inqurityDetails.dart';
 import 'package:wonroom/myPage.dart';
 import 'package:wonroom/myPlantNull.dart';
@@ -171,10 +172,11 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             children: [
               _buildHomePage(),
               PlantDictionary(),
+              // Community(),
               // _buildPlantDictionaryPage(),
               // PlantDictionary(),
               // _buildPlantClinicPage('식물클리닉 페이지'),
-              _buildCommunityPage('커뮤니티 페이지'),
+              // _buildCommunityPage('커뮤니티 페이지'),
               _buildCustomerServicePage('고객센터 페이지'),
             ],
           ),
@@ -520,7 +522,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   // 다이어리 있을 때 코드
   Widget _buildMyPlantsSection() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: Colors.white.withOpacity(0.8),
@@ -550,6 +552,10 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                     MaterialPageRoute(builder: (context) => Myplant()),
                   );
                 },
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.zero),
+                  minimumSize: MaterialStateProperty.all<Size>(Size.zero),
+                ),
                 child: const Text(
                   '다이어리 이동하기 >',
                   style: TextStyle(color: Color(0xff787878)),
@@ -559,7 +565,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
           ),
           const SizedBox(height: 10),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 width: 120,
@@ -579,7 +585,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                   children: [
                     const Text(
                       '몬스테라',
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10),
                     Wrap(
@@ -601,7 +607,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                             side: BorderSide(color: Color(0xffc2c2c2)),
                           ),
                         ),
@@ -620,7 +626,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                             side: BorderSide(color: Color(0xffc2c2c2)),
                           ),
                         ),
@@ -639,7 +645,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                             side: BorderSide(color: Color(0xffc2c2c2)),
                           ),
                         ),
@@ -657,7 +663,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                                 color: Color(0xff787878)),
                           ),
                           style: OutlinedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                             side: BorderSide(color: Color(0xffc2c2c2)),
                           ),
                         ),

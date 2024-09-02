@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wonroom/index.dart';
 import 'package:wonroom/postDetailPage.dart';
 import 'package:wonroom/writePage.dart';
-
+// 커뮤니티 
 class Community extends StatefulWidget {
   const Community({super.key});
 
