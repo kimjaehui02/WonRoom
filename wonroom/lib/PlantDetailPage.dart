@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-// 
+
 List<int> intList = List<int>.generate(6, (index) => index++, growable: false);
 
 class PlantDetailPage extends StatelessWidget {
@@ -74,10 +74,10 @@ class PlantDetailPage extends StatelessWidget {
                   SizedBox(height: 16),
                   Text(
                     '• 큰 잎과 독특한 구멍이 있는 열대 식물입니다.\n'
-                    '• 실내에서 쉽게 키울 수 있어 인기가 많습니다.\n'
-                    '• 공기 정화 능력도 뛰어납니다.\n'
-                    '• 인테리어에 포인트를 주기에 좋습니다.\n'
-                    '${analysisResult}',
+                        '• 실내에서 쉽게 키울 수 있어 인기가 많습니다.\n'
+                        '• 공기 정화 능력도 뛰어납니다.\n'
+                        '• 인테리어에 포인트를 주기에 좋습니다.\n'
+                        '${analysisResult}',
                     style: TextStyle(fontSize: 16, color: Color(0xff595959)),
                   ),
                   SizedBox(height: 20),
@@ -226,12 +226,12 @@ class PlantDetailPage extends StatelessWidget {
                   SizedBox(height: 12),
                   Table(
                     columnWidths: {
-                      0: FlexColumnWidth(2), // 첫 번째 열 비율
-                      1: FlexColumnWidth(3), // 두 번째 열 비율
+                      0: FlexColumnWidth(2),
+                      1: FlexColumnWidth(3),
                     },
                     children: List<TableRow>.generate(
                       _tableData.length,
-                      (index) {
+                          (index) {
                         return _buildTableRow(
                           _tableData[index]['parameter']!,
                           _tableData[index]['value']!,
@@ -348,7 +348,10 @@ class PlantDetailPage extends StatelessWidget {
               ],
             ),
 
+
+
             // 구분
+
             Container(
               margin: EdgeInsets.only(top: 24, bottom: 24),
               width: MediaQuery.of(context).size.width,

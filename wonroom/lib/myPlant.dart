@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wonroom/myPlantClinic.dart';
+import 'package:wonroom/myPlantRegistration.dart';
 
 class Myplant extends StatefulWidget {
   const Myplant({super.key});
@@ -176,6 +177,7 @@ class _MyplantState extends State<Myplant> {
                   onTap: () {
                     // 수정하기 기능 추가
                     Navigator.pop(context);
+                    showPlantRegistrationModal(context);
                   },
                 ),
                 ListTile(
