@@ -1,26 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:wonroom/PlantDetailPage.dart';
+import 'package:wonroom/PlantDetailPage.dart'; // 이 파일이 실제로 존재해야 합니다.
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:io';
+
 class PlantDictionary extends StatefulWidget {
   @override
   State<PlantDictionary> createState() => _PlantDictionaryState();
 }
-
-// void _scrollToTop() {
-//   _scrollController.animateTo(
-//     0,
-//     duration: Duration(milliseconds: 500),
-//     curve: Curves.easeInOut,
-//   );
-// }
 
 class _PlantDictionaryState extends State<PlantDictionary> {
   List<Map<String, String>> _items = [];
   ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
   int _currentPage = 0;
+  bool _isFabVisible = false;
 
   @override
   void initState() {
@@ -31,6 +24,11 @@ class _PlantDictionaryState extends State<PlantDictionary> {
           _scrollController.position.maxScrollExtent) {
         _loadMoreItems(); // 스크롤이 끝에 도달했을 때 더 많은 항목을 로드
       }
+
+      // FAB 가시성 제어
+      setState(() {
+        _isFabVisible = _scrollController.offset > 100;
+      });
     });
   }
 
@@ -73,106 +71,132 @@ class _PlantDictionaryState extends State<PlantDictionary> {
     });
   }
 
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(16),
-        child: CustomScrollView(
-          controller: _scrollController,
-          slivers: [
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  '식물 사전',
-                  style: TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold,
+    return Scaffold(
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: CustomScrollView(
+              controller: _scrollController,
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(
+                      '식물 사전',
+                      style: TextStyle(
+                        fontSize: 21,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            SliverGrid(
-              delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                  if (index == _items.length && _isLoading) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  return GestureDetector(
-                    onTap: () async {
-                      final String plantName = "식물이름";
-                      String analysisResult = await sendNameToServer(plantName, 'plant_name');
+                SliverGrid(
+                  delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                      if (index == _items.length && _isLoading) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      return GestureDetector(
+                        onTap: () async {
+                          final String plantName = _items[index]["name"]!;
+                          try {
+                            String analysisResult =
+                            await sendNameToServer(plantName, 'plant_name');
 
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PlantDetailPage(analysisResult: analysisResult),
-                        ),
-                      );
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => PlantDetailPage(
-                      //       // plantName: _items[index]["name"]!,
-                      //       // plantImage: _items[index]["image"]!,
-                      //     ),
-                      //   ),
-                      // );
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade300,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black26,
-                                  blurRadius: 4, // 그림자의 흐림 정도
-                                  offset: Offset(2, 2),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    PlantDetailPage(analysisResult: analysisResult),
+                              ),
+                            );
+                          } catch (e) {
+                            // Handle error
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Failed to fetch plant details.'),
+                              ),
+                            );
+                          }
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade300,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 4, // 그림자의 흐림 정도
+                                      offset: Offset(2, 2),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            child: ClipRRect(
-                              // ClipRRect의 괄호 시작
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.network(
-                                _items[index]["image"]!,
-                                fit: BoxFit.cover,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(
+                                    _items[index]["image"]!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            SizedBox(height: 8),
+                            Text(
+                              _items[index]["name"]!,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 8),
-
-                        // padding: const EdgeInsets.only(left: 10, right: 10, top: 4),
-                        Text(
-                          _items[index]["name"]!,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                childCount: _items.length + (_isLoading ? 1 : 0),
-              ),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // 한 행에 2개의 항목
-                crossAxisSpacing: 12, // 항목 간의 수평 간격
-                mainAxisSpacing: 24, // 항목 간의 수직 간격
-                childAspectRatio: 1, // 1:1 비율 설정
+                      );
+                    },
+                    childCount: _items.length + (_isLoading ? 1 : 0),
+                  ),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 24,
+                    childAspectRatio: 1,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (_isFabVisible)
+            Positioned(
+              right: 16,
+              bottom: 30,
+              child: FloatingActionButton(
+                onPressed: _scrollToTop,
+                child: Icon(Icons.arrow_upward, color: Colors.white),
+                backgroundColor: Colors.black.withOpacity(0.6),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                elevation: 0,
               ),
             ),
-          ],
-        ),
-      );
+        ],
+      ),
+    );
   }
 }
 
