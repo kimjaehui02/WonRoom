@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wonroom/PlantDetailPage.dart';
+import 'package:wonroom/PostDetailPage.dart';
+import 'package:wonroom/inqurityDetails.dart';
 import 'package:wonroom/myPage.dart';
 import 'package:wonroom/myPlantNull.dart';
 import 'package:wonroom/myPlant.dart';
@@ -167,7 +170,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             controller: _tabController,
             children: [
               _buildHomePage(),
-              _buildPlantDictionaryPage(),
+              PlantDictionary(),
+              // _buildPlantDictionaryPage(),
               // PlantDictionary(),
               // _buildPlantClinicPage('식물클리닉 페이지'),
               _buildCommunityPage('커뮤니티 페이지'),
@@ -926,75 +930,86 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             ),
             itemBuilder: (context, index) {
               final item = data[index];
-              return Container(
-                margin: EdgeInsets.symmetric(horizontal: 6), // 카드 사이의 여백
-                padding: EdgeInsets.only(top: 8, bottom: 8),
-                child: AspectRatio(
-                  aspectRatio: 1.0,
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.13),
-                          spreadRadius: 2,
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
+              return GestureDetector(
+                onTap: () {
+                  // 상세 페이지로 이동
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PostDetailPage(post: {}),
                     ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          height: MediaQuery.of(context).size.width * 0.25,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            image: DecorationImage(
-                              image: AssetImage(item['image']!),
-                              fit: BoxFit.cover,
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 6), // 카드 사이의 여백
+                  padding: EdgeInsets.only(top: 8, bottom: 8),
+                  child: AspectRatio(
+                    aspectRatio: 1.0,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.13),
+                            spreadRadius: 2,
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.25,
+                            height: MediaQuery.of(context).size.width * 0.25,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              image: DecorationImage(
+                                image: AssetImage(item['image']!),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item['boardName']!,
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 12,
+                          const SizedBox(width: 10),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item['boardName']!,
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 12,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  item['title']!,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    item['title']!,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  item['description']!,
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
+                                  Text(
+                                    item['description']!,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -1003,6 +1018,95 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             padEnds: false, // 페이지 끝에 패딩 적용 안 함
           ),
         )
+
+
+        // SizedBox(
+        //   height: 140,
+        //   child: PageView.builder(
+        //     itemCount: data.length,
+        //     controller: PageController(
+        //       viewportFraction: 0.9, // 카드 너비를 설정하여 페이지 간의 여백 조정
+        //       initialPage: 0,
+        //     ),
+        //     itemBuilder: (context, index) {
+        //       final item = data[index];
+        //       return Container(
+        //         margin: EdgeInsets.symmetric(horizontal: 6), // 카드 사이의 여백
+        //         padding: EdgeInsets.only(top: 8, bottom: 8),
+        //         child: AspectRatio(
+        //           aspectRatio: 1.0,
+        //           child: Container(
+        //             padding: const EdgeInsets.all(10),
+        //             decoration: BoxDecoration(
+        //               borderRadius: BorderRadius.circular(8),
+        //               color: Colors.white,
+        //               boxShadow: [
+        //                 BoxShadow(
+        //                   color: Colors.black.withOpacity(0.13),
+        //                   spreadRadius: 2,
+        //                   blurRadius: 8,
+        //                   offset: const Offset(0, 2),
+        //                 ),
+        //               ],
+        //             ),
+        //             child: Row(
+        //               crossAxisAlignment: CrossAxisAlignment.start,
+        //               children: [
+        //                 Container(
+        //                   width: MediaQuery.of(context).size.width * 0.25,
+        //                   height: MediaQuery.of(context).size.width * 0.25,
+        //                   decoration: BoxDecoration(
+        //                     borderRadius: BorderRadius.circular(8),
+        //                     image: DecorationImage(
+        //                       image: AssetImage(item['image']!),
+        //                       fit: BoxFit.cover,
+        //                     ),
+        //                   ),
+        //                 ),
+        //                 const SizedBox(width: 10),
+        //                 Flexible(
+        //                   child: Padding(
+        //                     padding: const EdgeInsets.symmetric(vertical: 12),
+        //                     child: Column(
+        //                       crossAxisAlignment: CrossAxisAlignment.start,
+        //                       children: [
+        //                         Text(
+        //                           item['boardName']!,
+        //                           style: const TextStyle(
+        //                             color: Colors.grey,
+        //                             fontSize: 12,
+        //                           ),
+        //                         ),
+        //                         const SizedBox(height: 2),
+        //                         Text(
+        //                           item['title']!,
+        //                           style: const TextStyle(
+        //                             fontWeight: FontWeight.bold,
+        //                             fontSize: 14,
+        //                           ),
+        //                         ),
+        //                         Text(
+        //                           item['description']!,
+        //                           style: const TextStyle(
+        //                             fontSize: 12,
+        //                             color: Colors.grey,
+        //                           ),
+        //                           maxLines: 2,
+        //                           overflow: TextOverflow.ellipsis,
+        //                         ),
+        //                       ],
+        //                     ),
+        //                   ),
+        //                 ),
+        //               ],
+        //             ),
+        //           ),
+        //         ),
+        //       );
+        //     },
+        //     padEnds: false, // 페이지 끝에 패딩 적용 안 함
+        //   ),
+        // )
 
 
 
@@ -1113,38 +1217,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
-  Widget _buildPlantDictionaryPage() {
-    return SingleChildScrollView(
-      controller: _scrollController,
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 50),
-          const SizedBox(height: 50),
-          const SizedBox(height: 40),
-        ],
-      ),
-    );
-  }
 
-  // Widget _buildPlantDictionaryPage() {
-  //   return SingleChildScrollView(
-  //     controller: _scrollController,
-  //     padding: const EdgeInsets.all(16),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         // _buildPlantCamera(),
-  //         const SizedBox(height: 50),
-  //         // _buildRecommendedPlantsSection(),
-  //         const SizedBox(height: 50),
-  //         // _buildPopularPostsSection(),
-  //         const SizedBox(height: 40),
-  //       ],
-  //     ),
-  //   );
-  // }
   // Widget _buildPlantDictionaryPage() {
   //   return SingleChildScrollView(
   //     controller: _scrollController,
@@ -1161,11 +1234,11 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   // }
 
 
-  Widget _buildPlantClinicPage(String text) {
-    return Center(
-      child: Text(text),
-    );
-  }
+  // Widget _buildPlantClinicPage(String text) {
+  //   return Center(
+  //     child: Text(text),
+  //   );
+  // }
 
   Widget _buildCommunityPage(String text) {
     return Center(

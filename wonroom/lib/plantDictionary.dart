@@ -105,8 +105,7 @@ class _PlantDictionaryState extends State<PlantDictionary> {
 
 
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
+                        context, MaterialPageRoute(
                           builder: (context) => PlantDetailPage(analysisResult: analysisResult),
                         ),
                       );
