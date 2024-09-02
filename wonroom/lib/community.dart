@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wonroom/index.dart';
 import 'package:wonroom/postDetailPage.dart';
 import 'package:wonroom/writePage.dart';
-// 커뮤니티 
+
 class Community extends StatefulWidget {
   const Community({super.key});
 
@@ -21,7 +21,7 @@ class _CommunityState extends State<Community> with SingleTickerProviderStateMix
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
-    _tabController.index = 3; // 커뮤니티 탭을 기본으로 설정
+    _tabController.index = 3;
     _scrollController.addListener(_scrollListener);
   }
 

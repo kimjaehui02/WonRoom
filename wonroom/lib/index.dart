@@ -172,7 +172,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             children: [
               _buildHomePage(),
               PlantDictionary(),
-              // Community(),
+              Community(),
               // _buildPlantDictionaryPage(),
               // PlantDictionary(),
               // _buildPlantClinicPage('식물클리닉 페이지'),
@@ -1165,11 +1165,11 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   //   );
   // }
 
-  Widget _buildCommunityPage(String text) {
-    return Center(
-      child: Text(text),
-    );
-  }
+  // Widget _buildCommunityPage(String text) {
+  //   return Center(
+  //     child: Text(text),
+  //   );
+  // }
 
   Widget _buildCustomerServicePage(String text) {
     return Center(
