@@ -4,7 +4,24 @@
             "outputFile": "com.example.wonroom.app-mergeDebugResources-27:/values-zh-rCN/values-zh-rCN.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\253b2e663bdfb62e24c58c1731366987\\transformed\\jetified-play-services-base-16.0.1\\res\\values-zh-rCN\\values.xml",
+                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\2f6a5506f4dac22f7ab67b13b215ea43\\transformed\\core-1.13.1\\res\\values-zh-rCN\\values-zh-rCN.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,147,248,342,436,529,623,719",
+                        "endColumns": "91,100,93,93,92,93,95,100",
+                        "endOffsets": "142,243,337,431,524,618,714,815"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,27",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "105,197,298,392,486,579,673,3072",
+                        "endColumns": "91,100,93,93,92,93,95,100",
+                        "endOffsets": "192,293,387,481,574,668,764,3168"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\253b2e663bdfb62e24c58c1731366987\\transformed\\jetified-play-services-base-16.0.1\\res\\values-zh-rCN\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -21,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\bdf87e621b798b6e4632ce4b2956c3f3\\transformed\\jetified-play-services-basement-16.0.1\\res\\values-zh-rCN\\values.xml",
+                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\bdf87e621b798b6e4632ce4b2956c3f3\\transformed\\jetified-play-services-basement-16.0.1\\res\\values-zh-rCN\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -35,23 +52,6 @@
                         "startOffsets": "1789",
                         "endColumns": "157",
                         "endOffsets": "1942"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\2f6a5506f4dac22f7ab67b13b215ea43\\transformed\\core-1.13.1\\res\\values-zh-rCN\\values-zh-rCN.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,147,248,342,436,529,623,719",
-                        "endColumns": "91,100,93,93,92,93,95,100",
-                        "endOffsets": "142,243,337,431,524,618,714,815"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7,8,27",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "105,197,298,392,486,579,673,3072",
-                        "endColumns": "91,100,93,93,92,93,95,100",
-                        "endOffsets": "192,293,387,481,574,668,764,3168"
                     }
                 }
             ]

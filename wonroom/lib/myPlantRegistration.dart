@@ -105,39 +105,119 @@ void showPlantRegistrationModal(BuildContext context) {
                     ),
                   ),
                 ),
+
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text('취소', style: TextStyle(fontSize: 25)),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.grey,
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                        child: SizedBox(
+                          height: 45,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('취소', style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18
+                            )),
+                            style: OutlinedButton.styleFrom(
+                              backgroundColor: Color(0xffc2c2c2),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
-                            side: BorderSide(color: Colors.grey),
-                            minimumSize: Size(150, 50),
                           ),
                         ),
                       ),
-                      SizedBox(width: 16), // 버튼 사이의 간격
+
+                      SizedBox(width: 10),
+
                       Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: Text('등록', style: TextStyle(fontSize: 25, color: Colors.white)),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                        child: SizedBox(
+                          height: 45,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 30, horizontal: 16),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            '등록되었습니다.',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(height: 5),
+                                          Text(
+                                            '등록된 식물은 다이어리에서\n확인하실 수 있습니다.',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.grey),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(height: 24),
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.black,
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 10,
+                                                    horizontal: 32),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                              ),
+                                              child: Container(
+                                                width: MediaQuery.of(context).size.width *0.5,
+                                                child: Text(
+                                                  '확인',
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.white,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: Text('등록',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white
+                                )),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              minimumSize: Size(150, 50),
                             ),
-                            minimumSize: Size(150, 50),
                           ),
                         ),
                       ),

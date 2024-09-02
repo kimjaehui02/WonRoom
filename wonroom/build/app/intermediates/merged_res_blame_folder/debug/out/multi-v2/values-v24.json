@@ -4,7 +4,7 @@
             "outputFile": "com.example.wonroom.app-mergeDebugResources-27:/values-v24/values-v24.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\smhrd1\\.gradle\\caches\\transforms-3\\6b0474d987953096ecc6b40e9d5a11d9\\transformed\\media-1.0.0\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\smhrd\\.gradle\\caches\\transforms-3\\6b0474d987953096ecc6b40e9d5a11d9\\transformed\\media-1.0.0\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",
