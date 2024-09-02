@@ -60,6 +60,7 @@ def insert_record():
     finally:
         cursor.close()
         db.close()
+        
 @plant_management.route("/select", methods=['POST'])
 def select_records():
     # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
@@ -84,7 +85,7 @@ def select_records():
     sql = '''
     SELECT * FROM plant_management_records
     WHERE plant_id = %s
-    ORDER BY management_date ASC
+    ORDER BY management_date DESC
     '''
 
     # 3. select 실행, 파라미터 채워주기

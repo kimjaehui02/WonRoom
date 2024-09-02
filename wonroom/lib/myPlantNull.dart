@@ -112,9 +112,7 @@ class _MyplantNullState extends State<MyplantNull> {
         if (userPlants != null) {
           setState(() {
             _userPlants = userPlants; // 데이터 할당 후 상태 업데이트
-            print("성공");
-            print("성공");
-            print("성공");
+
 
             _updateDoubleList();
 
@@ -164,21 +162,15 @@ class _MyplantNullState extends State<MyplantNull> {
         }
     );
 
-    print("");
-    print("for (int i = 0; i < numbOfPlant; i++) {");
     for (int i = 0; i < numbOfPlant; i++) {
       // 식물 ID를 가져옵니다
-      print("int plantId = _userPlants[i].plantId ?? -1;");
       int plantId = _userPlants[i].plantId ?? -1;
 
-      print("if (plantId == -1) {");
       if (plantId == -1) {
         // 식물 ID가 유효하지 않으면 건너뜁니다
-        print("continue;");
         continue;
       }
 
-      print("try {");
       try {
         // 식물 ID로 식물 관리 기록을 가져옵니다
 
@@ -190,16 +182,12 @@ class _MyplantNullState extends State<MyplantNull> {
         //     plantId: plantId);
         //
         // pms.addRecord(pmr2);
-        print("List<PlantManagementRecord>? pmr = await pms.getRecords(plantId);");
         List<PlantManagementRecord>? pmr = await pms.getRecords(plantId);
 
-        print("if (pmr != null) {");
         if (pmr != null) {
 
-          print("_PMR[i] = pmr;");
           _PMR[i] = pmr;
 
-          print("sortedGroupedRecords[i] = sortAndGroupRecords(_PMR[i]);");
           // 식물 관리 기록을 더 쉽게 관리하기위해 매핑합니다
           sortedGroupedRecords[i] = sortAndGroupRecords(_PMR[i]);
 
@@ -237,15 +225,25 @@ class _MyplantNullState extends State<MyplantNull> {
   // db연결 없이 이미 가진 값들로 화면을 최신화합니다
   void _updatePlant(index)
   {
+    // return;
     setState(() {
       diary_title = _userPlants[index].diaryTitle ?? 'Default Title';
 
 
-      print(sortedGroupedRecords[0].length);
-      print(sortedGroupedRecords[1].length);
-      print(sortedGroupedRecords[2].length);
-      print(sortedGroupedRecords[index].length);
-      print("asdasdasdasdasd");
+      print(sortedGroupedRecords[index][ManagementType.Watering]);
+      print(sortedGroupedRecords[index][ManagementType.Watering]);
+      print(sortedGroupedRecords[index][ManagementType.Watering]);
+      print(sortedGroupedRecords[index][ManagementType.Watering]);
+      print(sortedGroupedRecords[index][ManagementType.Watering]);
+
+      print(index);
+      print(index);
+      print(index);
+      print(index);
+      print(index);
+      print(index);
+
+
       // print(sortedGroupedRecords[index][ManagementType.Repotting]);
       // print(sortedGroupedRecords[index][ManagementType.Repotting]?[0].getFormattedDate());
 
@@ -675,7 +673,7 @@ class _MyplantNullState extends State<MyplantNull> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   buildTimelineItem("03.19 \n 정상", true),
-                                  buildTimelineItem("04.19 \n 질병", true),
+                                  buildTimelineItem("14.19 \n 질병", true),
                                   buildTimelineItem("05.19 \n 해충", true),
                                   buildTimelineItem("06.19 \n 정상", true),
                                   buildTimelineItem(" \n ", false),
@@ -763,10 +761,6 @@ class _MyplantNullState extends State<MyplantNull> {
             child: ElevatedButton(
               onPressed: () {
                 // 도감 등록하기 버튼 클릭 시 실행될 코드
-                print("도감 등록하기 버튼 클릭 시 실행될 코드");
-                print("도감 등록하기 버튼 클릭 시 실행될 코드");
-                print("도감 등록하기 버튼 클릭 시 실행될 코드");
-                print("도감 등록하기 버튼 클릭 시 실행될 코드");
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xff6bbe45),
@@ -809,11 +803,7 @@ class _MyplantNullState extends State<MyplantNull> {
                     _updatePlant(plantIndex);
                     // return index1;
                   });
-                  print("메인쪽");
-                  print("메인쪽");
-                  print(plantIndex);
-                  print("메인쪽");
-                  print("메인쪽");
+
                 }, _userPlants),
               ),
             ),

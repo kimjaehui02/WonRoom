@@ -97,6 +97,8 @@ class PlantManagementRecord {
     final DateFormat formatter = DateFormat('MM.dd');
     return formatter.format(managementDate);
   }
+
+
 }
 
 

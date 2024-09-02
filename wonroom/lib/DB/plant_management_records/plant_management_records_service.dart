@@ -101,4 +101,26 @@ class PlantManagementService {
       print("Error: $e");
     }
   }
+
+  bool isDateToday(DateTime date) {
+    // 현재 날짜
+    DateTime today = DateTime.now();
+
+    print("datedatedatedatedatedatedate");
+    print(date);
+    print(date);
+    print(date);
+    print(date);
+    print(today);
+    print(today);
+    print(today);
+    print(today);
+
+    // 날짜만 비교하기 위해 시간 부분은 무시
+    DateTime todayDateOnly = DateTime(today.year, today.month, today.day);
+    DateTime dateOnly = DateTime(date.year, date.month, date.day);
+
+    return todayDateOnly.isAtSameMomentAs(dateOnly);
+  }
+
 }
