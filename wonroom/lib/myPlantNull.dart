@@ -72,6 +72,7 @@ class _MyplantNullState extends State<MyplantNull> {
   // 인덱스(식물별) - 일정종류 - 일정 낱개
   List<Map<ManagementType, List<PlantManagementRecord>>> sortedGroupedRecords = [{}];
 
+
   @override
   void initState() {
     super.initState();
@@ -402,186 +403,195 @@ class _MyplantNullState extends State<MyplantNull> {
                       SizedBox(height: 12),
 
                       // 물주기 기록
-                      Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(30),
-                          decoration: BoxDecoration(
-                              color : Color(0xfffafafa),
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.water_drop,
-                                    size: 32,
-                                    color: Colors.lightBlueAccent,
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    '물주기 기록',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  buildTimelineItem("03.19", true),
-                                  buildTimelineItem("04.19", true),
-                                  buildTimelineItem("05.19", true),
-                                  buildTimelineItem("06.19", true),
-                                  buildTimelineItem(" ", false),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                      // Center(
+                      //   child: Container(
+                      //     width: MediaQuery.of(context).size.width,
+                      //     padding: EdgeInsets.all(30),
+                      //     decoration: BoxDecoration(
+                      //         color : Color(0xfffafafa),
+                      //         borderRadius: BorderRadius.circular(10)
+                      //     ),
+                      //     child: Column(
+                      //       children: [
+                      //         Row(
+                      //           mainAxisAlignment: MainAxisAlignment.center,
+                      //           children: [
+                      //             Icon(
+                      //               Icons.water_drop,
+                      //               size: 32,
+                      //               color: Colors.lightBlueAccent,
+                      //             ),
+                      //             SizedBox(width: 4),
+                      //             Text(
+                      //               '물주기 기록',
+                      //               style: TextStyle(
+                      //                 fontSize: 20,
+                      //                 fontWeight: FontWeight.bold,
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //         SizedBox(height: 20),
+                      //         Row(
+                      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //           children: [
+                      //             buildTimelineItem("03.19", true),
+                      //             buildTimelineItem("04.19", true),
+                      //             buildTimelineItem("05.19", true),
+                      //             buildTimelineItem("06.19", true),
+                      //             buildTimelineItem(" ", false),
+                      //           ],
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+
+                      makeBox(context, Icons.water_drop, "물주기 기록", sortedGroupedRecords[plantIndex], ManagementType.Watering),
 
                       SizedBox(height: 24),
 
                       // 영양제 기록
-                      Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(30),
-                          decoration: BoxDecoration(
-                              color : Color(0xfffafafa),
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'images/potion.png', // 영양제 아이콘
-                                    width: 32,
-                                    height: 32,
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    '영양제 기록',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  buildTimelineItem("03.19", true),
-                                  buildTimelineItem("04.19", true),
-                                  buildTimelineItem(" ", false),
-                                  buildTimelineItem(" ", false),
-                                  buildTimelineItem(" ", false),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                      // Center(
+                      //   child: Container(
+                      //     width: MediaQuery.of(context).size.width,
+                      //     padding: EdgeInsets.all(30),
+                      //     decoration: BoxDecoration(
+                      //         color : Color(0xfffafafa),
+                      //         borderRadius: BorderRadius.circular(10)
+                      //     ),
+                      //     child: Column(
+                      //       children: [
+                      //         Row(
+                      //           mainAxisAlignment: MainAxisAlignment.center,
+                      //           children: [
+                      //             Image.asset(
+                      //               'images/potion.png', // 영양제 아이콘
+                      //               width: 32,
+                      //               height: 32,
+                      //             ),
+                      //             SizedBox(width: 4),
+                      //             Text(
+                      //               '영양제 기록',
+                      //               style: TextStyle(
+                      //                 fontSize: 20,
+                      //                 fontWeight: FontWeight.bold,
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //         SizedBox(height: 20),
+                      //         Row(
+                      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //           children: [
+                      //             buildTimelineItem("03.19", true),
+                      //             buildTimelineItem("04.19", true),
+                      //             buildTimelineItem(" ", false),
+                      //             buildTimelineItem(" ", false),
+                      //             buildTimelineItem(" ", false),
+                      //           ],
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+                      makeBox(context, 'images/potion.png', "영양제 기록", sortedGroupedRecords[plantIndex], ManagementType.Fertilizing),
+
                       SizedBox(height: 24),
 
                       // 가지치기 기록
-                      Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(30),
-                          decoration: BoxDecoration(
-                              color : Color(0xfffafafa),
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'images/scissor.png', // 가지치기 아이콘
-                                    width: 32,
-                                    height: 32,
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    '가지치기 기록',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 20),
-                              Container(
-                                child: Column(
-                                  children: [
-                                    Text('기록이 없습니다. \n 기록을 추가해보세요.',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(color: Color(0xff787878)),),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                      // Center(
+                      //   child: Container(
+                      //     width: MediaQuery.of(context).size.width,
+                      //     padding: EdgeInsets.all(30),
+                      //     decoration: BoxDecoration(
+                      //         color : Color(0xfffafafa),
+                      //         borderRadius: BorderRadius.circular(10)
+                      //     ),
+                      //     child: Column(
+                      //       children: [
+                      //         Row(
+                      //           mainAxisAlignment: MainAxisAlignment.center,
+                      //           children: [
+                      //             Image.asset(
+                      //               'images/scissor.png', // 가지치기 아이콘
+                      //               width: 32,
+                      //               height: 32,
+                      //             ),
+                      //             SizedBox(width: 4),
+                      //             Text(
+                      //               '가지치기 기록',
+                      //               style: TextStyle(
+                      //                 fontSize: 20,
+                      //                 fontWeight: FontWeight.bold,
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //         SizedBox(height: 20),
+                      //         Container(
+                      //           child: Column(
+                      //             children: [
+                      //               Text('기록이 없습니다. \n 기록을 추가해보세요.',
+                      //                 textAlign: TextAlign.center,
+                      //                 style: TextStyle(color: Color(0xff787878)),),
+                      //             ],
+                      //           ),
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
+
+                      makeBox(context, 'images/scissor.png', "가지치기 기록", sortedGroupedRecords[plantIndex], ManagementType.Pruning),
+
                       SizedBox(height: 24),
 
+                      makeBox(context, 'images/soil.png', "분갈이 기록", sortedGroupedRecords[plantIndex], ManagementType.Repotting),
+
                       // 분갈이 기록
-                      Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(30),
-                          decoration: BoxDecoration(
-                              color : Color(0xfffafafa),
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    'images/soil.png', // 분갈이 아이콘
-                                    width: 32,
-                                    height: 32,
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    '분갈이 기록',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 20),
-                              Container(
-                                child: Column(
-                                  children: [
-                                    Text('기록이 없습니다. \n 기록을 추가해보세요.',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(color: Color(0xff787878)),),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                      // Center(
+                      //   child: Container(
+                      //     width: MediaQuery.of(context).size.width,
+                      //     padding: EdgeInsets.all(30),
+                      //     decoration: BoxDecoration(
+                      //         color : Color(0xfffafafa),
+                      //         borderRadius: BorderRadius.circular(10)
+                      //     ),
+                      //     child: Column(
+                      //       children: [
+                      //         Row(
+                      //           mainAxisAlignment: MainAxisAlignment.center,
+                      //           children: [
+                      //             Image.asset(
+                      //               'images/soil.png', // 분갈이 아이콘
+                      //               width: 32,
+                      //               height: 32,
+                      //             ),
+                      //             SizedBox(width: 4),
+                      //             Text(
+                      //               '분갈이 기록',
+                      //               style: TextStyle(
+                      //                 fontSize: 20,
+                      //                 fontWeight: FontWeight.bold,
+                      //               ),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //         SizedBox(height: 20),
+                      //         Container(
+                      //           child: Column(
+                      //             children: [
+                      //               Text('기록이 없습니다. \n 기록을 추가해보세요.',
+                      //                 textAlign: TextAlign.center,
+                      //                 style: TextStyle(color: Color(0xff787878)),),
+                      //             ],
+                      //           ),
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
 
                     ],
                   ),
@@ -596,97 +606,97 @@ class _MyplantNullState extends State<MyplantNull> {
                 ),
 
                 // 진단
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '진단 기록',
-                              style: TextStyle(
-                                fontSize: 21,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-
-                            TextButton(onPressed: (){
-                              Navigator.push(context,
-                                MaterialPageRoute(builder: (_)=>MyPlantClinic()),
-                              );
-                            },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    '자세히 보기 ',
-                                    style: TextStyle(
-                                      color: Color(0xff787878),
-                                    ),
-                                  ),
-                                  Icon(Icons.arrow_forward_ios,
-                                    size: 12,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: 12),
-
-                      // 진단 기록
-                      Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          padding: EdgeInsets.all(30),
-                          decoration: BoxDecoration(
-                              color : Color(0xfffafafa),
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.eco,
-                                    size: 32,
-                                    color: Colors.lightGreen,
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    '건강 기록',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  buildTimelineItem("03.19 \n 정상", true),
-                                  buildTimelineItem("14.19 \n 질병", true),
-                                  buildTimelineItem("05.19 \n 해충", true),
-                                  buildTimelineItem("06.19 \n 정상", true),
-                                  buildTimelineItem(" \n ", false),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
+                // Container(
+                //   padding: const EdgeInsets.all(16),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Container(
+                //         padding: EdgeInsets.only(left: 10),
+                //         child: Row(
+                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //           children: [
+                //             Text(
+                //               '진단 기록',
+                //               style: TextStyle(
+                //                 fontSize: 21,
+                //                 fontWeight: FontWeight.bold,
+                //               ),
+                //             ),
+                //
+                //             TextButton(onPressed: (){
+                //               Navigator.push(context,
+                //                 MaterialPageRoute(builder: (_)=>MyPlantClinic()),
+                //               );
+                //             },
+                //               child: Row(
+                //                 children: [
+                //                   Text(
+                //                     '자세히 보기 ',
+                //                     style: TextStyle(
+                //                       color: Color(0xff787878),
+                //                     ),
+                //                   ),
+                //                   Icon(Icons.arrow_forward_ios,
+                //                     size: 12,
+                //                   )
+                //                 ],
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //
+                //       SizedBox(height: 12),
+                //
+                //       // 진단 기록
+                //       Center(
+                //         child: Container(
+                //           width: MediaQuery.of(context).size.width,
+                //           padding: EdgeInsets.all(30),
+                //           decoration: BoxDecoration(
+                //               color : Color(0xfffafafa),
+                //               borderRadius: BorderRadius.circular(10)
+                //           ),
+                //           child: Column(
+                //             children: [
+                //               Row(
+                //                 mainAxisAlignment: MainAxisAlignment.center,
+                //                 children: [
+                //                   Icon(
+                //                     Icons.eco,
+                //                     size: 32,
+                //                     color: Colors.lightGreen,
+                //                   ),
+                //                   SizedBox(width: 4),
+                //                   Text(
+                //                     '건강 기록',
+                //                     style: TextStyle(
+                //                       fontSize: 20,
+                //                       fontWeight: FontWeight.bold,
+                //                     ),
+                //                   ),
+                //                 ],
+                //               ),
+                //               SizedBox(height: 20),
+                //               Row(
+                //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //                 children: [
+                //                   buildTimelineItem("03.19 \n 정상", true),
+                //                   buildTimelineItem("14.19 \n 질병", true),
+                //                   buildTimelineItem("05.19 \n 해충", true),
+                //                   buildTimelineItem("06.19 \n 정상", true),
+                //                   buildTimelineItem(" \n ", false),
+                //                 ],
+                //               )
+                //             ],
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                makeBox(context, Icons.eco, "진단 기록", sortedGroupedRecords[plantIndex], ManagementType.Diagnosis),
                 SizedBox(height: 100,),
 
                 Padding(
@@ -879,6 +889,91 @@ Widget buildTimelineItem(String date, bool isActive) {
     ],
   );
 }
+
+Widget makeBox(BuildContext context, dynamic icon, String title, Map<ManagementType, List<PlantManagementRecord>> records, type) {
+  List<PlantManagementRecord> recordList = records[type] ?? [];
+
+  return Center(
+    child: Container(
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.all(30),
+      decoration: BoxDecoration(
+          color: Color(0xfffafafa),
+          borderRadius: BorderRadius.circular(10)),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon is String
+                ? Image.asset(
+              icon, // 이미지 아이콘
+              width: 32,
+              height: 32,
+            )
+                : Icon(
+                icon,
+                              size: 32,
+                              color: Colors.lightBlueAccent,
+                            ),
+              SizedBox(width: 4),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20),
+          recordList.isNotEmpty
+              ? Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: buildTimelineItemsForManagementType(recordList),
+          )
+              : Container(
+            child: Column(
+              children: [
+                Text(
+                  '기록이 없습니다. \n 기록을 추가해보세요.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Color(0xff787878)),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    ),
+  );
+}
+
+List<Widget> buildTimelineItemsForManagementType(List<PlantManagementRecord> records) {
+  // 가장 최근 5개의 기록만 사용 (최신순으로 정렬되어 있다고 가정)
+  int displayCount = records.length > 5 ? 5 : records.length;
+
+  // 최신 5개 기록만 선택하고 오래된 순서로 정렬
+  List<PlantManagementRecord> displayRecords = records.take(displayCount).toList().reversed.toList();
+
+  // 5개의 슬롯을 만들고 해당 슬롯에 기록을 채우기
+  return List.generate(5, (index) {
+    if (index < displayRecords.length) {
+      return buildTimelineItem(
+        displayRecords[index].getFormattedDate(),
+        true, // 활성화 상태
+      );
+    } else {
+      return buildTimelineItem(
+        " ", // 빈 문자열
+        false, // 비활성화 상태
+      );
+    }
+  });
+}
+
+
+
 
 // 보존된 리스트
 // children: [
