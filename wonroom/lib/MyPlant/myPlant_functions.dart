@@ -18,15 +18,6 @@ class PlantAction {
   });
 }
 
-class Record {
-  final String date;
-  final bool hasRecord;
-
-  Record({
-    required this.date,
-    required this.hasRecord,
-  });
-}
 
 List<Widget> menuButton(int count, black, setState, _userPlants)
 {
@@ -206,81 +197,4 @@ List<Widget> buildPlantActionContainers(List<PlantAction> actions, _id, _loading
     );
   }).toList();
 }
-
-Widget buildRecordSection({
-  required BuildContext context,
-  required String title,
-  required Widget icon,
-  required List<Record> records,
-}) {
-  return Center(
-    child: Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(30),
-      decoration: BoxDecoration(
-        color: Color(0xfffafafa),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              icon,
-              SizedBox(width: 4),
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-          records.isEmpty
-              ? Container(
-            child: Column(
-              children: [
-                Text(
-                  '기록이 없습니다. \n 기록을 추가해보세요.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Color(0xff787878)),
-                ),
-              ],
-            ),
-          )
-              : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: records.map((record) => buildTimelineItem(record.date, record.hasRecord)).toList(),
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget buildTimelineItem(String date, bool hasRecord) {
-  return Expanded(
-    child: Column(
-      children: [
-        Container(
-          height: 2,
-          color: hasRecord ? Colors.blue : Colors.grey,
-        ),
-        SizedBox(height: 4),
-        Text(
-          date,
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-
-
 
