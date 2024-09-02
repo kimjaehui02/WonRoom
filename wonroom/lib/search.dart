@@ -89,65 +89,65 @@ class _SearchState extends State<Search> {
           SizedBox(height: 20,),
 
           // 검색 결과
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: Color(0xffeeeeee),
-                  width: 1,
-                ),
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.2,
-                  height: MediaQuery.of(context).size.width * 0.2,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage('images/img01.jpg'),
-                    ),
-                  ),
-                ),
-
-
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('몬스테라',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Color(0xff595959),
-                              fontWeight: FontWeight.bold
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
-
-                        SizedBox(height: 5,),
-
-                        Text('큰 잎과 독특한 구멍이 있는 열대 식물입니다. 천남성과의 여러해살이 덩굴성 식물. 관엽식물로 길이는',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xff787878),
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Container(
+          //   margin: EdgeInsets.symmetric(horizontal: 16),
+          //   padding: EdgeInsets.all(8),
+          //   decoration: BoxDecoration(
+          //     border: Border(
+          //       top: BorderSide(
+          //         color: Color(0xffeeeeee),
+          //         width: 1,
+          //       ),
+          //     ),
+          //   ),
+          //   child: Row(
+          //     children: [
+          //       Container(
+          //         width: MediaQuery.of(context).size.width * 0.2,
+          //         height: MediaQuery.of(context).size.width * 0.2,
+          //         decoration: BoxDecoration(
+          //           borderRadius: BorderRadius.circular(10),
+          //           image: DecorationImage(
+          //             fit: BoxFit.fill,
+          //             image: AssetImage('images/img01.jpg'),
+          //           ),
+          //         ),
+          //       ),
+          //
+          //
+          //       Expanded(
+          //         child: Padding(
+          //           padding: const EdgeInsets.all(16),
+          //           child: Column(
+          //             crossAxisAlignment: CrossAxisAlignment.start,
+          //             children: [
+          //               Text('몬스테라',
+          //                 style: TextStyle(
+          //                     fontSize: 18,
+          //                     color: Color(0xff595959),
+          //                     fontWeight: FontWeight.bold
+          //                 ),
+          //                 overflow: TextOverflow.ellipsis,
+          //                 maxLines: 1,
+          //               ),
+          //
+          //               SizedBox(height: 5,),
+          //
+          //               Text('큰 잎과 독특한 구멍이 있는 열대 식물입니다. 천남성과의 여러해살이 덩굴성 식물. 관엽식물로 길이는',
+          //                 style: TextStyle(
+          //                   fontSize: 14,
+          //                   color: Color(0xff787878),
+          //                 ),
+          //                 overflow: TextOverflow.ellipsis,
+          //                 maxLines: 2,
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

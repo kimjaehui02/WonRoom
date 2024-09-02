@@ -513,7 +513,7 @@ class _MyplantState extends State<Myplant> {
                                       height: 18,
                                     ),
                                     label: Text(
-                                      "영양재",
+                                      "영양제",
                                       style: TextStyle(color: Color(0xff787878)),
                                     ),
                                     style: OutlinedButton.styleFrom(

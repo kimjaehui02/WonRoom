@@ -94,6 +94,7 @@ class FindingIdSuccess extends StatelessWidget {
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 18,
+                          fontWeight: FontWeight.bold
                       ),
                     ),
                   ),
@@ -122,8 +123,9 @@ class FindingIdSuccess extends StatelessWidget {
                     child: Text(
                       '로그인',
                       style: TextStyle(
-                        color: Colors.white, // 텍스트 색상
-                        fontSize: 18, // 글자 크기
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold
                       ),
                     ),
                   ),

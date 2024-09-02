@@ -4,6 +4,7 @@ import 'package:wonroom/myPlantNull.dart';
 import 'package:wonroom/myPlant.dart';
 import 'package:wonroom/myPlantRegistration.dart';
 import 'package:wonroom/plantClinicChat.dart';
+import 'package:wonroom/search.dart';
 import 'package:wonroom/showFloatingActionModal.dart';
 import 'plantDictionary.dart';
 
@@ -88,7 +89,12 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         automaticallyImplyLeading: false,
         leading: IconButton(
           icon: const Icon(Icons.search),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Search()),
+            );
+          },
         ),
         title: RichText(
           text: TextSpan(
@@ -537,7 +543,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 onPressed: () {},
                 child: const Text(
                   '다이어리 이동하기 >',
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(color: Color(0xff787878)),
                 ),
               ),
             ],
@@ -586,7 +592,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                             side: BorderSide(color: Color(0xffc2c2c2)),
                           ),
                         ),
@@ -605,7 +611,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                             side: BorderSide(color: Color(0xffc2c2c2)),
                           ),
                         ),
@@ -624,7 +630,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                             side: BorderSide(color: Color(0xffc2c2c2)),
                           ),
                         ),
@@ -642,7 +648,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                                 color: Color(0xff787878)),
                           ),
                           style: OutlinedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                             side: BorderSide(color: Color(0xffc2c2c2)),
                           ),
                         ),
@@ -685,10 +691,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
-
-
-
 
 
 
@@ -860,7 +862,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                   Text(
                     '더보기 >',
                     style: TextStyle(
-                      color: Colors.grey,
+                      color: Color(0xff787878),
                     ),
                   ),
                   SizedBox(width: 5),
@@ -903,7 +905,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                   Text(
                     '더보기 >',
                     style: TextStyle(
-                      color: Colors.grey,
+                      color: Color(0xff787878),
                     ),
                   ),
                   SizedBox(width: 5),
