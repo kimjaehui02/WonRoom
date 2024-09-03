@@ -204,8 +204,10 @@ List<Widget> buildPlantActionContainers(List<PlantAction> actions, _id, _loading
   }).toList();
 }
 
-void plants(String label, int _id, _loading)async
+Future<bool> plants(String label, int _id, _loading)async
 {
+  bool returnbool = false;
+
   try {
     // 디버깅용 출력
     print("Starting action...");
@@ -244,7 +246,8 @@ void plants(String label, int _id, _loading)async
 
     // 오늘 날짜와 같은 일정이 있는지 확인
     bool shouldAddRecord = true; // 기본적으로 레코드를 추가하도록 설정
-    if (_check != null && _check.isNotEmpty) {
+    if (_check != null && _check.isNotEmpty)
+    {
       // 같은 날짜와 같은 관리 타입의 레코드가 있는지 확인
       for (var record in _check) {
         bool isToday = _pms.isDateToday(record.managementDate);
@@ -277,10 +280,17 @@ void plants(String label, int _id, _loading)async
     }
 
     // 화면 업데이트
-    _loading();
+    if(_loading != null)
+      {
+        _loading();
+      }
+
 
   } catch (e) {
     // 예외 처리
     print("An error occurred: $e");
   }
+
+  return returnbool;
 }
+

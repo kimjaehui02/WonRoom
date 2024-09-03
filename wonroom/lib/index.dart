@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wonroom/DB/plant_management_records/plant_management_model.dart';
+import 'package:wonroom/DB/plant_management_records/plant_management_records_service.dart';
 import 'package:wonroom/DB/user_plants/user_plants_model.dart';
 import 'package:wonroom/DB/user_plants/user_plants_service.dart';
 import 'package:wonroom/Flask/storage_manager.dart';
@@ -44,7 +46,12 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
   final ScrollController _scrollController = ScrollController();
   bool _isFabVisible = false;
-  
+
+  bool _1 = false;
+  bool _2 = false;
+  bool _3 = false;
+  bool _4 = false;
+
   // 다이어리 이동 페이지의 화면을 표시하기위해
   // 식물인덱스의0번째나 즐겨찾기꺼를 담습니다
   UserPlant? indexPlant = null;
@@ -58,6 +65,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     // 비동기 작업을 위해 별도의 메서드 호출
     _initializeIndexPlant();
 
+
+    initializeBooleans(indexPlant?.plantId ?? -1);
+
   }
 
 
@@ -69,6 +79,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     });
   }
 
+  // 식물값을 얻어오는 함수
   Future<UserPlant?> _getPlants() async {
     UserPlantService ups = UserPlantService();
     final _data = await readUserData();
@@ -83,6 +94,49 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     return _plants[0];
   }
   
+  // 4개의 불값을 조절
+  Future<void> initializeBooleans(int plantId) async {
+    // 각각의 일정에 대한 중복 여부를 저장할 불리언 변수들
+    _1 = false; // 물주기
+    _2 = false; // 영양제
+    _3 = false; // 가지치기
+    _4 = false; // 분갈이
+
+    // PlantManagementService 초기화
+    PlantManagementService _pms = PlantManagementService();
+
+    setState(() async{
+      // 각 관리 타입에 대해 중복 여부 확인
+      _1 = await isDateDuplicate(plantId, ManagementType.Watering, _pms);
+      _2 = await isDateDuplicate(plantId, ManagementType.Fertilizing, _pms);
+      _3 = await isDateDuplicate(plantId, ManagementType.Pruning, _pms);
+      _4 = await isDateDuplicate(plantId, ManagementType.Repotting, _pms);
+
+    });
+
+    // 결과 출력 (디버깅용)
+    print('물주기 중복 여부: $_1');
+    print('영양제 중복 여부: $_2');
+    print('가지치기 중복 여부: $_3');
+    print('분갈이 중복 여부: $_4');
+
+    // 추가 로직이 필요하다면 여기에 작성
+  }
+  // 식물버튼 불값
+  Future<bool> isDateDuplicate(int plantId, ManagementType type, PlantManagementService pms) async {
+    // 해당 식물의 일정 기록을 가져옴
+    List<PlantManagementRecord> records = await pms.getRecords(plantId);
+
+    // 오늘 날짜와 같은 일정이 있는지 확인
+    for (var record in records) {
+      if (pms.isDateToday(record.managementDate) && record.managementType == type) {
+        return true; // 중복된 날짜가 있는 경우
+      }
+    }
+
+    return false; // 중복된 날짜가 없는 경우
+  }
+
 
   @override
   void dispose() {
@@ -622,8 +676,12 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                         OutlinedButton.icon(
                           onPressed: ()
                           {
-                            // int indexPlantId = indexPlant?.plantId ?? -1;
-                            // plants("물주기", indexPlantId, _loading);
+                            // 얘네가 db에 데이터를 업데이트하거나 하는 역할을 하였으니
+                            // 다음엔 db에서 값을 가져오는 역할을 해야합니다
+                            int indexPlantId = indexPlant?.plantId ?? -1;
+                            plants("물주기", indexPlantId, null);
+
+                            initializeBooleans(indexPlantId);
                           },
                           icon: Icon(
                             Icons.water_drop,
