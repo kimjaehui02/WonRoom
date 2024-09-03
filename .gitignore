@@ -43,3 +43,6 @@ wonroom/.dart_tool/
 
 # Ignore Kotlin build cache files
 wonroom/build/app/kotlin/compileDebugKotlin/cacheable/
+
+# Ignore all .apk files
+*.apk

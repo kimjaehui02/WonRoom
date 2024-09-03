@@ -77,8 +77,8 @@ class PlantDetailPage extends StatelessWidget {
                         '• 실내에서 쉽게 키울 수 있어 인기가 많습니다.\n'
                         '• 공기 정화 능력도 뛰어납니다.\n'
                         '• 인테리어에 포인트를 주기에 좋습니다.\n'
-                        '${analysisResult}',
-                    style: TextStyle(fontSize: 16, color: Color(0xff595959)),
+                        // '${analysisResult}'
+                    ,style: TextStyle(fontSize: 16, color: Color(0xff595959)),
                   ),
                   SizedBox(height: 20),
                   Row(

@@ -8,6 +8,7 @@ import 'package:wonroom/myPage.dart';
 import 'package:wonroom/myPlantNull.dart';
 import 'package:wonroom/myPlant.dart';
 import 'package:wonroom/myPlantRegistration.dart';
+import 'package:wonroom/notificationPage.dart';
 import 'package:wonroom/plantClinicChat.dart';
 import 'package:wonroom/search.dart';
 import 'package:wonroom/showFloatingActionModal.dart';
@@ -143,7 +144,12 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_none_outlined),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationPage()),
+              );
+            },
           ),
           IconButton(
             icon: const Icon(Icons.person_outline),
