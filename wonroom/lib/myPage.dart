@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wonroom/Flask/storage_manager.dart';
 import 'package:wonroom/intro.dart';
 import 'package:wonroom/myComments.dart';
 import 'package:wonroom/pwChange.dart';
@@ -14,7 +15,24 @@ class _MyPageState extends State<MyPage> {
   String userName = '게스트';
   String userEmail = 'wonroom@naver.com';
 
+  @override
+  void initState() {
+    super.initState();
+    // 비동기 작업을 수행하는 함수 호출
+    _fetchUserData();
+  }
 
+  Future<void> _fetchUserData() async {
+    // 비동기 작업 수행
+    final data = await readUserData();
+    // 상태 업데이트
+    setState(() {
+      userName = data?["user_id"];
+      userEmail = data?["user_email"];
+    });
+  }
+
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(

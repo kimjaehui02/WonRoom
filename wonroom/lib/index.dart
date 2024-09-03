@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:wonroom/DB/user_plants/user_plants_model.dart';
+import 'package:wonroom/DB/user_plants/user_plants_service.dart';
+import 'package:wonroom/Flask/storage_manager.dart';
+import 'package:wonroom/MyPlant/myPlant_functions.dart';
 import 'package:wonroom/myPage.dart';
 import 'package:wonroom/myPlantNull.dart';
 import 'package:wonroom/myPlant.dart';
@@ -40,12 +44,46 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
   final ScrollController _scrollController = ScrollController();
   bool _isFabVisible = false;
+  
+  // 다이어리 이동 페이지의 화면을 표시하기위해
+  // 식물인덱스의0번째나 즐겨찾기꺼를 담습니다
+  UserPlant? indexPlant = null;
+  
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
     _scrollController.addListener(_scrollListener);
+
+    // 비동기 작업을 위해 별도의 메서드 호출
+    _initializeIndexPlant();
+
   }
+
+
+  Future<void> _initializeIndexPlant() async {
+    // 비동기 작업을 수행하고 결과를 상태에 반영
+    UserPlant? plant = await _getPlants();
+    setState(() {
+      indexPlant = plant;
+    });
+  }
+
+  Future<UserPlant?> _getPlants() async {
+    UserPlantService ups = UserPlantService();
+    final _data = await readUserData();
+    List<UserPlant>? _plants = await ups.getPlants(_data?["user_id"]);
+
+    // _plants가 null이거나 비어있으면 null 반환
+    if (_plants == null || _plants.isEmpty) {
+      return null;
+    }
+
+    // 첫 번째 플랜트를 반환
+    return _plants[0];
+  }
+  
+
   @override
   void dispose() {
     _scrollController.removeListener(_scrollListener);
@@ -80,6 +118,16 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       curve: Curves.easeInOut,
     );
   }
+  
+  // 다이어리 이동하기로 화면을 이동시킵니다
+  void _moveDiary()
+  {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MyplantNull()), // MyPage로 이동
+    );
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,7 +195,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
           indicatorWeight: 3.0,
           tabAlignment: TabAlignment.center,
           labelPadding: EdgeInsets.symmetric(horizontal: 20.0),
-          tabs: const [
+          tabs: const
+          [
             Tab(text: '홈'),
             Tab(text: '식물사전'),
             Tab(text: '커뮤니티'),
@@ -274,7 +323,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
           if (index == 0) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Myplant()),
+              MaterialPageRoute(builder: (context) => MyplantNull()),
             );
           } else if (index == 1) {
             Navigator.push(
@@ -309,9 +358,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         children: [
           // 다이어리 빈곳 유무를 교체할 때 쓰는곳
           // if (false)
-            _buildMyPlantsSection(),
-          // else
-          //   _buildMyPlantsSectionNull(),
+            indexPlant != null ?_buildMyPlantsSection():
+            _buildMyPlantsSectionNull(),
 
 
           const SizedBox(height: 30),
@@ -534,7 +582,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {_moveDiary();},
                 child: const Text(
                   '다이어리 이동하기 >',
                   style: TextStyle(color: Colors.grey),
@@ -572,7 +620,11 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                       runSpacing: 2, // 줄 바꿈 시의 세로 간격
                       children: [
                         OutlinedButton.icon(
-                          onPressed: () {},
+                          onPressed: ()
+                          {
+                            // int indexPlantId = indexPlant?.plantId ?? -1;
+                            // plants("물주기", indexPlantId, _loading);
+                          },
                           icon: Icon(
                             Icons.water_drop,
                             size: 16,
@@ -786,7 +838,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {_moveDiary();},
                 child: Row(
                   children: const [
                     Text(

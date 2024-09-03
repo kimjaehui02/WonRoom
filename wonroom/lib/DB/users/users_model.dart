@@ -7,6 +7,7 @@ class User {
   String? userNick;
   String? userEmail;
   DateTime regDate;
+  String? favoritePlantId; // 추가된 필드
 
   User({
     required this.userId,
@@ -14,6 +15,7 @@ class User {
     required this.userNick,
     required this.userEmail,
     required this.regDate,
+    this.favoritePlantId, // 선택적 필드
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class User {
       userNick: json["user_nick"],
       userEmail: json["user_email"],
       regDate: regDate,
+      favoritePlantId: json["favorite_plant_id"], // 추가된 필드
     );
   }
 
@@ -38,6 +41,7 @@ class User {
     "user_nick": userNick,
     "user_email": userEmail,
     "reg_date": regDate.toIso8601String(),  // DateTime을 ISO 8601 문자열로 변환
+    "favorite_plant_id": favoritePlantId, // 추가된 필드
   };
 
   String? getuserId() {
