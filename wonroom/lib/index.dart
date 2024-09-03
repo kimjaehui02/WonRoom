@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wonroom/PlantDetailPage.dart';
 import 'package:wonroom/PostDetailPage.dart';
 import 'package:wonroom/community.dart';
+import 'package:wonroom/customerService.dart';
 import 'package:wonroom/inqurityDetails.dart';
 import 'package:wonroom/myPage.dart';
 import 'package:wonroom/myPlantNull.dart';
@@ -50,11 +51,24 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
     _scrollController.addListener(_scrollListener);
+
+    //   추가
+    // Tab change listener
+    _tabController.addListener(() {
+      if (_tabController.index == 3) { // 고객센터 탭이 선택되었을 때
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CustomerService()), // customerService.dart로 이동
+        );
+        _tabController.index = 0; // 홈 탭으로 되돌아가도록 설정
+      }
+    });
   }
   @override
   void dispose() {
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
+    _tabController.dispose();
     super.dispose();
   }
   void _scrollListener() {
@@ -173,11 +187,14 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               _buildHomePage(),
               PlantDictionary(),
               Community(),
+              // 추가
+              Container(),
+              // CustomerService(),
               // _buildPlantDictionaryPage(),
               // PlantDictionary(),
               // _buildPlantClinicPage('식물클리닉 페이지'),
               // _buildCommunityPage('커뮤니티 페이지'),
-              _buildCustomerServicePage('고객센터 페이지'),
+              // _buildCustomerServicePage('고객센터 페이지'),
             ],
           ),
           if (_isFabVisible)
@@ -1171,9 +1188,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   //   );
   // }
 
-  Widget _buildCustomerServicePage(String text) {
-    return Center(
-      child: Text(text),
-    );
-  }
+  // Widget _buildCustomerServicePage(String text) {
+  //   return Center(
+  //     child: Text(text),
+  //   );
+  // }
 }
