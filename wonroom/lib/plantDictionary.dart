@@ -104,12 +104,12 @@ class _PlantDictionaryState extends State<PlantDictionary> {
                       String analysisResult = await sendNameToServer(plantName, 'plant_name');
 
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PlantDetailPage(analysisResult: analysisResult),
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => PlantDetailPage(),
+                      //   ),
+                      // );
                       // Navigator.push(
                       //   context,
                       //   MaterialPageRoute(

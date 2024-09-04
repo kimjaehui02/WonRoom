@@ -1,9 +1,18 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 class PlantClinicChat extends StatefulWidget {
-  const PlantClinicChat({super.key});
+  final Map<String, dynamic>? jsonData;
+  final String? imagePath;
+
+  const PlantClinicChat({
+    Key? key,
+    this.jsonData,
+    this.imagePath,
+  }) : super(key: key);
 
   @override
   _PlantClinicChatState createState() => _PlantClinicChatState();
@@ -13,6 +22,7 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
   final TextEditingController _messageController = TextEditingController();
   final List<Map<String, dynamic>> _messages = [];
   final ImagePicker _picker = ImagePicker();
+  bool _isSending = false; // 요청 중 여부를 확인할 변수
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +58,7 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
                             message: message['text'],
                             image: message['image'],
                             isUser: message['isUser'],
+                            isLoading: _isSending && !message['isUser'],
                           );
                         },
                         shrinkWrap: true,
@@ -60,7 +71,8 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
 
               // 입력 필드 및 버튼
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16, vertical: 20),
                 decoration: BoxDecoration(
                   border: Border(
                     top: BorderSide(
@@ -103,11 +115,13 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
                           ),
                           contentPadding: EdgeInsets.symmetric(horizontal: 16),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
+                            borderSide: BorderSide(
+                                color: Color(0xffc2c2c2), width: 1.0),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
+                            borderSide: BorderSide(
+                                color: Color(0xffc2c2c2), width: 1.0),
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
@@ -142,35 +156,10 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
               ),
             ],
           ),
-          if (_messages.isEmpty)
-            Align(
-              alignment: Alignment(0, -0.2), // x, y 좌표 조정 (0은 중앙, -0.2는 살짝 위로)
-              child: Column(
-                mainAxisSize: MainAxisSize.min, // Column의 크기를 내용에 맞게 조정
-                children: [
-                  Container(
-                    width: 200,
-                    child: Center(
-                      child: Image.asset(
-                        'images/chat-bot.png',
-                        width: 100, // 아이콘 크기
-                        height: 100, // 아이콘 크기
-                        fit: BoxFit.cover,
-                        color: Color(0xffeeeeee),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 16), // 이미지와 텍스트 사이의 간격
-                  Text(
-                    '식물을 찰영하여\n식물 정보를 확인해보세요.',
-                    style: TextStyle(
-                      color: Color(0xffc2c2c2),
-                      fontSize: 16, // 텍스트 크기 조정 (선택 사항)
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
+          // 로딩 인디케이터
+          if (_isSending)
+            Center(
+              child: CircularProgressIndicator(),
             ),
         ],
       ),
@@ -206,7 +195,8 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
               GestureDetector(
                 onTap: () async {
                   Navigator.pop(context);
-                  final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+                  final pickedFile = await _picker.pickImage(
+                      source: ImageSource.gallery);
                   if (pickedFile != null) {
                     _sendMessage(image: pickedFile.path, isUser: true);
                   }
@@ -215,7 +205,8 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Row(
                     children: [
-                      Icon(Icons.photo_library_outlined, color: Color(0xff787878)),
+                      Icon(Icons.photo_library_outlined,
+                          color: Color(0xff787878)),
                       SizedBox(width: 16), // 텍스트와 아이콘 사이 간격
                       Text('갤러리에서 선택', style: TextStyle(
                         fontSize: 16,
@@ -228,7 +219,8 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
               GestureDetector(
                 onTap: () async {
                   Navigator.pop(context);
-                  final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+                  final pickedFile = await _picker.pickImage(
+                      source: ImageSource.camera);
                   if (pickedFile != null) {
                     _sendMessage(image: pickedFile.path, isUser: true);
                   }
@@ -254,8 +246,9 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
     );
   }
 
-
   void _sendMessage({String? text, String? image, required bool isUser}) {
+    if (_isSending) return; // 요청 중일 때는 처리하지 않음
+
     setState(() {
       if (text != null && text.isNotEmpty) {
         _messages.add({
@@ -263,15 +256,6 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
           'image': null,
           'isUser': isUser,
         });
-        // Simulate GPT response
-        if (isUser) {
-          Future.delayed(Duration(seconds: 1), () {
-            _sendMessage(
-              text: 'GPT의 응답입니다. 실제 API와 연동될 부분입니다.',
-              isUser: false,
-            );
-          });
-        }
       } else if (image != null) {
         _messages.add({
           'text': null,
@@ -279,75 +263,115 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
           'isUser': isUser,
         });
       }
+      if (text != null && text.isNotEmpty || image != null) {
+        _isSending = true; // 요청 시작
+      }
     });
-    _messageController.clear();
+
+    _sendMessageToServer(text: text, image: image); // 서버로 메시지 전송
   }
 
-  Widget _buildMessageBubble({String? message, String? image, required bool isUser}) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.0),
-      child: Align(
-        alignment: isUser ? Alignment.topRight : Alignment.centerLeft,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.75,
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (!isUser)
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Color(0xffeeeeee),
-                      width: 1,
-                    ),
-                    color: Colors.white,
-                  ),
-                  child: Center(
-                    child: Image.asset(
-                      'images/chat-bot.png',
-                      width: 25,
-                      height: 25,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              SizedBox(width: 8),
-              if (image != null)
-                Container(
-                  constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width * 0.5,
-                  ),
-                  child: Image.file(
-                    File(image),
-                    fit: BoxFit.cover,
-                  ),
-                )
-              else if (message != null)
-                Flexible(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: isUser ? Color(0xff86b26a) : Color(0xffeeeeee),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      message,
-                      style: TextStyle(
-                        color: isUser ? Colors.white : Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          ),
+  Future<void> _sendMessageToServer({String? text, String? image}) async {
+    try {
+      final Uri apiUrl = Uri.parse(
+          'https://16b5-34-91-150-31.ngrok-free.app/plant_pest'); // 수정된 URL
+
+      final requestBody = <String, dynamic>{
+        if (text != null && text.isNotEmpty) 'text': text,
+        if (image != null) 'image': base64Encode(File(image).readAsBytesSync()),
+      };
+
+      print('Request URL: $apiUrl');
+      print('Request Body: $requestBody');
+
+      final response = await http.post(
+        apiUrl,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestBody),
+      );
+
+      print('Response Status: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        setState(() {
+          _messages.add({
+            'text': responseData['pest_info'] ?? '서버 응답이 없습니다.',
+            'image': null,
+            'isUser': false,
+          });
+          _isSending = false; // 요청 완료
+        });
+      } else {
+        print('서버 요청 실패: ${response.statusCode}');
+        setState(() {
+          _messages.add({
+            'text': '서버 요청 실패: 다시시도해주세요',
+            'image': null,
+            'isUser': false,
+          });
+          _isSending = false; // 요청 완료
+        });
+      }
+    } catch (e) {
+      print('서버 통신 실패: $e');
+      setState(() {
+        _messages.add({
+          'text': '서버 통신 실패: 다시시도해주세요',
+          'image': null,
+          'isUser': false,
+        });
+        _isSending = false; // 요청 완료
+      });
+    }
+  }
+
+  Widget _buildMessageBubble({
+    String? message,
+    String? image,
+    required bool isUser,
+    bool isLoading = false, // 추가된 로딩 인디케이터 상태
+  }) {
+    final isUserMessage = isUser;
+    final alignment = isUserMessage ? Alignment.centerRight : Alignment.centerLeft;
+    final backgroundColor = isUserMessage ? Colors.blueAccent : Colors.grey[300];
+    final textColor = isUserMessage ? Colors.white : Colors.black;
+
+    return Align(
+      alignment: alignment,
+      child: Container(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.75, // 최대 너비를 75%로 설정
+        ),
+        margin: EdgeInsets.symmetric(vertical: 8),
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (!isUser && isLoading)
+              Center(child: CircularProgressIndicator()), // AI 메시지에만 로딩 인디케이터 추가
+            if (message != null)
+              Text(
+                message,
+                style: TextStyle(color: textColor),
+              ),
+            if (image != null)
+              Image.file(
+                File(image),
+                width: 200,
+                height: 200,
+                fit: BoxFit.cover,
+              ),
+          ],
         ),
       ),
     );
   }
+
+
 }
