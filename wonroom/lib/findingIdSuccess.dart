@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wonroom/Finding_Pw.dart';
+import 'package:wonroom/findingPw.dart';
 import 'package:wonroom/login.dart';
 
 class FindingIdSuccess extends StatelessWidget {

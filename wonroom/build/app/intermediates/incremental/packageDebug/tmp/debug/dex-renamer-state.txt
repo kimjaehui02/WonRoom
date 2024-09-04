@@ -1,33 +1,10 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#Fri Aug 30 11:11:06 KST 2024
-base.0=C\:\\Users\\smhrd1\\Desktop\\thirdproject\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-base.1=C\:\\Users\\smhrd1\\Desktop\\thirdproject\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
-base.2=C\:\\Users\\smhrd1\\Desktop\\thirdproject\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.3=C\:\\Users\\smhrd1\\Desktop\\thirdproject\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
-base.4=C\:\\Users\\smhrd1\\Desktop\\thirdproject\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\6\\classes.dex
-base.5=C\:\\Users\\smhrd1\\Desktop\\thirdproject\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
-=======
-#Fri Aug 30 12:20:35 KST 2024
-=======
-#Fri Aug 30 17:19:21 KST 2024
->>>>>>> 전다혜
+#Tue Sep 03 11:52:35 KST 2024
 base.0=C\:\\Users\\smhrd\\Desktop\\project\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=C\:\\Users\\smhrd\\Desktop\\project\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
 base.2=C\:\\Users\\smhrd\\Desktop\\project\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
 base.3=C\:\\Users\\smhrd\\Desktop\\project\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
 base.4=C\:\\Users\\smhrd\\Desktop\\project\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\6\\classes.dex
->>>>>>> 한채연
-=======
-#Fri Aug 30 17:40:24 KST 2024
-base.0=C\:\\Users\\smhrd\\Desktop\\wonroom\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
-base.1=C\:\\Users\\smhrd\\Desktop\\wonroom\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
-base.2=C\:\\Users\\smhrd\\Desktop\\wonroom\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.3=C\:\\Users\\smhrd\\Desktop\\wonroom\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\1\\classes.dex
-base.4=C\:\\Users\\smhrd\\Desktop\\wonroom\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\6\\classes.dex
-base.5=C\:\\Users\\smhrd\\Desktop\\wonroom\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
->>>>>>> 오준하2
+base.5=C\:\\Users\\smhrd\\Desktop\\project\\WonRoom\\wonroom\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes2.dex
 path.0=classes.dex
 path.1=0/classes.dex
 path.2=0/classes.dex

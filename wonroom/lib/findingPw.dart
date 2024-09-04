@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wonroom/Finding_Pw_Temporarily.dart';
+import 'package:wonroom/findingPwTemporarily.dart';
 
 class FindingPw extends StatelessWidget {
   const FindingPw({super.key});

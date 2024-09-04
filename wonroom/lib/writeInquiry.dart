@@ -1,4 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:wonroom/inqurityDetails.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+
 
 class WriteInquiry extends StatefulWidget {
   const WriteInquiry({super.key});
@@ -11,6 +16,45 @@ class _WriteInquiryState extends State<WriteInquiry> {
   String? _selectedCategory;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
+
+  // 이미지 선택에 필요한 코드
+  List<XFile?> _images = [];
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    if (_images.length >= 3) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('이미지는 최대 3개까지 선택할 수 있습니다.')),
+      );
+      return;
+    }
+
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _images.add(image);
+      });
+    }
+  }
+
+  Widget _buildImageContainer(XFile? imageFile) {
+    return Container(
+      width: 80,
+      height: 80,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(8),
+        image: imageFile == null
+            ? null
+            : DecorationImage(
+          image: FileImage(File(imageFile.path)),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  // ==============================================================
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +87,25 @@ class _WriteInquiryState extends State<WriteInquiry> {
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     const SizedBox(height: 8),
-                    DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
+                    DropdownButtonFormField2<String>(
+                      decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                        contentPadding: EdgeInsets.fromLTRB(-4, 0, 10, 0), // 오른쪽 패딩을 조정하여 아이콘을 왼쪽으로 이동
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 시 테두리 색상 및 두께
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0), // 비포커스 상태에서의 테두리 색상 및 두께
+                        ),
                       ),
-                      hint: const Text('문의유형을 선택해주세요.'),
+                      hint: Text(
+                        '문의유형을 선택해주세요.',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      value: _selectedCategory,
                       items: [
                         '계정 및 로그인',
                         '앱 기능 및 사용 방법',
@@ -66,6 +123,21 @@ class _WriteInquiryState extends State<WriteInquiry> {
                           _selectedCategory = newValue;
                         });
                       },
+                      style: const TextStyle(fontSize: 14, color: Colors.black),
+                      dropdownStyleData: DropdownStyleData(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        maxHeight: 300,
+                      ),
+                      buttonStyleData: ButtonStyleData(
+                        padding: EdgeInsets.zero,
+                      ),
+                      iconStyleData: IconStyleData(
+                        iconSize: 24,
+                        icon: Icon(Icons.expand_more, color: Colors.grey),
+                      ),
                     ),
                     const SizedBox(height: 16),
                     const Text(
@@ -79,7 +151,13 @@ class _WriteInquiryState extends State<WriteInquiry> {
                         border: OutlineInputBorder(),
                         contentPadding: EdgeInsets.all(12),
                         hintText: '제목을 입력하세요',
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 14), // 힌트 텍스트 크기 조절
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 시 테두리 색상 및 두께
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0), // 비포커스 상태에서의 테두리 색상 및 두께
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -100,48 +178,53 @@ class _WriteInquiryState extends State<WriteInquiry> {
                               '답을 찾지 못하셨다면, 1:1 문의하기에 남겨주세요.\n'
                               '자세한 내용과 함께 캡쳐본을 전달해주시면 더욱\n'
                               '빠르게 답변드릴 수 있습니다.',
-                          hintStyle: TextStyle(color: Colors.grey, fontSize: 14), // 힌트 텍스트 크기 조절
+                          hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 시 테두리 색상 및 두께
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0), // 비포커스 상태에서의 테두리 색상 및 두께
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(height: 15),
+
+                    // 이미지 선택에 필요한 코드
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Stack(
-                            children: [
-                              const Center(
-                                child: Icon(Icons.camera_alt_outlined, color: Colors.grey, size: 32),
-                              ),
-                              Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                                  child: const Text(
-                                    '1/3',
-                                    style: TextStyle(fontSize: 14, color: Colors.grey),
-                                  ),
+                        GestureDetector(
+                          onTap: _pickImage,
+                          child: Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.camera_alt_outlined, color: Colors.grey, size: 32),
+                                Text(
+                                  '${_images.length}/3',
+                                  style: TextStyle(fontSize: 14, color: Colors.grey),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                         const SizedBox(width: 30),
                         Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _buildImageContainer('images/멕시코소철.jpg'),
-                              _buildImageContainer('images/백량금.jpg'),
-                              _buildImageContainer('images/산세베리아.jpg'),
-                            ],
+                          child: Wrap(
+                            spacing: 8.0, // 이미지 간 간격
+                            runSpacing: 8.0, // 이미지 간 행 간격 (세로)
+                            alignment: WrapAlignment.start,
+                            children: _images
+                                .take(3)
+                                .map((image) => _buildImageContainer(image))
+                                .toList(),
                           ),
                         ),
                       ],
@@ -161,7 +244,6 @@ class _WriteInquiryState extends State<WriteInquiry> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        // 취소 버튼 클릭 시의 동작
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
@@ -181,7 +263,7 @@ class _WriteInquiryState extends State<WriteInquiry> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 16), // 버튼 사이 간격 조정
+                const SizedBox(width: 16),
                 Expanded(
                   child: SizedBox(
                     height: 50,
@@ -189,11 +271,76 @@ class _WriteInquiryState extends State<WriteInquiry> {
                       onPressed: () {
                         // 등록 버튼 클릭 시의 동작
                         // 예를 들어, 폼 제출 로직을 여기에 추가
+
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Dialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      '등록이 완료되었습니다.',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: 5),
+                                    Text(
+                                      '확인버튼을 누르면\n이전 페이지로 이동합니다.',
+                                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: 24),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.black,
+                                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 32),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                        ),
+                                        child: Container(
+                                          width: MediaQuery.of(context).size.width * 0.5,
+                                          child: Text(
+                                            '확인',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => InqurityDetails()),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff6bbe45), // 초록색 배경
+                        backgroundColor: const Color(0xff6bbe45),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(3), // 둥근 모서리
+                          borderRadius: BorderRadius.circular(3),
                         ),
                         elevation: 0, // 그림자 제거
                       ),
@@ -202,7 +349,7 @@ class _WriteInquiryState extends State<WriteInquiry> {
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
-                            fontWeight: FontWeight.bold), // 흰색 글씨
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -211,21 +358,6 @@ class _WriteInquiryState extends State<WriteInquiry> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildImageContainer(String imagePath) {
-    return Container(
-      width: 80,
-      height: 80,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(8),
-        image: DecorationImage(
-          image: AssetImage(imagePath),
-          fit: BoxFit.cover,
-        ),
       ),
     );
   }

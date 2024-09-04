@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Join/validators.dart';
 import 'Join/controllers.dart';
@@ -421,7 +422,7 @@ class _JoinState extends State<Join> {
             ),
           ),
 
-        SizedBox(height: 25.0),
+        // SizedBox(height: 25.0),
       ],
     );
   }
