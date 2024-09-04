@@ -4,6 +4,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 List<int> intList = List<int>.generate(6, (index) => index++, growable: false);
 
 class PlantDetailPage extends StatelessWidget {
+
+
   final PageController _pageController = PageController();
   String analysisResult = "플랜테라";
   // PlantDetailPage({required this.analysisResult});

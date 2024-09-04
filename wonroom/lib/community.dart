@@ -43,99 +43,120 @@ class _CommunityState extends State<Community> {
             Container(
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 14),
               color: Color(0xffeeeeee),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff595959),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 20),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          onPressed: () {
-                            // Button click action
-                          },
-                          child: Text(
-                            '전체',
-                            style: TextStyle(color: Colors.white),
-                          ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xff595959),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 20),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        SizedBox(width: 10),
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 20),
-                            side: BorderSide(
-                              color: Color(0xffc2c2c2),
-                              width: 1,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          onPressed: () {
-                            // Button click action
-                          },
-                          child: Text(
-                            '질문하기',
-                            style: TextStyle(color: Color(0xff787878)),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 20),
-                            side: BorderSide(
-                              color: Color(0xffc2c2c2),
-                              width: 1,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          onPressed: () {
-                            // Button click action
-                          },
-                          child: Text(
-                            '자랑하기',
-                            style: TextStyle(color: Color(0xff787878)),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 20),
-                            side: BorderSide(
-                              color: Color(0xffc2c2c2),
-                              width: 1,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          onPressed: () {
-                            // Button click action
-                          },
-                          child: Text(
-                            '자유게시판',
-                            style: TextStyle(color: Color(0xff787878)),
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                      ],
+                      ),
+                      onPressed: () {
+                        // Button click action
+                      },
+                      child: Text(
+                        '전체',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
-                  ),
-                ],
+                    SizedBox(width: 10),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 20),
+                        side: BorderSide(
+                          color: Color(0xffc2c2c2),
+                          width: 1,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () {
+                        // Button click action
+                      },
+                      child: Text(
+                        '질문하기',
+                        style: TextStyle(color: Color(0xff787878)),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 20),
+                        side: BorderSide(
+                          color: Color(0xffc2c2c2),
+                          width: 1,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () {
+                        // Button click action
+                      },
+                      child: Text(
+                        '자랑하기',
+                        style: TextStyle(color: Color(0xff787878)),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 20),
+                        side: BorderSide(
+                          color: Color(0xffc2c2c2),
+                          width: 1,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () {
+                        // Button click action
+                      },
+                      child: Text(
+                        '자유게시판',
+                        style: TextStyle(color: Color(0xff787878)),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+
+
+
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 20),
+                        side: BorderSide(
+                          color: Color(0xffc2c2c2),
+                          width: 1,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () {
+                        // Button click action
+                      },
+                      child: Text(
+                        '질문하기',
+                        style: TextStyle(color: Color(0xff787878)),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             Padding(

@@ -53,14 +53,13 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
   final ScrollController _scrollController = ScrollController();
   bool _isFabVisible = false;
+  bool _hasNavigatedToCustomerService = false;
 
   bool _1 = true;
   bool _2 = true;
   bool _3 = true;
   bool _4 = true;
 
-  // 다이어리 이동 페이지의 화면을 표시하기위해
-  // 식물인덱스의0번째나 즐겨찾기꺼를 담습니다
   UserPlant? indexPlant = null;
   
   @override
@@ -72,21 +71,56 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     // 비동기 작업을 위해 별도의 메서드 호출
     _initializeIndexPlant();
 
-
-
     //   추가
     // Tab change listener
+  //   _tabController.addListener(() {
+  //     if (_tabController.index == 3 && !_hasNavigatedToCustomerService) {
+  //       _hasNavigatedToCustomerService = true;
+  //       Navigator.push(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => CustomerService()),
+  //       ).then((_) {
+  //         if (mounted) {
+  //           setState(() {
+  //             _tabController.index = 0;
+  //             WidgetsBinding.instance?.addPostFrameCallback((_) {
+  //               _tabController.index = 0;
+  //             });
+  //           });
+  //         }
+  //         _hasNavigatedToCustomerService = false;
+  //       });
+  //     }
+  //   });
+  // }
     _tabController.addListener(() {
-      if (_tabController.index == 3) { // 고객센터 탭이 선택되었을 때
+      if (_tabController.index == 3 && !_hasNavigatedToCustomerService) {
+        _hasNavigatedToCustomerService = true;
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>
-              CustomerService()), // customerService.dart로 이동
+          MaterialPageRoute(builder: (context) => CustomerService()),
         ).then((_) {
-          _tabController.index = 0; // 홈 탭으로 되돌아가도록 설정
+          if (mounted) {
+            WidgetsBinding.instance?.addPostFrameCallback((_) {
+              if (_tabController.index != 0) {
+                _tabController.index = 0; // 홈 화면으로 이동
+              }
+            });
+            setState(() {
+              _hasNavigatedToCustomerService = false;
+            });
+          }
         });
       }
     });
+
+    // Bottom Navigation Bar에서 탭 변경 시 인덱스 설정
+    void _onBottomNavBarItemTapped(int index) {
+      setState(() {
+        _selectedIndex = index;
+        _tabController.index = index; // 탭 인덱스 직접 설정
+      });
+    }
   }
 
 
@@ -133,7 +167,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     int indexPlantId = indexPlant?.plantId ?? -1;
     await plants(input, indexPlantId, null);
 
-
     setState(() {
       initializeBooleans(indexPlantId);
     });
@@ -160,11 +193,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     // print(ManagementType.Watering);
 
     bool isDateDuplicate1 = await isDateDuplicate(plantId, ManagementType.Watering, _pms);
-
     bool isDateDuplicate2 = await isDateDuplicate(plantId, ManagementType.Fertilizing, _pms);
-
     bool isDateDuplicate3 = await isDateDuplicate(plantId, ManagementType.Pruning, _pms);
-
     bool isDateDuplicate4 = await isDateDuplicate(plantId, ManagementType.Repotting, _pms);
 
     // 비동기 작업이 완료된 후 상태 업데이트
@@ -264,30 +294,38 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             );
           },
         ),
-        title: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: 'Won',
-                style: TextStyle(
-                  color: Color(0xff779d60),
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'DMSerifDisplay',
-                  letterSpacing: 2,
-                  fontSize: 28,
+        title: GestureDetector(
+          onTap: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Index()), // HomePage로 이동
+            );
+          },
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Won',
+                  style: TextStyle(
+                    color: Color(0xff779d60),
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'DMSerifDisplay',
+                    letterSpacing: 2,
+                    fontSize: 28,
+                  ),
                 ),
-              ),
-              TextSpan(
-                text: '-Room',
-                style: TextStyle(
-                  color: Color(0xff595959),
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'DMSerifDisplay',
-                  letterSpacing: 1,
-                  fontSize: 28,
+                TextSpan(
+                  text: '-Room',
+                  style: TextStyle(
+                    color: Color(0xff595959),
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'DMSerifDisplay',
+                    letterSpacing: 1,
+                    fontSize: 28,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         actions: [
@@ -344,13 +382,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               PlantDictionary(),
               Community(),
               // 추가
-              Container(),
-              // CustomerService(),
-              // _buildPlantDictionaryPage(),
-              // PlantDictionary(),
-              // _buildPlantClinicPage('식물클리닉 페이지'),
-              // _buildCommunityPage('커뮤니티 페이지'),
-              // _buildCustomerServicePage('고객센터 페이지'),
+              // Container(),
             ],
           ),
           if (_isFabVisible)
@@ -717,22 +749,28 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 '다이어리',
                 style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyplantNull()),
-                  );
-                },
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.zero),
-                  minimumSize: MaterialStateProperty.all<Size>(Size.zero),
+              Container(
+                width: 200,
+                color: Colors.blue,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyplantNull()),
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                  ),
+                  child: const Text(
+                    '다이어리 이동하기ddd >',
+                    style: TextStyle(color: Color(0xff787878)),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                child: const Text(
-                  '다이어리 이동하기 >',
-                  style: TextStyle(color: Color(0xff787878)),
-                ),
-              ),
+              )
+
+
             ],
           ),
           const SizedBox(height: 10),
@@ -1012,6 +1050,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                     MaterialPageRoute(builder: (context) => MyplantNull()),
                   );
                 },
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                ),
                 child: Row(
                   children: const [
                     Text(
@@ -1020,7 +1061,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                         color: Colors.grey,
                       ),
                     ),
-                    SizedBox(width: 5),
                   ],
                 ),
               ),
@@ -1345,71 +1385,4 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
-  // Widget _buildPlantDictionaryPage() {
-  //   return SingleChildScrollView(
-  //     controller: _scrollController,
-  //     padding: const EdgeInsets.all(16),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         const SizedBox(height: 50),
-  //         const SizedBox(height: 50),
-  //         const SizedBox(height: 40),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-
-  // Widget _buildPlantClinicPage(String text) {
-  //   return Center(
-  //     child: Text(text),
-  //   );
-  // }
-
-  // Widget _buildCommunityPage(String text) {
-  //   return Center(
-  //     child: Text(text),
-  //   );
-  // }
-
-  // Widget _buildCustomerServicePage(String text) {
-  //   return Center(
-  //     child: Text(text),
-  //   );
-  // }
-// Widget _buildPlantDictionaryPage() {
-//   return SingleChildScrollView(
-//     controller: _scrollController,
-//     padding: const EdgeInsets.all(16),
-//     child: Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         const SizedBox(height: 50),
-//         const SizedBox(height: 50),
-//         const SizedBox(height: 40),
-//       ],
-//     ),
-//   );
-// }
-
-
-// Widget _buildPlantClinicPage(String text) {
-//   return Center(
-//     child: Text(text),
-//   );
-// }
-
-// Widget _buildCommunityPage(String text) {
-//   return Center(
-//     child: Text(text),
-//   );
-// }
-
-// Widget _buildCustomerServicePage(String text) {
-//   return Center(
-//     child: Text(text),
-//   );
-// }
 }
