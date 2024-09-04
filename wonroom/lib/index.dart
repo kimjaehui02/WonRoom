@@ -59,9 +59,11 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       if (_tabController.index == 3) { // 고객센터 탭이 선택되었을 때
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CustomerService()), // customerService.dart로 이동
-        );
-        _tabController.index = 0; // 홈 탭으로 되돌아가도록 설정
+          MaterialPageRoute(builder: (context) =>
+              CustomerService()), // customerService.dart로 이동
+        ).then((_) {
+          _tabController.index = 0; // 홈 탭으로 되돌아가도록 설정
+        });
       }
     });
   }
@@ -193,14 +195,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               _buildHomePage(),
               PlantDictionary(),
               Community(),
-              // 추가
               Container(),
               // CustomerService(),
-              // _buildPlantDictionaryPage(),
-              // PlantDictionary(),
-              // _buildPlantClinicPage('식물클리닉 페이지'),
-              // _buildCommunityPage('커뮤니티 페이지'),
-              // _buildCustomerServicePage('고객센터 페이지'),
             ],
           ),
           if (_isFabVisible)

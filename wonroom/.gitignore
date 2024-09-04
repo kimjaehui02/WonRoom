@@ -1,25 +1,10 @@
-# Miscellaneous
-*.class
-*.log
+# Python virtual environment
+py/venv/
+py/*.venv/
+
+# Python cache files
+py/__pycache__/
 *.pyc
-*.swp
-.DS_Store
-.atom/
-.buildlog/
-.history
-.svn/
-migrate_working_dir/
-
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
-
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -31,13 +16,48 @@ migrate_working_dir/
 .pub/
 /build/
 
-# Symbolication related
-app.*.symbols
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
 
-# Obfuscation related
-app.*.map.json
+# VS Code related (optional)
+#.vscode/
 
 # Android Studio will place build artifacts here
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Flask specific
+*.sqlite3
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# Additional paths to ignore
+wonroom/build/
+wonroom/.dart_tool/
+wonroom/build/app/kotlin/compileDebugKotlin/cacheable/
+
+# Ignore Kotlin build cache files
+*.apk
+
+# Miscellaneous
+*.class
+*.log
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
