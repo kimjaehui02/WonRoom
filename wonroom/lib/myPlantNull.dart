@@ -125,18 +125,23 @@ class _MyplantNullState extends State<MyplantNull> {
   void _loading() async
   {
     final _id = await readUserData();
-    _userPlants = _id?["favorite_plant_id"];
 
-    // print(_userPlants);
-    // print(_userPlants);
-    // print(_userPlants);
-    // print(_userPlants);
-    // print(_userPlants);
-    // print(_userfav);
-    // print(_userfav);
-    // print(_userfav);
-    // print(_userfav);
-    // print(_userfav);
+// favorite_plant_id를 8로 업데이트
+    await updateFavoritePlantId(8);
+
+// favorite_plant_id 값을 읽어와서 출력
+    final _userfav = await getUserFav();
+    print(_userfav);
+    print(_userfav);
+    print(_userfav);
+    print(_userfav);
+    print(_userfav);
+
+// 업데이트된 데이터를 다시 읽어서 확인
+    final updatedData = await readUserData();
+    print(updatedData?["favorite_plant_id"] ?? "");
+
+    print("페이버릿입니다");
 
     setState(() {
 
@@ -288,47 +293,69 @@ class _MyplantNullState extends State<MyplantNull> {
       // UserPlant의 다이어리 제목 설정
       diary_title = _userPlants[index].diaryTitle ?? 'Default Title';
 
-      //
+      // UserPlant의 식물 ID 설정
       _plantid = _userPlants[index].plantId ?? -1;
+
+      // 각 ManagementType에 대해 안전하게 접근
+      String getActionDate(List<PlantManagementRecord>? records) {
+        return (records != null && records.isNotEmpty)
+            ? records[0].getFormattedDate()
+            : "--.--";
+      }
+
+      bool isActive(List<PlantManagementRecord>? records) {
+        return (records != null && records.isNotEmpty)
+            ? records[0].getFormattedDate() != todayDate
+            : true;
+      }
 
       // PlantAction 리스트를 생성하면서 날짜에 따라 active 값을 설정
       List<PlantAction> plantActions = [
         PlantAction(
           label: "물주기",
           icon: Icons.water_drop,
-          actionDate: sortedGroupedRecords[index][ManagementType.Watering]?[0].getFormattedDate() ?? "--.--",
-          active: sortedGroupedRecords[index][ManagementType.Watering]?[0].getFormattedDate() == todayDate ? false : true,
+          actionDate: getActionDate(sortedGroupedRecords[index][ManagementType.Watering]),
+          active: isActive(sortedGroupedRecords[index][ManagementType.Watering]),
         ),
         PlantAction(
           label: "영양제",
           imageAsset: 'images/potion.png', // 영양제 아이콘
-          actionDate: sortedGroupedRecords[index][ManagementType.Fertilizing]?[0].getFormattedDate() ?? "--.--",
-          active: sortedGroupedRecords[index][ManagementType.Fertilizing]?[0].getFormattedDate() == todayDate ? false : true,
+          actionDate: getActionDate(sortedGroupedRecords[index][ManagementType.Fertilizing]),
+          active: isActive(sortedGroupedRecords[index][ManagementType.Fertilizing]),
         ),
         PlantAction(
           label: "가지치기",
           imageAsset: 'images/scissor.png', // 가지치기 아이콘
-          actionDate: sortedGroupedRecords[index][ManagementType.Pruning]?[0].getFormattedDate() ?? "--.--",
-          active: sortedGroupedRecords[index][ManagementType.Pruning]?[0].getFormattedDate() == todayDate ? false : true,
+          actionDate: getActionDate(sortedGroupedRecords[index][ManagementType.Pruning]),
+          active: isActive(sortedGroupedRecords[index][ManagementType.Pruning]),
         ),
         PlantAction(
           label: "분갈이",
           imageAsset: 'images/soil.png', // 분갈이 아이콘
-          actionDate: sortedGroupedRecords[index][ManagementType.Repotting]?[0].getFormattedDate() ?? "--.--",
-          active: sortedGroupedRecords[index][ManagementType.Repotting]?[0].getFormattedDate() == todayDate ? false : true,
+          actionDate: getActionDate(sortedGroupedRecords[index][ManagementType.Repotting]),
+          active: isActive(sortedGroupedRecords[index][ManagementType.Repotting]),
         ),
         PlantAction(
           label: "진단",
           icon: Icons.eco,
-          actionDate: sortedGroupedRecords[index][ManagementType.Diagnosis]?[0].getFormattedDate() ?? "--.--",
-          active: sortedGroupedRecords[index][ManagementType.Diagnosis]?[0].getFormattedDate() == todayDate ? false : true,
+          actionDate: getActionDate(sortedGroupedRecords[index][ManagementType.Diagnosis]),
+          active: isActive(sortedGroupedRecords[index][ManagementType.Diagnosis]),
         ),
       ];
 
       // PlantActionContainers를 빌드
       actionContainers = buildPlantActionContainers(plantActions, _userPlants[index].plantId, _loading);
     });
+
+    print("최신화입니다");
+    print("최신화입니다");
+    print("최신화입니다");
+    print("최신화입니다");
+    print("최신화입니다");
+    print("최신화입니다");
+    print("최신화입니다");
   }
+
 
 
   void _showDeletionSuccessDialog(BuildContext context) {

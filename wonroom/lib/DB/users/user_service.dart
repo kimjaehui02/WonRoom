@@ -310,4 +310,32 @@ class UserService {
       return false;
     }
   }
+
+  Future<void> updateFavoritePlantIdService(int newFavoritePlantId) async {
+    // 사용자 정보 읽기
+    User? currentUser = await readUser();
+
+    if (currentUser == null) {
+      print('No user data found in storage');
+      return;
+    }
+
+    // Null 체크 후 예외 처리
+    if (currentUser.userPw == null || currentUser.userNick == null || currentUser.userEmail == null) {
+      throw Exception('User information is incomplete.');
+    }
+
+    // 기존 사용자 정보를 유지하면서 favorite_plant_id만 업데이트
+    await usersUpdate(
+      currentUser.userPw!,  // null이 아님을 보장
+      currentUser.userNick!,
+      currentUser.userEmail!,
+      newFavoritePlantId,
+    );
+
+    // 업데이트된 사용자 정보를 다시 저장 (선택 사항)
+    currentUser.favoritePlantId = newFavoritePlantId;
+    await writeUser(currentUser);
+  }
+
 }

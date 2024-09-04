@@ -793,18 +793,18 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                           icon: Icon(
                             Icons.water_drop,
                             size: 16,
-                            color: _1 ? Colors.lightBlueAccent : Colors.grey[300], // _1이 true일 때 색상 변경
+                            color: _1 ? Colors.grey[300] : Colors.lightBlueAccent, // _1이 true일 때 색상 변경
                           ),
                           label: Text(
                             "물주기",
                             style: TextStyle(
                               fontSize: 14,
-                              color: _1 ? Color(0xff787878) : Colors.grey[300], // _1이 true일 때 색상 변경
+                              color: _1 ? Colors.grey[300] : Color(0xff787878), // _1이 true일 때 색상 변경
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
                             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                            side: BorderSide(color: _1 ? Color(0xffc2c2c2) : Colors.grey[300]!),
+                            side: BorderSide(color: _1 ? Colors.grey[300]! : Color(0xffc2c2c2)),
                           ),
                         ),
                         OutlinedButton.icon(
@@ -815,17 +815,18 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                             'images/potion.png',
                             width: 16,
                             height: 16,
+                            color: _2 ? Colors.grey[300] : null, // _1이 true일 때 색상 변경
                           ),
                           label: Text(
                             "영양제",
                             style: TextStyle(
                               fontSize: 14,
-                              color: _2 ? Color(0xff787878) : Colors.grey[300], // _2가 true일 때 색상 변경
+                              color: _2 ? Colors.grey[300] : Color(0xff787878), // _2가 true일 때 색상 변경
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
                             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                            side: BorderSide(color: _2 ? Color(0xffc2c2c2) : Colors.grey[300]!),
+                            side: BorderSide(color: _2 ? Colors.grey[300]! : Color(0xffc2c2c2)),
                           ),
                         ),
                         OutlinedButton.icon(
@@ -836,17 +837,19 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                             'images/scissor.png',
                             width: 16,
                             height: 16,
+                            color: _3 ? Colors.grey[300] : null, // _2가 true일 때 색상 변경
+
                           ),
                           label: Text(
                             "가지치기",
                             style: TextStyle(
                               fontSize: 14,
-                              color: _3 ? Color(0xff787878) : Colors.grey[300], // _3가 true일 때 색상 변경
+                              color: _3 ? Colors.grey[300] : Color(0xff787878), // _3가 true일 때 색상 변경
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
                             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            side: BorderSide(color: _3 ? Color(0xffc2c2c2) : Colors.grey[300]!),
+                            side: BorderSide(color: _3 ? Colors.grey[300]! : Color(0xffc2c2c2)),
                           ),
                         ),
                         OutlinedButton.icon(
@@ -857,17 +860,19 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                             'images/soil.png',
                             width: 16,
                             height: 16,
+                            color: _4 ? Colors.grey[300] : null, // _2가 true일 때 색상 변경
+
                           ),
                           label: Text(
-                            "분갈이",
+                            "분갈이2",
                             style: TextStyle(
                               fontSize: 14,
-                              color: _4 ? Color(0xff787878) : Colors.grey[300], // _4가 true일 때 색상 변경
+                              color: _4 ? Colors.grey[300] : Color(0xff787878), // _4가 true일 때 색상 변경
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
                             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            side: BorderSide(color: _4 ? Color(0xffc2c2c2) : Colors.grey[300]!),
+                            side: BorderSide(color: _4 ? Colors.grey[300]! : Color(0xffc2c2c2)),
                           ),
                         ),
                       ],

@@ -115,6 +115,39 @@ Future<String?> getUserId() async {
   return null;
 }
 
+// 예시로 유저 ID를 추출하는 함수
+Future<int?> getUserFav() async {
+  final userData = await readUserData();
+  if (userData != null && userData.containsKey('favorite_plant_id')) {
+    return userData['favorite_plant_id'] as int?;
+  }
+  return null;
+}
+
+Future<void> updateFavoritePlantId(int newFavoritePlantId) async {
+  print('updateFavoritePlantId');
+  try {
+    // 기존의 userData를 읽어옴
+    Map<String, dynamic>? userData = await readUserData();
+
+    if (userData != null) {
+      // favorite_plant_id를 새 값으로 업데이트
+      userData['favorite_plant_id'] = newFavoritePlantId;
+
+      // 업데이트된 userData를 JSON 문자열로 변환하여 저장
+      String jsonString = jsonEncode(userData);
+      await storage.write(key: 'userData', value: jsonString);
+
+      print('favorite_plant_id updated successfully.');
+    } else {
+      print('No user data found to update.');
+    }
+  } catch (e) {
+    print('Error updating favorite_plant_id: $e');
+  }
+}
+
+
 Future<void> writeUser(User user) async {
   print('writeUser');
   try {
