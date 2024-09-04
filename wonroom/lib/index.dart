@@ -47,10 +47,10 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   bool _isFabVisible = false;
 
-  bool _1 = false;
-  bool _2 = false;
-  bool _3 = false;
-  bool _4 = false;
+  bool _1 = true;
+  bool _2 = true;
+  bool _3 = true;
+  bool _4 = true;
 
   // 다이어리 이동 페이지의 화면을 표시하기위해
   // 식물인덱스의0번째나 즐겨찾기꺼를 담습니다
@@ -66,7 +66,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     _initializeIndexPlant();
 
 
-    initializeBooleans(indexPlant?.plantId ?? -1);
 
   }
 
@@ -76,6 +75,12 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     UserPlant? plant = await _getPlants();
     setState(() {
       indexPlant = plant;
+      initializeBooleans(indexPlant?.plantId ?? -1);
+    });
+
+    // initializeBooleans(indexPlant?.plantId ?? -1);
+    setState(() {
+
     });
   }
 
@@ -93,26 +98,64 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     // 첫 번째 플랜트를 반환
     return _plants[0];
   }
-  
+
+  // 4개의 온프레스트
+  void button4(input) async
+  {
+    print(input);
+    print(input);
+    print(input);
+    print(input);
+    print(input);
+
+    // 얘네가 db에 데이터를 업데이트하거나 하는 역할을 하였으니
+    // 다음엔 db에서 값을 가져오는 역할을 해야합니다
+    int indexPlantId = indexPlant?.plantId ?? -1;
+    await plants(input, indexPlantId, null);
+
+
+    setState(() {
+      initializeBooleans(indexPlantId);
+    });
+
+  }
+
+
   // 4개의 불값을 조절
   Future<void> initializeBooleans(int plantId) async {
     // 각각의 일정에 대한 중복 여부를 저장할 불리언 변수들
-    _1 = false; // 물주기
-    _2 = false; // 영양제
-    _3 = false; // 가지치기
-    _4 = false; // 분갈이
+    // _1 = false; // 물주기
+    // _2 = false; // 영양제
+    // _3 = false; // 가지치기
+    // _4 = false; // 분갈이
 
     // PlantManagementService 초기화
     PlantManagementService _pms = PlantManagementService();
 
-    setState(() async{
-      // 각 관리 타입에 대해 중복 여부 확인
-      _1 = await isDateDuplicate(plantId, ManagementType.Watering, _pms);
-      _2 = await isDateDuplicate(plantId, ManagementType.Fertilizing, _pms);
-      _3 = await isDateDuplicate(plantId, ManagementType.Pruning, _pms);
-      _4 = await isDateDuplicate(plantId, ManagementType.Repotting, _pms);
+    // 비동기 작업을 수행
+    // print(ManagementType.Watering);
+    // print(ManagementType.Watering);
+    // print(ManagementType.Watering);
+    // print(ManagementType.Watering);
+    // print(ManagementType.Watering);
 
-    });
+    bool isDateDuplicate1 = await isDateDuplicate(plantId, ManagementType.Watering, _pms);
+
+    bool isDateDuplicate2 = await isDateDuplicate(plantId, ManagementType.Fertilizing, _pms);
+
+    bool isDateDuplicate3 = await isDateDuplicate(plantId, ManagementType.Pruning, _pms);
+
+    bool isDateDuplicate4 = await isDateDuplicate(plantId, ManagementType.Repotting, _pms);
+
+    // 비동기 작업이 완료된 후 상태 업데이트
+    if (mounted) {
+      setState(() {
+        _1 = isDateDuplicate1;
+        _2 = isDateDuplicate2;
+        _3 = isDateDuplicate3;
+        _4 = isDateDuplicate4;
+      });
+    }
 
     // 결과 출력 (디버깅용)
     print('물주기 중복 여부: $_1');
@@ -120,19 +163,22 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     print('가지치기 중복 여부: $_3');
     print('분갈이 중복 여부: $_4');
 
-    // 추가 로직이 필요하다면 여기에 작성
   }
+
   // 식물버튼 불값
   Future<bool> isDateDuplicate(int plantId, ManagementType type, PlantManagementService pms) async {
     // 해당 식물의 일정 기록을 가져옴
     List<PlantManagementRecord> records = await pms.getRecords(plantId);
-
+    print("입력받은 타입은");
+    print(type);
     // 오늘 날짜와 같은 일정이 있는지 확인
     for (var record in records) {
       if (pms.isDateToday(record.managementDate) && record.managementType == type) {
+        print("중복된게 있네요");
         return true; // 중복된 날짜가 있는 경우
       }
     }
+    print("중복된게 없네요");
 
     return false; // 중복된 날짜가 없는 경우
   }
@@ -673,35 +719,53 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                       spacing: 8, // 각 버튼 사이의 가로 간격
                       runSpacing: 2, // 줄 바꿈 시의 세로 간격
                       children: [
+                        // OutlinedButton.icon(
+                        //   onPressed: ()
+                        //   {
+                        //     button4("물주기");
+                        //   },
+                        //   icon: Icon(
+                        //     Icons.water_drop,
+                        //     size: 16,
+                        //     color: Colors.lightBlueAccent,
+                        //   ),
+                        //   label: Text(
+                        //     "물주기",
+                        //     style: TextStyle(
+                        //       fontSize: 14,
+                        //       color: Color(0xff787878),
+                        //     ),
+                        //   ),
+                        //   style: OutlinedButton.styleFrom(
+                        //     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        //     side: BorderSide(color: Color(0xffc2c2c2)),
+                        //   ),
+                        // ),
                         OutlinedButton.icon(
-                          onPressed: ()
-                          {
-                            // 얘네가 db에 데이터를 업데이트하거나 하는 역할을 하였으니
-                            // 다음엔 db에서 값을 가져오는 역할을 해야합니다
-                            int indexPlantId = indexPlant?.plantId ?? -1;
-                            plants("물주기", indexPlantId, null);
-
-                            initializeBooleans(indexPlantId);
+                          onPressed: () {
+                            button4("물주기");
                           },
                           icon: Icon(
                             Icons.water_drop,
                             size: 16,
-                            color: Colors.lightBlueAccent,
+                            color: _1 ? Colors.lightBlueAccent : Colors.grey[300], // _1이 true일 때 색상 변경
                           ),
                           label: Text(
                             "물주기",
                             style: TextStyle(
                               fontSize: 14,
-                              color: Color(0xff787878),
+                              color: _1 ? Color(0xff787878) : Colors.grey[300], // _1이 true일 때 색상 변경
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
                             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                            side: BorderSide(color: Color(0xffc2c2c2)),
+                            side: BorderSide(color: _1 ? Color(0xffc2c2c2) : Colors.grey[300]!),
                           ),
                         ),
                         OutlinedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            button4("영양제");
+                          },
                           icon: Image.asset(
                             'images/potion.png',
                             width: 16,
@@ -711,16 +775,18 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                             "영양제",
                             style: TextStyle(
                               fontSize: 14,
-                              color: Color(0xff787878),
+                              color: _2 ? Color(0xff787878) : Colors.grey[300], // _2가 true일 때 색상 변경
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
                             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                            side: BorderSide(color: Color(0xffc2c2c2)),
+                            side: BorderSide(color: _2 ? Color(0xffc2c2c2) : Colors.grey[300]!),
                           ),
                         ),
                         OutlinedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            button4("가지치기");
+                          },
                           icon: Image.asset(
                             'images/scissor.png',
                             width: 16,
@@ -730,16 +796,18 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                             "가지치기",
                             style: TextStyle(
                               fontSize: 14,
-                              color: Color(0xff787878),
+                              color: _3 ? Color(0xff787878) : Colors.grey[300], // _3가 true일 때 색상 변경
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
                             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            side: BorderSide(color: Color(0xffc2c2c2)),
+                            side: BorderSide(color: _3 ? Color(0xffc2c2c2) : Colors.grey[300]!),
                           ),
                         ),
                         OutlinedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            button4("분갈이");
+                          },
                           icon: Image.asset(
                             'images/soil.png',
                             width: 16,
@@ -748,12 +816,13 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                           label: Text(
                             "분갈이",
                             style: TextStyle(
-                                fontSize: 14,
-                                color: Color(0xff787878)),
+                              fontSize: 14,
+                              color: _4 ? Color(0xff787878) : Colors.grey[300], // _4가 true일 때 색상 변경
+                            ),
                           ),
                           style: OutlinedButton.styleFrom(
                             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            side: BorderSide(color: Color(0xffc2c2c2)),
+                            side: BorderSide(color: _4 ? Color(0xffc2c2c2) : Colors.grey[300]!),
                           ),
                         ),
                       ],

@@ -9,12 +9,14 @@ class PlantAction {
   final IconData icon;
   final String actionDate;
   final String imageAsset; // 이미지가 필요한 경우
+  bool? active = true;
 
   PlantAction({
     required this.label,
     this.icon = Icons.help, // 기본 아이콘
     this.actionDate = "N/A",
     this.imageAsset = "",
+    this.active = true
   });
 }
 
@@ -73,112 +75,37 @@ List<Widget> buildPlantActionContainers(List<PlantAction> actions, _id, _loading
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           OutlinedButton.icon(
-            onPressed: () async 
-            {
-              plants(action.label, _id, _loading);
-              
-              /*
-              try {
-                // 디버깅용 출력
-                print("Starting action...");
-
-                // 일정 테이블 매니저 초기화
-                PlantManagementService _pms = PlantManagementService();
-                print("PlantManagementService _pms = new PlantManagementService();");
-
-                // 어떤 종류의 일정인지 타입을 확인
-                ManagementType _type;
-
-                // 스위치문으로 일정 타입 결정
-                switch (action.label) {
-                  case '물주기':
-                    _type = ManagementType.Watering;
-                    break;
-                  case '영양제':
-                    _type = ManagementType.Fertilizing;
-                    break;
-                  case '가지치기':
-                    _type = ManagementType.Pruning;
-                    break;
-                  case '분갈이':
-                    _type = ManagementType.Repotting;
-                    break;
-                  case '진단':
-                    _type = ManagementType.Diagnosis;
-                    break;
-                  default:
-                    throw ArgumentError('Unknown label: ${action.label}');
-                }
-
-                // 일정 데이터 가져오기
-                List<PlantManagementRecord> _check = await _pms.getRecords(_id);
-                print("List<PlantManagementRecord> _check = await _pms.getRecords(_id);");
-
-                // 오늘 날짜와 같은 일정이 있는지 확인
-                bool shouldAddRecord = true; // 기본적으로 레코드를 추가하도록 설정
-                if (_check != null && _check.isNotEmpty) {
-                  // 같은 날짜와 같은 관리 타입의 레코드가 있는지 확인
-                  for (var record in _check) {
-                    bool isToday = _pms.isDateToday(record.managementDate);
-                    bool isSameType = record.managementType == _type;
-
-                    if (isToday && isSameType) {
-                      // 해당 레코드 삭제
-                      await _pms.deleteRecord(record.recordId ?? -1);
-                      print("Record ${record.recordId} has been deleted.");
-                      shouldAddRecord = false; // 레코드가 삭제되었으므로 새로운 레코드를 추가하지 않음
-                      break; // 루프 종료
-                    }
-                  }
-                }
-
-                // 새로운 레코드 추가 조건 확인
-                if (shouldAddRecord) {
-                  // 새로운 일정 모델 생성
-                  PlantManagementRecord _pmr = PlantManagementRecord(
-                      catalogNumber: 0,
-                      managementDate: DateTime.now(),
-                      managementType: _type,
-                      details: "세부사항",
-                      plantId: _id
-                  );
-
-                  // 서버에 일정 추가
-                  await _pms.addRecord(_pmr);
-                  print("New record has been added.");
-                }
-
-                // 화면 업데이트
-                _loading();
-
-              } catch (e) {
-                // 예외 처리
-                print("An error occurred: $e");
-              }
-              
-               */
+            onPressed: () async {
+              // 버튼의 로직은 그대로 유지
+              await plants(action.label, _id, _loading);
             },
-
             icon: action.imageAsset.isNotEmpty
                 ? Image.asset(
               action.imageAsset,
               width: 18,
               height: 18,
+              color: (action.active ?? true) ? null : Colors.grey[300],
             )
                 : Icon(
               action.icon,
               size: 18,
-              color: Colors.lightBlueAccent,
+              color: (action.active ?? true) ? Colors.lightBlueAccent : Colors.grey[300],
             ),
             label: Text(
               action.label,
-              style: TextStyle(color: Color(0xff787878)),
+              style: TextStyle(
+                color: (action.active ?? true) ? Color(0xff787878) : Colors.grey[300],
+              ),
             ),
             style: OutlinedButton.styleFrom(
-              side: BorderSide(color: Color(0xffc2c2c2)),
+              side: BorderSide(
+                color: (action.active ?? true) ? Color(0xffc2c2c2) : Colors.grey[300]!,
+              ),
             ),
           ),
+
           SizedBox(width: 20),
+
           RichText(
             text: TextSpan(
               text: action.actionDate.contains("다음 권장 날짜")
@@ -204,10 +131,13 @@ List<Widget> buildPlantActionContainers(List<PlantAction> actions, _id, _loading
   }).toList();
 }
 
+// 얘는 무슨함수이냐
+// 플랜
 Future<bool> plants(String label, int _id, _loading)async
 {
   bool returnbool = false;
 
+  int numb = 0;
   try {
     // 디버깅용 출력
     print("Starting action...");
@@ -222,18 +152,23 @@ Future<bool> plants(String label, int _id, _loading)async
     // 스위치문으로 일정 타입 결정
     switch (label) {
       case '물주기':
+        numb = 1;
         _type = ManagementType.Watering;
         break;
       case '영양제':
+        numb = 2;
         _type = ManagementType.Fertilizing;
         break;
       case '가지치기':
+        numb = 3;
         _type = ManagementType.Pruning;
         break;
       case '분갈이':
+        numb = 4;
         _type = ManagementType.Repotting;
         break;
       case '진단':
+        numb = 5;
         _type = ManagementType.Diagnosis;
         break;
       default:
@@ -258,8 +193,11 @@ Future<bool> plants(String label, int _id, _loading)async
           await _pms.deleteRecord(record.recordId ?? -1);
           print("Record ${record.recordId} has been deleted.");
           shouldAddRecord = false; // 레코드가 삭제되었으므로 새로운 레코드를 추가하지 않음
+
           break; // 루프 종료
         }
+
+
       }
     }
 

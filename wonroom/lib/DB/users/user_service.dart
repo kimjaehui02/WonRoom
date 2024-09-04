@@ -167,7 +167,7 @@ class UserService {
   }
 
   // 사용자 정보 업데이트
-  Future<void> usersUpdate(String userPw, String userNick, String userEmail, String? favoritePlantId) async {
+  Future<void> usersUpdate(String userPw, String userNick, String userEmail, int? favoritePlantId) async {
     String? userId = await storage.read(key: 'user_id');
 
     if (userId == null) {

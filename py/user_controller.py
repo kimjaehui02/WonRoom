@@ -61,6 +61,7 @@ def insert():
 
     return jsonify({"status": "success"}) if row > 0 else jsonify({"status": "fail", "message": "Insert failed"}), 500
 
+
 @users.route("/login", methods=['POST'])
 def login():
     data = request.get_json()

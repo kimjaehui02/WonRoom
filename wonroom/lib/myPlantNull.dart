@@ -17,6 +17,7 @@ import 'package:wonroom/DB/queries/queries_model.dart';
 import 'package:wonroom/DB/queries/queries_service.dart';
 import 'package:wonroom/DB/user_plants/user_plants_model.dart';
 import 'package:wonroom/DB/user_plants/user_plants_service.dart';
+import 'package:wonroom/DB/users/user_service.dart';
 import 'package:wonroom/DB/users/users_model.dart';
 import 'package:wonroom/Flask/storage_manager.dart';
 import 'package:wonroom/MyPlant/myPlant_functions.dart';
@@ -65,15 +66,52 @@ class _MyplantNullState extends State<MyplantNull> {
   // next_watering_date date
   // created_at timestamp
 
+  User? user;
+
   // 1. diary_title
   // 식물 이름쯔음이면 되겟따
   String diary_title = "";
+  
 
   // 2. 일정 라벨링
   // 리스트 - 맵 - 리스트
   // 인덱스(식물별) - 일정종류 - 일정 낱개
   List<Map<ManagementType, List<PlantManagementRecord>>> sortedGroupedRecords = [{}];
 
+  // 3. 별체크
+  // 즐겨찾기 항목이라면 별을 체크합니다
+  int _userfav = -10;
+  int _plantid = -100;
+
+  bool _1 = true;
+  bool _2 = true;
+  bool _3 = true;
+  bool _4 = true;
+  bool _5 = true;
+
+  // 불값들을관리해줄 콜백함수입니다
+  // void boolcalback(bool _input, int numb)
+  // {
+  //   // switch(numb)
+  //   // {
+  //   //   case 1:
+  //   //     _1 = _input;
+  //   //     break;
+  //   //   case 2:
+  //   //     _2 = _input;
+  //   //     break;
+  //   //   case 3:
+  //   //     _3 = _input;
+  //   //     break;
+  //   //   case 4:
+  //   //     _4 = _input;
+  //   //     break;
+  //   //   case 5:
+  //   //     _5 = _input;
+  //   //     break;
+  //   // }
+  //
+  // }
 
   @override
   void initState() {
@@ -86,7 +124,22 @@ class _MyplantNullState extends State<MyplantNull> {
 
   void _loading() async
   {
+    final _id = await readUserData();
+    _userPlants = _id?["favorite_plant_id"];
+
+    // print(_userPlants);
+    // print(_userPlants);
+    // print(_userPlants);
+    // print(_userPlants);
+    // print(_userPlants);
+    // print(_userfav);
+    // print(_userfav);
+    // print(_userfav);
+    // print(_userfav);
+    // print(_userfav);
+
     setState(() {
+
       _loadData(); // 페이지가 처음 로드될 때 데이터를 불러옵니다.
 
     });
@@ -97,15 +150,15 @@ class _MyplantNullState extends State<MyplantNull> {
   void _loadData() async
   {
     print("데이터 불러오기 작업을 수행합니다. inputss: $plantIndex");
-    User? user = await readUser(); // user 객체 가져오기
+    user = await readUser(); // user 객체 가져오기
     print("User? user = await readUser();");
 
     if (user != null) {
-      print(user.getuserId()); // 사용자 ID 출력
-      print(user.getuserId()); // 사용자 ID 출력
-      print(user.getuserId()); // 사용자 ID 출력
+      // print(user.getuserId()); // 사용자 ID 출력
+      // print(user.getuserId()); // 사용자 ID 출력
+      // print(user.getuserId()); // 사용자 ID 출력
 
-      String? userId = user.getuserId(); // 사용자 ID 변수에 할당
+      String? userId = user?.getuserId(); // 사용자 ID 변수에 할당
       if (userId != null) {
         UserPlantService ups = UserPlantService();
 
@@ -118,6 +171,7 @@ class _MyplantNullState extends State<MyplantNull> {
 
 
             _updateDoubleList();
+
 
 
             checks = true;
@@ -226,65 +280,56 @@ class _MyplantNullState extends State<MyplantNull> {
 
 
   // db연결 없이 이미 가진 값들로 화면을 최신화합니다
-  void _updatePlant(index)
-  {
-    // return;
+  void _updatePlant(int index) {
     setState(() {
+      // 현재 날짜를 MM.DD 형식으로 가져오기
+      String todayDate = DateFormat('MM.dd').format(DateTime.now());
+
+      // UserPlant의 다이어리 제목 설정
       diary_title = _userPlants[index].diaryTitle ?? 'Default Title';
 
+      //
+      _plantid = _userPlants[index].plantId ?? -1;
 
-      print(sortedGroupedRecords[index][ManagementType.Watering]);
-      print(sortedGroupedRecords[index][ManagementType.Watering]);
-      print(sortedGroupedRecords[index][ManagementType.Watering]);
-      print(sortedGroupedRecords[index][ManagementType.Watering]);
-      print(sortedGroupedRecords[index][ManagementType.Watering]);
-
-      print(index);
-      print(index);
-      print(index);
-      print(index);
-      print(index);
-      print(index);
-
-
-      // print(sortedGroupedRecords[index][ManagementType.Repotting]);
-      // print(sortedGroupedRecords[index][ManagementType.Repotting]?[0].getFormattedDate());
-
+      // PlantAction 리스트를 생성하면서 날짜에 따라 active 값을 설정
       List<PlantAction> plantActions = [
         PlantAction(
           label: "물주기",
           icon: Icons.water_drop,
           actionDate: sortedGroupedRecords[index][ManagementType.Watering]?[0].getFormattedDate() ?? "--.--",
+          active: sortedGroupedRecords[index][ManagementType.Watering]?[0].getFormattedDate() == todayDate ? false : true,
         ),
         PlantAction(
           label: "영양제",
           imageAsset: 'images/potion.png', // 영양제 아이콘
           actionDate: sortedGroupedRecords[index][ManagementType.Fertilizing]?[0].getFormattedDate() ?? "--.--",
+          active: sortedGroupedRecords[index][ManagementType.Fertilizing]?[0].getFormattedDate() == todayDate ? false : true,
         ),
         PlantAction(
           label: "가지치기",
           imageAsset: 'images/scissor.png', // 가지치기 아이콘
           actionDate: sortedGroupedRecords[index][ManagementType.Pruning]?[0].getFormattedDate() ?? "--.--",
+          active: sortedGroupedRecords[index][ManagementType.Pruning]?[0].getFormattedDate() == todayDate ? false : true,
         ),
         PlantAction(
           label: "분갈이",
           imageAsset: 'images/soil.png', // 분갈이 아이콘
           actionDate: sortedGroupedRecords[index][ManagementType.Repotting]?[0].getFormattedDate() ?? "--.--",
+          active: sortedGroupedRecords[index][ManagementType.Repotting]?[0].getFormattedDate() == todayDate ? false : true,
         ),
         PlantAction(
           label: "진단",
           icon: Icons.eco,
           actionDate: sortedGroupedRecords[index][ManagementType.Diagnosis]?[0].getFormattedDate() ?? "--.--",
+          active: sortedGroupedRecords[index][ManagementType.Diagnosis]?[0].getFormattedDate() == todayDate ? false : true,
         ),
       ];
 
+      // PlantActionContainers를 빌드
       actionContainers = buildPlantActionContainers(plantActions, _userPlants[index].plantId, _loading);
-
-
     });
-
-
   }
+
 
   void _showDeletionSuccessDialog(BuildContext context) {
     showDialog(
@@ -536,9 +581,17 @@ class _MyplantNullState extends State<MyplantNull> {
                             child: Padding(
                               padding: EdgeInsets.only(left: 32),
                               child: IconButton(
-                                icon: Icon(Icons.star_border_rounded, color: Color(0xff787878)),
-                                onPressed: () {
+                                icon: Icon(_userfav == _plantid ? Icons.star_border_rounded : Icons.star_rounded, color: _userfav == _plantid ? Color(0xff787878) : Colors.amber),
+                                onPressed: () async {
                                   // 아이콘 클릭 시 실행될 기능 구현
+                                  UserService _us = new UserService();
+                                  Map<String, dynamic> _read = await readUserData() ?? {};
+                                  _us.usersUpdate(
+                                      _read["user_pw"],
+                                      _read["user_nick"],
+                                      _read["user_email"],
+                                      7);
+
 
                                   // showDeletionSuccessDialog(context: context);
                                   print("즐겨찾기");

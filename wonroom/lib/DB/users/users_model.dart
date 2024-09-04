@@ -7,7 +7,7 @@ class User {
   String? userNick;
   String? userEmail;
   DateTime regDate;
-  String? favoritePlantId; // 추가된 필드
+  int? favoritePlantId; // 추가된 필드
 
   User({
     required this.userId,
