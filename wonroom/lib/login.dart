@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:wonroom/Finding_Pw.dart';
 import 'package:wonroom/Finding_Pw/Finding_Pw_functions.dart';
 import 'package:wonroom/Login/LoginValidators.dart';
+import 'package:wonroom/Splash/splash_functions.dart';
 import 'package:wonroom/findingId.dart';
+import 'package:wonroom/index.dart';
+import 'package:wonroom/intro.dart';
+import 'package:wonroom/splash.dart';
 import 'join.dart'; // Join 화면을 가져옵니다.
 
 class Login extends StatefulWidget {
@@ -229,7 +233,20 @@ class _LoginState extends State<Login> {
                               print(check);
                               if(check == '환영합니다.')
                               {
-                                LoginValidators.showSuccessDialog(context, check);
+                                // LoginValidators.showSuccessDialog(context, check);
+                                // Navigator.pushReplacement(
+                                //   context,
+                                //   MaterialPageRoute(builder: (context) => Index()),
+                                // );
+                                // 페이지 전환과 데이터 전달
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Splash(
+                                      data2: Index(), // 전달할 데이터
+                                    ),
+                                  ),
+                                );
                               }
                               else
                               {

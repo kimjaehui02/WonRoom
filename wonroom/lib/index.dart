@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:wonroom/DB/plant_management_records/plant_management_model.dart';
+import 'package:wonroom/DB/plant_management_records/plant_management_records_service.dart';
+import 'package:wonroom/DB/user_plants/user_plants_model.dart';
+import 'package:wonroom/DB/user_plants/user_plants_service.dart';
+import 'package:wonroom/Flask/storage_manager.dart';
+import 'package:wonroom/MyPlant/myPlant_functions.dart';
 import 'package:wonroom/myPage.dart';
 import 'package:wonroom/myPlantNull.dart';
 import 'package:wonroom/myPlant.dart';
@@ -40,12 +46,144 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
   final ScrollController _scrollController = ScrollController();
   bool _isFabVisible = false;
+
+  bool _1 = true;
+  bool _2 = true;
+  bool _3 = true;
+  bool _4 = true;
+
+  // 다이어리 이동 페이지의 화면을 표시하기위해
+  // 식물인덱스의0번째나 즐겨찾기꺼를 담습니다
+  UserPlant? indexPlant = null;
+  
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
     _scrollController.addListener(_scrollListener);
+
+    // 비동기 작업을 위해 별도의 메서드 호출
+    _initializeIndexPlant();
+
+
+
   }
+
+
+  Future<void> _initializeIndexPlant() async {
+    // 비동기 작업을 수행하고 결과를 상태에 반영
+    UserPlant? plant = await _getPlants();
+    setState(() {
+      indexPlant = plant;
+      initializeBooleans(indexPlant?.plantId ?? -1);
+    });
+
+    // initializeBooleans(indexPlant?.plantId ?? -1);
+    setState(() {
+
+    });
+  }
+
+  // 식물값을 얻어오는 함수
+  Future<UserPlant?> _getPlants() async {
+    UserPlantService ups = UserPlantService();
+    final _data = await readUserData();
+    List<UserPlant>? _plants = await ups.getPlants(_data?["user_id"]);
+
+    // _plants가 null이거나 비어있으면 null 반환
+    if (_plants == null || _plants.isEmpty) {
+      return null;
+    }
+
+    // 첫 번째 플랜트를 반환
+    return _plants[0];
+  }
+
+  // 4개의 온프레스트
+  void button4(input) async
+  {
+    print(input);
+    print(input);
+    print(input);
+    print(input);
+    print(input);
+
+    // 얘네가 db에 데이터를 업데이트하거나 하는 역할을 하였으니
+    // 다음엔 db에서 값을 가져오는 역할을 해야합니다
+    int indexPlantId = indexPlant?.plantId ?? -1;
+    await plants(input, indexPlantId, null);
+
+
+    setState(() {
+      initializeBooleans(indexPlantId);
+    });
+
+  }
+
+
+  // 4개의 불값을 조절
+  Future<void> initializeBooleans(int plantId) async {
+    // 각각의 일정에 대한 중복 여부를 저장할 불리언 변수들
+    // _1 = false; // 물주기
+    // _2 = false; // 영양제
+    // _3 = false; // 가지치기
+    // _4 = false; // 분갈이
+
+    // PlantManagementService 초기화
+    PlantManagementService _pms = PlantManagementService();
+
+    // 비동기 작업을 수행
+    // print(ManagementType.Watering);
+    // print(ManagementType.Watering);
+    // print(ManagementType.Watering);
+    // print(ManagementType.Watering);
+    // print(ManagementType.Watering);
+
+    bool isDateDuplicate1 = await isDateDuplicate(plantId, ManagementType.Watering, _pms);
+
+    bool isDateDuplicate2 = await isDateDuplicate(plantId, ManagementType.Fertilizing, _pms);
+
+    bool isDateDuplicate3 = await isDateDuplicate(plantId, ManagementType.Pruning, _pms);
+
+    bool isDateDuplicate4 = await isDateDuplicate(plantId, ManagementType.Repotting, _pms);
+
+    // 비동기 작업이 완료된 후 상태 업데이트
+    if (mounted) {
+      setState(() {
+        _1 = isDateDuplicate1;
+        _2 = isDateDuplicate2;
+        _3 = isDateDuplicate3;
+        _4 = isDateDuplicate4;
+      });
+    }
+
+    // 결과 출력 (디버깅용)
+    print('물주기 중복 여부: $_1');
+    print('영양제 중복 여부: $_2');
+    print('가지치기 중복 여부: $_3');
+    print('분갈이 중복 여부: $_4');
+
+  }
+
+  // 식물버튼 불값
+  Future<bool> isDateDuplicate(int plantId, ManagementType type, PlantManagementService pms) async {
+    // 해당 식물의 일정 기록을 가져옴
+    List<PlantManagementRecord> records = await pms.getRecords(plantId);
+    print("입력받은 타입은");
+    print(type);
+    // 오늘 날짜와 같은 일정이 있는지 확인
+    for (var record in records) {
+      if (pms.isDateToday(record.managementDate) && record.managementType == type) {
+        print("중복된게 있네요");
+        return true; // 중복된 날짜가 있는 경우
+      }
+    }
+    print("중복된게 없네요");
+
+    return false; // 중복된 날짜가 없는 경우
+  }
+
+
   @override
   void dispose() {
     _scrollController.removeListener(_scrollListener);
@@ -80,6 +218,16 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       curve: Curves.easeInOut,
     );
   }
+  
+  // 다이어리 이동하기로 화면을 이동시킵니다
+  void _moveDiary()
+  {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MyplantNull()), // MyPage로 이동
+    );
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,7 +295,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
           indicatorWeight: 3.0,
           tabAlignment: TabAlignment.center,
           labelPadding: EdgeInsets.symmetric(horizontal: 20.0),
-          tabs: const [
+          tabs: const
+          [
             Tab(text: '홈'),
             Tab(text: '식물사전'),
             Tab(text: '커뮤니티'),
@@ -274,7 +423,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
           if (index == 0) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Myplant()),
+              MaterialPageRoute(builder: (context) => MyplantNull()),
             );
           } else if (index == 1) {
             Navigator.push(
@@ -309,9 +458,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         children: [
           // 다이어리 빈곳 유무를 교체할 때 쓰는곳
           // if (false)
-            _buildMyPlantsSection(),
-          // else
-          //   _buildMyPlantsSectionNull(),
+            indexPlant != null ?_buildMyPlantsSection():
+            _buildMyPlantsSectionNull(),
 
 
           const SizedBox(height: 30),
@@ -534,7 +682,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {_moveDiary();},
                 child: const Text(
                   '다이어리 이동하기 >',
                   style: TextStyle(color: Colors.grey),
@@ -571,27 +719,53 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                       spacing: 8, // 각 버튼 사이의 가로 간격
                       runSpacing: 2, // 줄 바꿈 시의 세로 간격
                       children: [
+                        // OutlinedButton.icon(
+                        //   onPressed: ()
+                        //   {
+                        //     button4("물주기");
+                        //   },
+                        //   icon: Icon(
+                        //     Icons.water_drop,
+                        //     size: 16,
+                        //     color: Colors.lightBlueAccent,
+                        //   ),
+                        //   label: Text(
+                        //     "물주기",
+                        //     style: TextStyle(
+                        //       fontSize: 14,
+                        //       color: Color(0xff787878),
+                        //     ),
+                        //   ),
+                        //   style: OutlinedButton.styleFrom(
+                        //     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        //     side: BorderSide(color: Color(0xffc2c2c2)),
+                        //   ),
+                        // ),
                         OutlinedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            button4("물주기");
+                          },
                           icon: Icon(
                             Icons.water_drop,
                             size: 16,
-                            color: Colors.lightBlueAccent,
+                            color: _1 ? Colors.lightBlueAccent : Colors.grey[300], // _1이 true일 때 색상 변경
                           ),
                           label: Text(
                             "물주기",
                             style: TextStyle(
                               fontSize: 14,
-                              color: Color(0xff787878),
+                              color: _1 ? Color(0xff787878) : Colors.grey[300], // _1이 true일 때 색상 변경
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
                             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                            side: BorderSide(color: Color(0xffc2c2c2)),
+                            side: BorderSide(color: _1 ? Color(0xffc2c2c2) : Colors.grey[300]!),
                           ),
                         ),
                         OutlinedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            button4("영양제");
+                          },
                           icon: Image.asset(
                             'images/potion.png',
                             width: 16,
@@ -601,16 +775,18 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                             "영양제",
                             style: TextStyle(
                               fontSize: 14,
-                              color: Color(0xff787878),
+                              color: _2 ? Color(0xff787878) : Colors.grey[300], // _2가 true일 때 색상 변경
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
                             padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                            side: BorderSide(color: Color(0xffc2c2c2)),
+                            side: BorderSide(color: _2 ? Color(0xffc2c2c2) : Colors.grey[300]!),
                           ),
                         ),
                         OutlinedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            button4("가지치기");
+                          },
                           icon: Image.asset(
                             'images/scissor.png',
                             width: 16,
@@ -620,16 +796,18 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                             "가지치기",
                             style: TextStyle(
                               fontSize: 14,
-                              color: Color(0xff787878),
+                              color: _3 ? Color(0xff787878) : Colors.grey[300], // _3가 true일 때 색상 변경
                             ),
                           ),
                           style: OutlinedButton.styleFrom(
                             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            side: BorderSide(color: Color(0xffc2c2c2)),
+                            side: BorderSide(color: _3 ? Color(0xffc2c2c2) : Colors.grey[300]!),
                           ),
                         ),
                         OutlinedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            button4("분갈이");
+                          },
                           icon: Image.asset(
                             'images/soil.png',
                             width: 16,
@@ -638,12 +816,13 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                           label: Text(
                             "분갈이",
                             style: TextStyle(
-                                fontSize: 14,
-                                color: Color(0xff787878)),
+                              fontSize: 14,
+                              color: _4 ? Color(0xff787878) : Colors.grey[300], // _4가 true일 때 색상 변경
+                            ),
                           ),
                           style: OutlinedButton.styleFrom(
                             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            side: BorderSide(color: Color(0xffc2c2c2)),
+                            side: BorderSide(color: _4 ? Color(0xffc2c2c2) : Colors.grey[300]!),
                           ),
                         ),
                       ],
@@ -786,7 +965,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {_moveDiary();},
                 child: Row(
                   children: const [
                     Text(

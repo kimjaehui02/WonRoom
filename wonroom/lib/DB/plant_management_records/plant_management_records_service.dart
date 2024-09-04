@@ -16,16 +16,16 @@ class PlantManagementService {
         data: record.toJson(),
       );
 
-      print('Status Code: ${response.statusCode}');
-      print('Response URL: ${response.realUri}');
-      print('Response Data: ${response.data}');
+      // print('Status Code: ${response.statusCode}');
+      // print('Response URL: ${response.realUri}');
+      // print('Response Data: ${response.data}');
     } catch (e) {
-      print("Error: $e");
+      // print("Error: $e");
     }
   }
 
-  // 레코드 조회 요청
-  Future<List<PlantManagementRecord>?> getRecords(int plantId) async {
+// 레코드 조회 요청
+  Future<List<PlantManagementRecord>> getRecords(int plantId) async {
     final String url = "$baseUrl/plant_management/select";
 
     try {
@@ -36,9 +36,9 @@ class PlantManagementService {
         },
       );
 
-      print('Status Code: ${response.statusCode}');
-      print('Response URL: ${response.realUri}');
-      print('Response Data: ${response.data}');
+      // print('Status Code: ${response.statusCode}');
+      // print('Response URL: ${response.realUri}');
+      // print('Response Data: ${response.data}');
 
       if (response.statusCode == 200) {
         final responseData = response.data;
@@ -47,20 +47,22 @@ class PlantManagementService {
           List<PlantManagementRecord> records = recordsJson
               .map((json) => PlantManagementRecord.fromJson(json))
               .toList();
-          print('Records retrieved successfully.');
+          // print('Records retrieved successfully.');
           return records;
         } else {
-          print('Record retrieval failed: ${responseData['message']}');
+          // print('Record retrieval failed: ${responseData['message']}');
         }
       } else {
-        print('Unexpected status code: ${response.statusCode}');
+        // print('Unexpected status code: ${response.statusCode}');
       }
     } catch (e) {
-      print("Error: $e");
+      // print("Error: $e");
     }
 
-    return null;
+    // 404 또는 오류 발생 시 빈 리스트 반환
+    return [];
   }
+
 
   // 레코드 수정 요청
   Future<void> updateRecord(PlantManagementRecord record) async {
@@ -72,11 +74,11 @@ class PlantManagementService {
         data: record.toJson(),
       );
 
-      print('Status Code: ${response.statusCode}');
-      print('Response URL: ${response.realUri}');
-      print('Response Data: ${response.data}');
+      // print('Status Code: ${response.statusCode}');
+      // print('Response URL: ${response.realUri}');
+      // print('Response Data: ${response.data}');
     } catch (e) {
-      print("Error: $e");
+      // print("Error: $e");
     }
   }
 
@@ -92,11 +94,25 @@ class PlantManagementService {
         },
       );
 
-      print('Status Code: ${response.statusCode}');
-      print('Response URL: ${response.realUri}');
-      print('Response Data: ${response.data}');
+      // print('Status Code: ${response.statusCode}');
+      // print('Response URL: ${response.realUri}');
+      // print('Response Data: ${response.data}');
     } catch (e) {
-      print("Error: $e");
+      // print("Error: $e");
     }
   }
+
+  bool isDateToday(DateTime date) {
+    // 현재 날짜
+    DateTime today = DateTime.now();
+
+
+
+    // 날짜만 비교하기 위해 시간 부분은 무시
+    DateTime todayDateOnly = DateTime(today.year, today.month, today.day);
+    DateTime dateOnly = DateTime(date.year, date.month, date.day);
+
+    return todayDateOnly.isAtSameMomentAs(dateOnly);
+  }
+
 }

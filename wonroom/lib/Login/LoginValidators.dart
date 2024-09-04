@@ -92,6 +92,75 @@ class LoginValidators {
 
   // 성공 다이얼로그 표시
   static void showSuccessDialog(BuildContext context, String input) {
+    // showDialog(
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return Dialog(
+    //       shape: RoundedRectangleBorder(
+    //         borderRadius: BorderRadius.circular(10),
+    //       ),
+    //       child: Padding(
+    //         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+    //         child: Column(
+    //           mainAxisSize: MainAxisSize.min,
+    //           children: [
+    //             Text(
+    //               '로그아웃 되었습니다.',
+    //               style: TextStyle(
+    //                 fontSize: 20,
+    //                 fontWeight: FontWeight.bold,
+    //               ),
+    //               textAlign: TextAlign.center,
+    //             ),
+    //             SizedBox(height: 5),
+    //             Text(
+    //               '확인 버튼을 누르면 \n로그인 화면으로 이동합니다.',
+    //               style: TextStyle(fontSize: 16, color: Colors.grey),
+    //               textAlign: TextAlign.center,
+    //             ),
+    //             SizedBox(height: 24),
+    //             Align(
+    //               alignment: Alignment.center,
+    //               child: ElevatedButton(
+    //                 style: ElevatedButton.styleFrom(
+    //                   backgroundColor: Colors.black,
+    //                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 32),
+    //                   shape: RoundedRectangleBorder(
+    //                     borderRadius: BorderRadius.circular(8),
+    //                   ),
+    //                 ),
+    //                 child: Container(
+    //                   width: MediaQuery.of(context).size.width * 0.5,
+    //                   child: Text(
+    //                     '확인',
+    //                     style: TextStyle(
+    //                       fontSize: 18,
+    //                       color: Colors.white,
+    //                     ),
+    //                     textAlign: TextAlign.center,
+    //                   ),
+    //                 ),
+    //
+    //                 onPressed: () {
+    //                   // 로그아웃 기능
+    //
+    //                   Navigator.of(context).popUntil((route) => route.isFirst); // 모든 페이지를 팝하여 첫 페이지로 이동
+    //                   Navigator.push(
+    //                     context,
+    //                     MaterialPageRoute(
+    //                       builder: (context) => Intro(), // 로그인 페이지로 이동
+    //                     ),
+    //                   );
+    //                 },
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -156,60 +225,70 @@ class LoginValidators {
   }
 
   // 실패 다이얼로그 표시
-  static void showErrorDialog(BuildContext context, String errorMessage) {
+  static void showErrorDialog(BuildContext context, String errorMessage)
+  {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(10),
           ),
-          child: Container(
-            padding: EdgeInsets.all(20.0),
-            constraints: BoxConstraints(maxWidth: 400),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   errorMessage,
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.red,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 16.0),
+                SizedBox(height: 5),
                 Text(
-                  errorMessage,
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.red,
-                  ),
+                  '아이디 또는 비밀번호를 \n 다시 확인해주세요',
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 24.0),
-                SizedBox(
-                  width: double.infinity,
+                SizedBox(height: 24),
+                Align(
+                  alignment: Alignment.center,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      padding: EdgeInsets.symmetric(vertical: 14.0),
+                      backgroundColor: Colors.black,
+                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 32),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: Text(
-                      '확인',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: Text(
+                        '확인',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
+
+                    onPressed: ()
+                    {
+                      // 로그아웃 기능
+                      Navigator.of(context).pop();
+
+                      // Navigator.of(context).popUntil((route) => route.isFirst); // 모든 페이지를 팝하여 첫 페이지로 이동
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => Intro(), // 로그인 페이지로 이동
+                      //   ),
+                      // );
+                    },
                   ),
                 ),
               ],
@@ -218,6 +297,68 @@ class LoginValidators {
         );
       },
     );
+
+    // showDialog(
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return Dialog(
+    //       shape: RoundedRectangleBorder(
+    //         borderRadius: BorderRadius.circular(10.0),
+    //       ),
+    //       child: Container(
+    //         padding: EdgeInsets.all(20.0),
+    //         constraints: BoxConstraints(maxWidth: 400),
+    //         child: Column(
+    //           mainAxisSize: MainAxisSize.min,
+    //           children: [
+    //             Text(
+    //               errorMessage,
+    //               style: TextStyle(
+    //                 fontSize: 22,
+    //                 fontWeight: FontWeight.bold,
+    //                 color: Colors.red,
+    //               ),
+    //               textAlign: TextAlign.center,
+    //             ),
+    //             SizedBox(height: 16.0),
+    //             Text(
+    //               errorMessage,
+    //               style: TextStyle(
+    //                 fontSize: 18,
+    //                 color: Colors.red,
+    //               ),
+    //               textAlign: TextAlign.center,
+    //             ),
+    //             SizedBox(height: 24.0),
+    //             SizedBox(
+    //               width: double.infinity,
+    //               child: ElevatedButton(
+    //                 onPressed: () {
+    //                   Navigator.of(context).pop();
+    //                 },
+    //                 style: ElevatedButton.styleFrom(
+    //                   backgroundColor: Colors.red,
+    //                   padding: EdgeInsets.symmetric(vertical: 14.0),
+    //                   shape: RoundedRectangleBorder(
+    //                     borderRadius: BorderRadius.circular(8.0),
+    //                   ),
+    //                 ),
+    //                 child: Text(
+    //                   '확인',
+    //                   style: TextStyle(
+    //                     fontSize: 18,
+    //                     fontWeight: FontWeight.bold,
+    //                     color: Colors.white,
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
   }
 
 }

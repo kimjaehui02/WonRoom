@@ -53,7 +53,9 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.white, // 앱바 배경색
       ),
     ),
-      home: MyplantNull(),
+      home: Index(//analysisResult: '',
+        // data2: Intro(), // 올바른 Widget 타입
+      ),
     );
   }
 }

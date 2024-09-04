@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 // 관리 유형 Enum 정의
-enum ManagementType { Watering, Pruning, Repotting, Fertilizing }
+enum ManagementType { Watering, Pruning, Repotting, Fertilizing, Diagnosis }
+
+
 
 // PlantManagementRecord 모델 클래스
 class PlantManagementRecord {
@@ -39,14 +42,19 @@ class PlantManagementRecord {
     return {
       'record_id': recordId,
       'catalog_number': catalogNumber,
-      'management_date': managementDate.toIso8601String(),
+      'management_date':  _formatDateForDb(managementDate),
       'management_type': _managementTypeToString(managementType),
       'details': details,
       'plant_id': plantId,
     };
   }
 
-  // 관리 유형 문자열을 열거형으로 변환
+  // 관리 날짜를 'YYYY-MM-DD' 형식으로 포맷팅
+  String _formatDateForDb(DateTime date) {
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
+
+// 관리 유형 문자열을 열거형으로 변환
   static ManagementType _parseManagementType(String type) {
     switch (type) {
       case 'Watering':
@@ -57,12 +65,15 @@ class PlantManagementRecord {
         return ManagementType.Repotting;
       case 'Fertilizing':
         return ManagementType.Fertilizing;
+      case 'Diagnosis':
+        return ManagementType.Diagnosis;  // 추가된 부분
       default:
         throw ArgumentError('Unknown management type: $type');
     }
   }
 
-  // 관리 유형 열거형을 문자열로 변환
+
+// 관리 유형 열거형을 문자열로 변환
   static String _managementTypeToString(ManagementType type) {
     switch (type) {
       case ManagementType.Watering:
@@ -73,8 +84,47 @@ class PlantManagementRecord {
         return 'Repotting';
       case ManagementType.Fertilizing:
         return 'Fertilizing';
+      case ManagementType.Diagnosis:
+        return 'Diagnosis';  // 추가된 부분
       default:
         throw ArgumentError('Unknown management type: $type');
     }
   }
+
+
+  // managementDate를 'MM.dd' 형식으로 포맷팅
+  String getFormattedDate() {
+    final DateFormat formatter = DateFormat('MM.dd');
+    return formatter.format(managementDate);
+  }
+
+
 }
+
+
+// 리스트를 관리 유형에 따라 분류하고 날짜를 최신 순으로 정렬하는 함수
+Map<ManagementType, List<PlantManagementRecord>> sortAndGroupRecords(
+    List<PlantManagementRecord>? records) {
+  // records가 null인 경우 빈 맵을 반환
+  if (records == null) {
+    return {};
+  }
+
+  // 관리 유형에 따라 그룹화
+  final Map<ManagementType, List<PlantManagementRecord>> groupedRecords = {};
+
+  for (var record in records) {
+    if (!groupedRecords.containsKey(record.managementType)) {
+      groupedRecords[record.managementType] = [];
+    }
+    groupedRecords[record.managementType]!.add(record);
+  }
+
+  // 각 그룹 내에서 날짜를 최신 순으로 정렬
+  for (var key in groupedRecords.keys) {
+    groupedRecords[key]!.sort((a, b) => b.managementDate.compareTo(a.managementDate));
+  }
+
+  return groupedRecords;
+}
+
