@@ -40,7 +40,24 @@ py/__pycache__/
 # Additional paths to ignore
 wonroom/build/
 wonroom/.dart_tool/
+wonroom/build/app/kotlin/compileDebugKotlin/cacheable/
 
 # Ignore Kotlin build cache files
-wonroom/build/app/kotlin/compileDebugKotlin/cacheable/
 *.apk
+
+# Miscellaneous
+*.class
+*.log
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
