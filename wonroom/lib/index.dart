@@ -5,11 +5,18 @@ import 'package:wonroom/DB/user_plants/user_plants_model.dart';
 import 'package:wonroom/DB/user_plants/user_plants_service.dart';
 import 'package:wonroom/Flask/storage_manager.dart';
 import 'package:wonroom/MyPlant/myPlant_functions.dart';
+import 'package:wonroom/PlantDetailPage.dart';
+import 'package:wonroom/PostDetailPage.dart';
+import 'package:wonroom/community.dart';
+import 'package:wonroom/customerService.dart';
+import 'package:wonroom/inqurityDetails.dart';
 import 'package:wonroom/myPage.dart';
 import 'package:wonroom/myPlantNull.dart';
 import 'package:wonroom/myPlant.dart';
 import 'package:wonroom/myPlantRegistration.dart';
+import 'package:wonroom/notificationPage.dart';
 import 'package:wonroom/plantClinicChat.dart';
+import 'package:wonroom/search.dart';
 import 'package:wonroom/showFloatingActionModal.dart';
 import 'plantDictionary.dart';
 
@@ -67,6 +74,19 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
 
 
 
+    //   추가
+    // Tab change listener
+    _tabController.addListener(() {
+      if (_tabController.index == 3) { // 고객센터 탭이 선택되었을 때
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>
+              CustomerService()), // customerService.dart로 이동
+        ).then((_) {
+          _tabController.index = 0; // 홈 탭으로 되돌아가도록 설정
+        });
+      }
+    });
   }
 
 
@@ -188,6 +208,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   void dispose() {
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
+    _tabController.dispose();
     super.dispose();
   }
   void _scrollListener() {
@@ -236,7 +257,12 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         automaticallyImplyLeading: false,
         leading: IconButton(
           icon: const Icon(Icons.search),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Search()),
+            );
+          },
         ),
         title: RichText(
           text: TextSpan(
@@ -244,7 +270,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               TextSpan(
                 text: 'Won',
                 style: TextStyle(
-                  color: Colors.green,
+                  color: Color(0xff779d60),
                   fontWeight: FontWeight.bold,
                   fontFamily: 'DMSerifDisplay',
                   letterSpacing: 2,
@@ -267,7 +293,12 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_none_outlined),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationPage()),
+              );
+            },
           ),
           IconButton(
             icon: const Icon(Icons.person_outline),
@@ -310,11 +341,10 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             controller: _tabController,
             children: [
               _buildHomePage(),
-              _buildPlantDictionaryPage(),
-              // PlantDictionary(),
-              // _buildPlantClinicPage('식물클리닉 페이지'),
-              _buildCommunityPage('커뮤니티 페이지'),
-              _buildCustomerServicePage('고객센터 페이지'),
+              PlantDictionary(),
+              Community(),
+              Container(),
+              // CustomerService(),
             ],
           ),
           if (_isFabVisible)
@@ -658,7 +688,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   // 다이어리 있을 때 코드
   Widget _buildMyPlantsSection() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: Colors.white.withOpacity(0.8),
@@ -682,17 +712,26 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
               ),
               TextButton(
-                onPressed: () {_moveDiary();},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Myplant()),
+                  );
+                },
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.zero),
+                  minimumSize: MaterialStateProperty.all<Size>(Size.zero),
+                ),
                 child: const Text(
                   '다이어리 이동하기 >',
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(color: Color(0xff787878)),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 10),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 width: 120,
@@ -712,7 +751,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                   children: [
                     const Text(
                       '몬스테라',
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10),
                     Wrap(
@@ -868,10 +907,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
 
 
 
-
-
-
-
   Widget _buildActionContainer({
     required dynamic icon, // 변경: dynamic으로 변경하여 IconData와 String 모두 허용
     required String text,
@@ -965,7 +1000,12 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
               ),
               TextButton(
-                onPressed: () {_moveDiary();},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Myplant()),
+                  );
+                },
                 child: Row(
                   children: const [
                     Text(
@@ -1032,14 +1072,14 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             ),
             TextButton(
               onPressed: () {
-                // 더보기 버튼 클릭 시 동작할 코드 작성
+                _tabController.index = 1;
               },
               child: Row(
                 children: const [
                   Text(
                     '더보기 >',
                     style: TextStyle(
-                      color: Colors.grey,
+                      color: Color(0xff787878),
                     ),
                   ),
                   SizedBox(width: 5),
@@ -1075,14 +1115,14 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             ),
             TextButton(
               onPressed: () {
-                // 더보기 버튼 클릭 시 동작할 코드 작성
+                _tabController.index = 2;
               },
               child: Row(
                 children: const [
                   Text(
                     '더보기 >',
                     style: TextStyle(
-                      color: Colors.grey,
+                      color: Color(0xff787878),
                     ),
                   ),
                   SizedBox(width: 5),
@@ -1103,75 +1143,87 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             ),
             itemBuilder: (context, index) {
               final item = data[index];
-              return Container(
-                margin: EdgeInsets.symmetric(horizontal: 6), // 카드 사이의 여백
-                padding: EdgeInsets.only(top: 8, bottom: 8),
-                child: AspectRatio(
-                  aspectRatio: 1.0,
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.13),
-                          spreadRadius: 2,
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
+              return GestureDetector(
+                onTap: () {
+                  // 상세 페이지로 이동
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      // 임시로 디테일 페이지로 이동
+                      builder: (context) => PostDetailPage(post: {}),
                     ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          height: MediaQuery.of(context).size.width * 0.25,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            image: DecorationImage(
-                              image: AssetImage(item['image']!),
-                              fit: BoxFit.cover,
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 6), // 카드 사이의 여백
+                  padding: EdgeInsets.only(top: 8, bottom: 8),
+                  child: AspectRatio(
+                    aspectRatio: 1.0,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.13),
+                            spreadRadius: 2,
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.25,
+                            height: MediaQuery.of(context).size.width * 0.25,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              image: DecorationImage(
+                                image: AssetImage(item['image']!),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item['boardName']!,
-                                  style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 12,
+                          const SizedBox(width: 10),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item['boardName']!,
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 12,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  item['title']!,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    item['title']!,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  item['description']!,
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
+                                  Text(
+                                    item['description']!,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -1180,9 +1232,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             padEnds: false, // 페이지 끝에 패딩 적용 안 함
           ),
         )
-
-
-
 
 
 
@@ -1290,38 +1339,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
-  Widget _buildPlantDictionaryPage() {
-    return SingleChildScrollView(
-      controller: _scrollController,
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 50),
-          const SizedBox(height: 50),
-          const SizedBox(height: 40),
-        ],
-      ),
-    );
-  }
 
-  // Widget _buildPlantDictionaryPage() {
-  //   return SingleChildScrollView(
-  //     controller: _scrollController,
-  //     padding: const EdgeInsets.all(16),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         // _buildPlantCamera(),
-  //         const SizedBox(height: 50),
-  //         // _buildRecommendedPlantsSection(),
-  //         const SizedBox(height: 50),
-  //         // _buildPopularPostsSection(),
-  //         const SizedBox(height: 40),
-  //       ],
-  //     ),
-  //   );
-  // }
   // Widget _buildPlantDictionaryPage() {
   //   return SingleChildScrollView(
   //     controller: _scrollController,
@@ -1338,21 +1356,21 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   // }
 
 
-  Widget _buildPlantClinicPage(String text) {
-    return Center(
-      child: Text(text),
-    );
-  }
+  // Widget _buildPlantClinicPage(String text) {
+  //   return Center(
+  //     child: Text(text),
+  //   );
+  // }
 
-  Widget _buildCommunityPage(String text) {
-    return Center(
-      child: Text(text),
-    );
-  }
+  // Widget _buildCommunityPage(String text) {
+  //   return Center(
+  //     child: Text(text),
+  //   );
+  // }
 
-  Widget _buildCustomerServicePage(String text) {
-    return Center(
-      child: Text(text),
-    );
-  }
+  // Widget _buildCustomerServicePage(String text) {
+  //   return Center(
+  //     child: Text(text),
+  //   );
+  // }
 }

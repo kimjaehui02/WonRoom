@@ -151,54 +151,61 @@ class Validators {
       builder: (BuildContext context) {
         return Dialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Container(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
             constraints: BoxConstraints(maxWidth: 400),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   '회원가입 실패',
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.red,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 16.0),
+                SizedBox(height: 5),
                 Text(
                   errorMessage,
                   style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.red,
+                    fontSize: 16,
+                    color: Colors.grey
                   ),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 24.0),
-                SizedBox(
-                  width: double.infinity,
+
+                Align(
+                  alignment: Alignment.center,
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 32),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: Text(
+                        '확인',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+
                     onPressed: () {
+                      // 로그아웃 기능
+
                       Navigator.of(context).pop();
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      padding: EdgeInsets.symmetric(vertical: 14.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    child: Text(
-                      '확인',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
                   ),
                 ),
               ],

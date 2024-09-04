@@ -22,7 +22,6 @@ class NotificationNull extends StatelessWidget {
         ),
       ),
       body: Container(
-        color: Colors.white,
         child: Column(
           children: [
             SizedBox(height: 3,),

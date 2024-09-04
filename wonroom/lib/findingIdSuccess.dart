@@ -12,7 +12,7 @@ class FindingIdSuccess extends StatelessWidget {
         title: const Text('아이디 찾기', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios,
             color: Colors.grey,
           ),
@@ -68,42 +68,43 @@ class FindingIdSuccess extends StatelessWidget {
                 ),
               ],
             ),
+
             Column(
               children: [
                 // 비밀번호 찾기 버튼
                 SizedBox(
-                  width: double.infinity, // 버튼이 전체 너비를 차지하도록 설정
-                  child: OutlinedButton(
+                  width: double.infinity,
+                  child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => FindingPw()),
                       );
                     },
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(
-                        color: Colors.black, // 테두리 색상
-                        width: 1.5, // 테두리 두께
-                      ),
-                      minimumSize: const Size(double.infinity, 48), // 버튼의 최소 높이 설정
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      side: BorderSide(color: Colors.black, width: 1.5),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3), // 모서리 곡선 제거
+                        borderRadius: BorderRadius.circular(4),
                       ),
+                      padding: EdgeInsets.symmetric(vertical: 12),
                     ),
                     child: const Text(
                       '비밀번호 찾기',
                       style: TextStyle(
-                          color: Colors.black, // 버튼 글씨 색상
-                          fontSize: 24,
+                          color: Colors.black,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 16.0),
+                const SizedBox(height: 12),
+
                 // 로그인 버튼
-                SizedBox(
-                  width: double.infinity, // 버튼이 전체 너비를 차지하도록 설정
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.only(bottom: 20),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -112,18 +113,19 @@ class FindingIdSuccess extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xff6FB348), // 버튼 배경색 초록색
+                      backgroundColor: Color(0xff6FB348),
+                      // side: BorderSide(color: Colors.black, width: 1),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3), // 모서리 곡선 제거
+                        borderRadius: BorderRadius.circular(4),
                       ),
-                      minimumSize: const Size(double.infinity, 48), // 버튼의 최소 높이 설정
+                      padding: EdgeInsets.symmetric(vertical: 12), // 버튼 크기 조정
                     ),
-                    child: const Text(
+                    child: Text(
                       '로그인',
                       style: TextStyle(
-                          color: Colors.white, // 버튼 글씨 색상 흰색
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold
                       ),
                     ),
                   ),

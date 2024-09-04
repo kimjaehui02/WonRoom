@@ -13,12 +13,232 @@ class _PostDetailPageState extends State<PostDetailPage> {
   bool showReplyField1 = false; // 사용자1에 대한 대댓글 작성 필드
   bool showReplyField2 = false; // 사용자2에 대한 대댓글 작성 필드
   bool showReplyField3 = false; // 사용자3에 대한 대댓글 작성 필드
+  bool isFavorite1 = false; // 첫 번째 댓글의 좋아요 상태
+  bool isFavorite2 = false; // 두 번째 댓글의 좋아요 상태
+  bool isFavorite3 = false; // 세 번째 댓글의 좋아요 상태
+  bool isFavoriteInput = false; // 입력 필드 옆 하트 아이콘의 좋아요 상태
+
+  // TextEditingController 추가
+  final TextEditingController _commentController = TextEditingController();
+  final TextEditingController _replyController1 = TextEditingController();
+  final TextEditingController _replyController2 = TextEditingController();
+  final TextEditingController _replyController3 = TextEditingController();
+  bool _isCommentNotEmpty = false; // 댓글 입력 여부 상태 변수
+  bool _isReply1NotEmpty = false; // 사용자1 대댓글 입력 여부
+  bool _isReply2NotEmpty = false; // 사용자2 대댓글 입력 여부
+  bool _isReply3NotEmpty = false; // 사용자3 대댓글 입력 여부
+
+  @override
+  void initState() {
+    super.initState();
+    _commentController.addListener(() {
+      setState(() {
+        _isCommentNotEmpty = _commentController.text.isNotEmpty;
+      });
+    });
+    _replyController1.addListener(() {
+      setState(() {
+        _isReply1NotEmpty = _replyController1.text.isNotEmpty;
+      });
+    });
+    _replyController2.addListener(() {
+      setState(() {
+        _isReply2NotEmpty = _replyController2.text.isNotEmpty;
+      });
+    });
+    _replyController3.addListener(() {
+      setState(() {
+        _isReply3NotEmpty = _replyController3.text.isNotEmpty;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    _replyController1.dispose();
+    _replyController2.dispose();
+    _replyController3.dispose();
+    super.dispose();
+  }
+
+  // 수정, 삭제 팝업
+  void _showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: Icon(Icons.edit_outlined),
+                title: Text('수정하기'),
+                onTap: () {
+                  // 수정하기 기능 추가
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.delete_outline_outlined),
+                title: Text('삭제하기'),
+                onTap: () {
+                  Navigator.pop(context); // 기존 바텀 시트를 닫습니다.
+                  _showDeleteConfirmationSheet(context); // 삭제 확인 바텀 시트를 호출합니다.
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // 삭제버튼 클릭 시 팝업
+  void _showDeleteConfirmationSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 20),
+              Text(
+                '정말 삭제하시겠습니까?',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 3),
+              Text(
+                '삭제하기를 누르시면\n해당 게시글이 삭제됩니다.',
+                style: TextStyle(color: Colors.grey, fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context); // 바텀 시트 닫기
+                    },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.grey[300], // 회색 배경
+                      minimumSize: Size(170, 50), // 네모 모양의 버튼 크기
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3), // 네모 모양
+                      ),
+                    ),
+                    child: Text(
+                      '취소',
+                      style: TextStyle(
+                          color: Color(0xff787878),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context); // 삭제 확인 팝업 닫기
+                      _showDeletionSuccessDialog(context); // 삭제 완료 팝업 열기
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xff595959),
+                      minimumSize: Size(170, 50), // 네모 모양의 버튼 크기
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3), // 네모 모양
+                      ),
+                    ),
+                    child: Text(
+                      '삭제',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold
+                      ), // 흰색 글씨
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showDeletionSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      // 사용자가 팝업 외부를 클릭해도 다이얼로그가 닫히지 않도록 설정
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0), // 패딩 조정으로 크기 키우기
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10), // 다이얼로그 모서리 둥글게 설정
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 10,),
+              Text(
+                '삭제되었습니다.',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.black),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 3),
+              Text(
+                '확인 버튼을 누르면 \n 이전 페이지로 이동합니다.',
+                style: TextStyle(color: Colors.grey, fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 15),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // 삭제 완료 다이얼로그 닫기
+                    Navigator.pop(context); // 이전 페이지로 돌아가기
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    minimumSize: Size(200, 45), // 네모 모양의 버튼 크기
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(3), // 네모 모양의 버튼
+                    ),
+                  ),
+                  child: Text(
+                    '확인',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold
+                    ), // 흰색 글씨
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    // 예시로 사용될 댓글 목록, 실제 데이터로 대체 가능
-    List<Map<String, String>> comments = []; // 빈 리스트로 초기화
-
     return Scaffold(
       appBar: AppBar(
         title: Text('자유게시판', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -44,8 +264,15 @@ class _PostDetailPageState extends State<PostDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CircleAvatar(
-                          radius: 20,
-                          backgroundImage: AssetImage('assets/profile_image.png'), // 프로필 이미지 경로
+                          backgroundColor: Colors.transparent,
+                          child: ClipOval(
+                            child: Image.asset(
+                              'images/멕시코소철.jpg',
+                              fit: BoxFit.cover,
+                              width: 100,
+                              height: 100,
+                            ),
+                          ),
                         ),
                         SizedBox(width: 10),
                         Column(
@@ -59,10 +286,12 @@ class _PostDetailPageState extends State<PostDetailPage> {
                           ],
                         ),
                         Spacer(),
-                        // 본인일 경우
-                        // Icon(Icons.more_vert),
-                        // 다른 사용자일 경우 보이는 아이콘
-                        Icon(Icons.share)
+                        IconButton(
+                          icon: Icon(Icons.more_vert),
+                          onPressed: () => _showBottomSheet(context),
+                        ),
+                        // 다른사람
+                        // Icon(Icons.share)
                       ],
                     ),
                     SizedBox(height: 10),
@@ -104,9 +333,9 @@ class _PostDetailPageState extends State<PostDetailPage> {
                     SizedBox(height: 10),
                     Image.asset(
                       'images/산세베리아.jpg',
-                      width: double.infinity, // Make image width full screen
+                      width: double.infinity,
                       height: 300,
-                      fit: BoxFit.cover, // Ensure the image fits within its container
+                      fit: BoxFit.cover,
                     ),
                     SizedBox(height: 15),
                     Text(
@@ -122,41 +351,27 @@ class _PostDetailPageState extends State<PostDetailPage> {
                     Divider(height: 32, thickness: 1.5, color: Colors.grey[300]),
                     SizedBox(height: 16),
 
-                    // 댓글 목록 비어있을 때 SizeBox
-                    // SizedBox(height: 100),
-
-                    // 댓글 목록이 비어있을 때 표시되는 메시지
-                    //   Center(
-                    //     child: Column(
-                    //       children: [
-                    //         Text(
-                    //           '작성된 댓글이 없습니다.',
-                    //           style: TextStyle(fontSize: 16, color: Colors.grey),
-                    //         ),
-                    //         SizedBox(height: 8),
-                    //         Text(
-                    //           '대화를 시작하세요.',
-                    //           style: TextStyle(fontSize: 14, color: Colors.grey),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // 댓글 목록 비어있을 때 SizeBox
-                    // SizedBox(height: 100),
-
                     Text(
-                      '댓글 3',  // 댓글 수를 3으로 수정
+                      '댓글 3',
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                     // Comment Section
                     ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: AssetImage('assets/profile_image.png'), // 댓글 프로필 이미지 경로
+                        backgroundColor: Colors.transparent,
+                        child: ClipOval(
+                          child: Image.asset(
+                            'images/멕시코소철.jpg',
+                            fit: BoxFit.cover,
+                            width: 100,
+                            height: 100,
+                          ),
+                        ),
                       ),
                       title: Row(
                         children: [
                           Text('사용자1', style: TextStyle(fontWeight: FontWeight.bold)),
-                          SizedBox(width: 8),  // 이름과 시간 간격
+                          SizedBox(width: 8),
                           Text('10분 전', style: TextStyle(fontSize: 12, color: Colors.grey)),
                         ],
                       ),
@@ -167,42 +382,60 @@ class _PostDetailPageState extends State<PostDetailPage> {
                           GestureDetector(
                             onTap: () {
                               setState(() {
-                                showReplyField1 = !showReplyField1;  // 댓글 달기 버튼을 클릭하면 대댓글 작성 필드 표시 여부 변경
+                                showReplyField1 = !showReplyField1;
                               });
                             },
                             child: Text('답글 달기', style: TextStyle(color: Colors.grey, fontSize: 14)),
                           ),
                         ],
                       ),
-                      trailing: Icon(Icons.favorite_border),
-                      contentPadding: EdgeInsets.symmetric(vertical: 0), // 세로 패딩 0으로 설정
-                      minLeadingWidth: 40, // 이미지와 텍스트 간 간격 설정
+                      trailing: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isFavorite1 = !isFavorite1;
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          child: Icon(
+                            isFavorite1 ? Icons.favorite : Icons.favorite_border,
+                            color: isFavorite1 ? Colors.red : Colors.grey,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(vertical: 0),
+                      minLeadingWidth: 40,
                     ),
-                    if (showReplyField1)  // 대댓글 작성 필드 표시 여부에 따라 TextField 표시
+                    if (showReplyField1)
                       Padding(
                         padding: const EdgeInsets.only(left: 58.0, bottom: 2.0),
                         child: SizedBox(
-                          height: 40, // 대댓글 박스의 높이 조정
+                          height: 60,
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center, // 추가된 부분
                             children: [
                               Expanded(
                                 child: TextField(
+                                  controller: _replyController1,
                                   decoration: InputDecoration(
                                     hintText: '대댓글을 입력하세요...',
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.zero,
                                     ),
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // 패딩 조정
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 8), // TextField와 아이콘 사이의 간격 조정
+                              SizedBox(width: 2),
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: IconButton(
-                                  icon: Icon(Icons.telegram, color: Colors.grey, size: 40), // 아이콘 크기 조정
-                                  // 입력 시 아이콘 초록으로 변경
-                                  // icon: Icon(Icons.telegram, color: Color(0xff6bbe45), size: 40), // 아이콘 크기 조정
+                                  icon: Icon(
+                                    Icons.telegram,
+                                    color: _isReply1NotEmpty ? Color(0xff6bbe45) : Colors.grey,
+                                    size: 45,
+                                  ),
                                   onPressed: () {
                                     // 대댓글 전송 기능 추가
                                   },
@@ -213,10 +446,18 @@ class _PostDetailPageState extends State<PostDetailPage> {
                         ),
                       ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 55.0, top: 0.0, bottom: 8.0), // 댓글과 대댓글 간격 줄이기
+                      padding: const EdgeInsets.only(left: 55.0, top: 0.0, bottom: 8.0),
                       child: ListTile(
                         leading: CircleAvatar(
-                          backgroundImage: AssetImage('assets/profile_image.png'), // 대댓글 프로필 이미지 경로
+                          backgroundColor: Colors.transparent,
+                          child: ClipOval(
+                            child: Image.asset(
+                              'images/멕시코소철.jpg',
+                              fit: BoxFit.cover,
+                              width: 100,
+                              height: 100,
+                            ),
+                          ),
                         ),
                         title: Row(
                           children: [
@@ -232,43 +473,62 @@ class _PostDetailPageState extends State<PostDetailPage> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  showReplyField2 = !showReplyField2;  // 대댓글의 대댓글 작성 필드 표시 여부 변경
+                                  showReplyField2 = !showReplyField2;
                                 });
                               },
                               child: Text('답글 달기', style: TextStyle(color: Colors.grey, fontSize: 14)),
                             ),
                           ],
                         ),
-                        trailing: Icon(Icons.favorite_border),
-                        contentPadding: EdgeInsets.symmetric(vertical: 0), // 세로 패딩 0으로 설정
-                        minLeadingWidth: 40, // 이미지와 텍스트 간 간격 설정
+                        trailing: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isFavorite2 = !isFavorite2;
+                            });
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            child: Icon(
+                              isFavorite2 ? Icons.favorite : Icons.favorite_border,
+                              color: isFavorite2 ? Colors.red : Colors.grey,
+                              size: 24,
+                            ),
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(vertical: 0),
+                        minLeadingWidth: 40,
                       ),
                     ),
-                    if (showReplyField2)  // 대댓글의 대댓글 작성 필드 표시 여부에 따라 TextField 표시
+                    if (showReplyField2)
                       Padding(
                         padding: const EdgeInsets.only(left: 80.0, bottom: 8.0),
                         child: SizedBox(
-                          height: 40, // 대댓글 박스의 높이 조정
+                          height: 60,
                           child: Row(
                             children: [
                               Expanded(
                                 child: TextField(
-                                  minLines: 1, // 최소 줄 수
-                                  maxLines: 1, // 최대 줄 수
+                                  controller: _replyController2,
+                                  minLines: 1,
+                                  maxLines: 1,
                                   decoration: InputDecoration(
                                     hintText: '대댓글을 입력하세요...',
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.zero,
                                     ),
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // 패딩 조정
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 8), // TextField와 아이콘 사이의 간격 조정
+                              SizedBox(width: 2),
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: IconButton(
-                                  icon: Icon(Icons.telegram, color: Colors.grey, size: 30), // 아이콘 크기 조정
+                                  icon: Icon(
+                                    Icons.telegram,
+                                    color: _isReply2NotEmpty ? Color(0xff6bbe45) : Colors.grey,
+                                    size: 45,
+                                  ),
                                   onPressed: () {
                                     // 대댓글의 대댓글 전송 기능 추가
                                   },
@@ -280,11 +540,19 @@ class _PostDetailPageState extends State<PostDetailPage> {
                       ),
                     ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: AssetImage('assets/profile_image.png'), // 댓글 프로필 이미지 경로
+                        backgroundColor: Colors.transparent,
+                        child: ClipOval(
+                          child: Image.asset(
+                            'images/멕시코소철.jpg',
+                            fit: BoxFit.cover,
+                            width: 100,
+                            height: 100,
+                          ),
+                        ),
                       ),
                       title: Row(
                         children: [
-                          Text('사용자3', style: TextStyle(fontWeight: FontWeight.bold)), // 새로운 댓글 작성자
+                          Text('사용자3', style: TextStyle(fontWeight: FontWeight.bold)),
                           SizedBox(width: 8),
                           Text('방금 전', style: TextStyle(fontSize: 12, color: Colors.grey)),
                         ],
@@ -296,42 +564,67 @@ class _PostDetailPageState extends State<PostDetailPage> {
                           GestureDetector(
                             onTap: () {
                               setState(() {
-                                showReplyField3 = !showReplyField3;  // 댓글 달기 버튼을 클릭하면 대댓글 작성 필드 표시 여부 변경
+                                showReplyField3 = !showReplyField3;
                               });
                             },
                             child: Text('답글 달기', style: TextStyle(color: Colors.grey, fontSize: 14)),
                           ),
                         ],
                       ),
-                      trailing: Icon(Icons.favorite_border),
-                      contentPadding: EdgeInsets.symmetric(vertical: 2), // 세로 패딩 줄이기
-                      minLeadingWidth: 40, // 이미지와 텍스트 간 간격 설정
+                      trailing: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isFavorite3 = !isFavorite3;
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          child: Icon(
+                            isFavorite3 ? Icons.favorite : Icons.favorite_border,
+                            color: isFavorite3 ? Colors.red : Colors.grey,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(vertical: 2),
+                      minLeadingWidth: 40,
                     ),
-                    if (showReplyField3)  // 사용자3에 대한 대댓글 작성 필드 표시 여부에 따라 TextField 표시
+                    if (showReplyField3)
                       Padding(
                         padding: const EdgeInsets.only(left: 60.0, bottom: 8.0),
                         child: SizedBox(
-                          height: 40, // 대댓글 박스의 높이 조정
+                          height: 60,
                           child: Row(
                             children: [
                               Expanded(
                                 child: TextField(
-                                  minLines: 1, // 최소 줄 수
-                                  maxLines: 1, // 최대 줄 수
+                                  controller: _replyController3,
+                                  minLines: 1,
+                                  maxLines: 1,
                                   decoration: InputDecoration(
                                     hintText: '대댓글을 입력하세요...',
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.zero,
                                     ),
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // 패딩 조정
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
+                                    ),
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 8), // TextField와 아이콘 사이의 간격 조정
+                              SizedBox(width: 2),
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: IconButton(
-                                  icon: Icon(Icons.telegram, color: Colors.grey, size: 40), // 아이콘 크기 조정
+                                  icon: Icon(
+                                    Icons.telegram,
+                                    color: _isReply3NotEmpty ? Color(0xff6bbe45) : Colors.grey,
+                                    size: 45,
+                                  ),
                                   onPressed: () {
                                     // 대댓글 전송 기능 추가
                                   },
@@ -346,35 +639,68 @@ class _PostDetailPageState extends State<PostDetailPage> {
               ),
             ),
           ),
-
-
           // Add Comment Section
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                SizedBox(width: 4,),
-                Icon(Icons.favorite_border_outlined, size: 27,),
-                SizedBox(width: 10,),
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: '댓글을 입력하세요...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.zero,
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: Color(0xffeeeeee),
+                  width: 1,
+                ),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  SizedBox(width: 4,),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isFavoriteInput = !isFavoriteInput;
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      child: Icon(
+                        isFavoriteInput ? Icons.favorite : Icons.favorite_border_outlined,
+                        size: 27,
+                        color: isFavoriteInput ? Colors.red : Colors.grey,
                       ),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                     ),
                   ),
-                ),
-                SizedBox(width: 3),
-                IconButton(
-                  icon: Icon(Icons.telegram, color: Colors.grey, size: 50,),
-                  onPressed: () {
-                    // 댓글 전송 기능 추가
-                  },
-                ),
-              ],
+                  SizedBox(width: 10,),
+                  Expanded(
+                    child: TextField(
+                      controller: _commentController,
+                      decoration: InputDecoration(
+                        hintText: '댓글을 입력하세요...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.zero,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 3),
+                  IconButton(
+                    icon: Icon(
+                      Icons.telegram,
+                      color: _isCommentNotEmpty ? Color(0xff6bbe45) : Colors.grey,
+                      size: 50,
+                    ),
+                    onPressed: () {
+                      // 댓글 전송 기능 추가
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ],

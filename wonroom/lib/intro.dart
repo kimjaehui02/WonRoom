@@ -15,7 +15,7 @@ class Intro extends StatelessWidget {
           Expanded(
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   mainAxisSize: MainAxisSize.min, // 최소한의 높이로 설정
                   children: [
@@ -26,7 +26,7 @@ class Intro extends StatelessWidget {
                           TextSpan(
                             text: 'Won', // 초록색으로 할 부분
                             style: TextStyle(
-                              color: Colors.green,
+                              color: Color(0xff779d60),
                               fontWeight: FontWeight.bold,
                               fontFamily: 'DMSerifDisplay',
                               letterSpacing: 2,
@@ -49,7 +49,7 @@ class Intro extends StatelessWidget {
                     SizedBox(height: 10), // 두 텍스트 사이의 공간
                     Text(
                       '언제 어디서나 간편하게 \n 건강한 식물 키우기', // 두 번째 텍스트
-                      style: TextStyle(fontSize: 21, color: Colors.black),
+                      style: TextStyle(fontSize: 18, color: Color(0xff333333)),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -57,14 +57,14 @@ class Intro extends StatelessWidget {
               ),
             ),
           ),
-          // 하단에 위치할 버튼
+
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisSize: MainAxisSize.min, // 최소한의 높이로 설정
               children: [
                 Container(
-                  width: 350, // 버튼의 너비 설정
+                  width: MediaQuery.of(context).size.width,
                   child: ElevatedButton(
                     onPressed: () {
                       // 로그인 버튼 클릭 시 동작
@@ -77,22 +77,24 @@ class Intro extends StatelessWidget {
                       backgroundColor: Colors.white,
                       side: BorderSide(color: Colors.black, width: 1.5),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero, // 직사각형 모양
+                        borderRadius: BorderRadius.circular(4),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 15), // 버튼 크기 조정
+                      padding: EdgeInsets.symmetric(vertical: 12), // 버튼 크기 조정
                     ),
                     child: Text(
                       '로그인',
                       style: TextStyle(
-                        color: Colors.black, // 텍스트 색상
-                        fontSize: 23, // 글자 크기
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 13), // 두 버튼 사이의 공간
+                SizedBox(height: 12), // 두 버튼 사이의 공간
                 Container(
-                  width: 350, // 버튼의 너비 설정
+                  width: MediaQuery.of(context).size.width,
+                  margin: EdgeInsets.only(bottom: 20),
                   child: ElevatedButton(
                     onPressed: () {
                       // 회원가입 버튼 클릭 시 동작
@@ -107,17 +109,18 @@ class Intro extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
-                      side: BorderSide(color: Colors.black, width: 1.5),
+                      // side: BorderSide(color: Colors.black, width: 1),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero, // 직사각형 모양
+                        borderRadius: BorderRadius.circular(4),
                       ),
-                      padding: EdgeInsets.symmetric(vertical: 15), // 버튼 크기 조정
+                      padding: EdgeInsets.symmetric(vertical: 12), // 버튼 크기 조정
                     ),
                     child: Text(
                       '회원가입',
                       style: TextStyle(
-                        color: Colors.white, // 텍스트 색상
-                        fontSize: 23, // 글자 크기
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold
                       ),
                     ),
                   ),

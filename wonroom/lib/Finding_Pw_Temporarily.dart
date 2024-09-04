@@ -8,9 +8,12 @@ class FindingPwTemporarily extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.chevron_left),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.grey,
+          ),
           onPressed: () {
-            Navigator.of(context).pop(); // 뒤로 가기
+            Navigator.of(context).pop();
           },
         ),
       ),
@@ -18,7 +21,7 @@ class FindingPwTemporarily extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween, // 버튼을 하단에 위치
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,7 +29,7 @@ class FindingPwTemporarily extends StatelessWidget {
                 // 이미지 추가 및 색상 필터 적용
                 ColorFiltered(
                   colorFilter: ColorFilter.mode(
-                    Color(0xFFB2FF59), // 연두색
+                    Color(0xff6FB348), // 연두색
                     BlendMode.srcIn, // 색상 혼합 모드
                   ),
                   child: Image.asset(
@@ -35,11 +38,10 @@ class FindingPwTemporarily extends StatelessWidget {
                     height: 100, // 이미지 높이
                   ),
                 ),
-                const SizedBox(height: 16),
                 const Text(
-                  '임시 비밀번호 전송이\n 완료되었습니다.',
+                  '임시 비밀번호 전송이\n완료되었습니다.',
                   style: TextStyle(
-                    fontSize: 26,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -48,7 +50,7 @@ class FindingPwTemporarily extends StatelessWidget {
                   '입력하신 이메일로 임시 비밀번호를 발송하였습니다.\n'
                       '이메일을 확인하여 로그인해주세요.',
                   style: TextStyle(
-                    fontSize: 17.0,
+                    fontSize: 16,
                     color: Colors.grey,
                   ),
                 ),
@@ -64,24 +66,25 @@ class FindingPwTemporarily extends StatelessWidget {
               ],
             ),
             // 로그인 버튼
-            SizedBox(
-              width: double.infinity, // 버튼이 전체 너비를 차지하도록 설정
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.only(bottom: 20),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushReplacementNamed('/login'); // 로그인 페이지로 이동
+                  Navigator.of(context).pushReplacementNamed('/login');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xff6FB348), // 버튼 배경색 초록색
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero, // 모서리 곡선 제거
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                  minimumSize: const Size(double.infinity, 48), // 버튼의 최소 높이 설정
+                  padding: EdgeInsets.symmetric(vertical: 12),
                 ),
                 child: const Text(
                   '로그인',
                   style: TextStyle(
-                    color: Colors.white, // 버튼 글씨 색상 흰색
-                    fontSize: 24,
+                    color: Colors.white,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold
                   ),
                 ),

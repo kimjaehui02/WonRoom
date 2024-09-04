@@ -24,7 +24,7 @@ class _LoginState extends State<Login> {
 
   bool _buttonAble = false;
 
-  String _idHint = ' '; // 초기 힌트 텍스트
+  String _idHint = '  '; // 초기 힌트 텍스트
   String _passwordHint = '영문, 숫자, 특수문자("제외) 포함 8자리 이상'; // 초기 힌트 텍스트
 
   @override
@@ -66,7 +66,7 @@ class _LoginState extends State<Login> {
     setState(() {
       // 올바르게 클래스 변수 업데이트
       if (_idController.text.isEmpty) {
-        _idHint = ' ';
+        _idHint = ' '; // ID 입력 필드가 비어 있을 때 표시할 오류 메시지
       } else {
         _idHint = LoginValidators.validateUserId(_idController.text) ?? ' ';
       }
@@ -87,9 +87,12 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.chevron_left),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.grey,
+          ),
           onPressed: () {
-            Navigator.of(context).pop(); // 뒤로 가기
+            Navigator.of(context).pop();
           },
         ),
         title: const Text('로그인'),
@@ -106,25 +109,28 @@ class _LoginState extends State<Login> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Row(
-                        children: const <Widget>[
-                          Icon(Icons.person_outline, size: 24), // person 아이콘
-                          SizedBox(width: 8.0), // 아이콘과 텍스트 사이의 간격
-                          Text(
-                            '아이디',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 6),
+                        child: Row(
+                          children: const <Widget>[
+                            Icon(Icons.person_outline, size: 24), // person 아이콘
+                            SizedBox(width: 8.0), // 아이콘과 텍스트 사이의 간격
+                            Text(
+                              '아이디',
+                              style: TextStyle(
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 8.0),
+                      const SizedBox(height: 10),
                       TextFormField(
                         controller: _idController, // 컨트롤러를 지정합니다.
                         decoration: const InputDecoration(
                           // labelText: '아이디',
-                          hintText: 'wonroom',
+                          hintText: 'ex. wonroom',
                           border: OutlineInputBorder(),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0), // 포커스 시 테두리 색상 및 두께
@@ -145,26 +151,30 @@ class _LoginState extends State<Login> {
                         child: Text(
                           _idHint,
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 14,
                             color: Colors.grey[700], // 설명 텍스트 색상
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: const <Widget>[
-                          Icon(Icons.lock_outline, size: 24),
-                          SizedBox(width: 8.0), // 아이콘과 텍스트 사이의 간격
-                          Text(
-                            '비밀번호',
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
+                      const SizedBox(height: 8),
+
+                      Padding(
+                        padding: const EdgeInsets.only(left: 6),
+                        child: Row(
+                          children: const <Widget>[
+                            Icon(Icons.lock_outline, size: 24, color: Color(0xffc2c2c2),),
+                            SizedBox(width: 8.0), // 아이콘과 텍스트 사이의 간격
+                            Text(
+                              '비밀번호',
+                              style: TextStyle(
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 8.0),
+                      const SizedBox(height: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -258,15 +268,19 @@ class _LoginState extends State<Login> {
                             // 로그인 결과 처리
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: _buttonAble ? Colors.green : Colors.grey,
+                            backgroundColor: _buttonAble ? Color(0xff6bbe45) : Colors.grey,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(3)
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 10), // 버튼 높이 설정
+                            padding: const EdgeInsets.symmetric(vertical: 12), // 버튼 높이 설정
                           ),
                           child: const Text(
                             '로그인',
-                            style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold), // 흰색 글씨
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold
+                            ), // 흰색 글씨
                           ),
                         ),
                       ),
@@ -285,7 +299,7 @@ class _LoginState extends State<Login> {
                             },
                             child: const Text(
                               '아이디 찾기',
-                              style: TextStyle(fontSize: 17, color: Color(0xff787878)),
+                              style: TextStyle(fontSize: 16, color: Color(0xff787878)),
                             ),
                           ),
                           const Text('|', style: TextStyle(color: Color(0xffc2c2c2))),
@@ -299,7 +313,7 @@ class _LoginState extends State<Login> {
                             },
                             child: const Text(
                               '비밀번호 찾기',
-                              style: TextStyle(fontSize: 17, color: Color(0xff787878)),
+                              style: TextStyle(fontSize: 16, color: Color(0xff787878)),
                             ),
                           ),
                         ],
@@ -319,11 +333,15 @@ class _LoginState extends State<Login> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(3),
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 10), // 버튼 높이 설정
+                            padding: const EdgeInsets.symmetric(vertical: 12), // 버튼 높이 설정
                           ),
                           child: const Text(
                             '회원가입',
-                            style: TextStyle(color: Color(0xff6bbe45), fontSize: 22, fontWeight: FontWeight.bold), // 초록색 글씨
+                            style: TextStyle(
+                                color: Color(0xff6bbe45),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold
+                            ), // 초록색 글씨
                           ),
                         ),
                       ),

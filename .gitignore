@@ -61,3 +61,13 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+wonroom/build/app/kotlin/compileDebugKotlin/cacheable/
+
+# Ignore all .apk files
+*.apk
+wonroom/build/app/outputs/apk/debug/app-debug.apk
+wonroom/build/app/intermediates/assets/debug/flutter_assets/kernel_blob.bin
+wonroom/build/9b44b7a8a43d68cb22b678c9c2139da6.cache.dill.track.dill
+wonroom/build/app/outputs/apk/debug/app-debug.apk
+wonroom/build/app/intermediates/assets/debug/flutter_assets/kernel_blob.bin
+wonroom/build/9b44b7a8a43d68cb22b678c9c2139da6.cache.dill.track.dill
