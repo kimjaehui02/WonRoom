@@ -264,9 +264,7 @@ class _WriteInquiryState extends State<WriteInquiry> {
                     ),
                   ),
                 ),
-
-                const SizedBox(width: 10),
-
+                const SizedBox(width: 16),
                 Expanded(
                   child: SizedBox(
                     height: 50,
@@ -351,7 +349,7 @@ class _WriteInquiryState extends State<WriteInquiry> {
                         '등록',
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold),
                       ),
                     ),

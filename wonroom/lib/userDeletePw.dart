@@ -1,4 +1,8 @@
+// import 'dart:nativewrappers/_internal/vm/lib/core_patch.dart';
+
 import 'package:flutter/material.dart';
+import 'package:wonroom/DB/users/user_service.dart';
+import 'package:wonroom/Flask/storage_manager.dart';
 import 'package:wonroom/intro.dart';
 
 class UserDeletePw extends StatefulWidget {
@@ -13,6 +17,32 @@ class _UserDeletePwState extends State<UserDeletePw> {
   final TextEditingController _confirmPasswordController = TextEditingController();
   bool _obscureConfirmPassword = true;
 
+  // userData는 유저 테이블을 json형태로 저장하기 위해 쓰인다
+  Map<dynamic, dynamic>? userData;
+
+  // user_id가 null이거나 존재하지 않을 경우 기본값을 설정합니다.
+  // json파일에서 유저id정보를 저장하기위해 사용합니다
+  dynamic userId = "";
+  dynamic userPw = "";
+
+  UserService userService = new UserService();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void getUser() async
+  {
+    // 유저 데이터를 핸드폰 기본 스토리지에서 json형태로 가져온다
+    userData = await readUserData();
+    // 가져온 json에서 user_id만 가져온다 ?? 뒤의 문자열은 에외처리
+    // userData?["user_id"]가 널이면 ??뒤의 문자열로 userId를 초기화 해준다
+    userId = userData?["user_id"] ?? "user_id";
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +55,7 @@ class _UserDeletePwState extends State<UserDeletePw> {
             color: Colors.grey,
           ),
           onPressed: () {
+
             Navigator.pop(context);
           },
         ),
@@ -105,7 +136,6 @@ class _UserDeletePwState extends State<UserDeletePw> {
               child: ElevatedButton(
                 onPressed: () {
                   // 비밀번호 확인
-
                   Navigator.push(
                     context,
                     MaterialPageRoute(

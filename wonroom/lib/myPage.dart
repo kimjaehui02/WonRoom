@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:wonroom/Flask/storage_manager.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:wonroom/customerService.dart';
+import 'package:wonroom/inqurityDetails.dart';
 import 'package:wonroom/intro.dart';
 import 'package:wonroom/myComments.dart';
+import 'package:wonroom/myPost.dart';
 import 'package:wonroom/pwChange.dart';
 import 'package:wonroom/userDeletePW.dart';
 
@@ -14,12 +20,52 @@ class _MyPageState extends State<MyPage> {
   // 변수 선언
   String userName = '게스트';
   String userEmail = 'wonroom@naver.com';
+  File? _image;  // 선택된 이미지를 저장할 변수
+  final ImagePicker _picker = ImagePicker();  // ImagePicker 인스턴스 생성
+
+  // 앨범에서 사진 선택 함수
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    // 비동기 작업을 수행하는 함수 호출
-    _fetchUserData();
+    // 사용자 이름 업데이트
+    updateUserName();
+  }
+
+  // 로그인 상태를 확인하는 메서드
+  bool isLoggedIn() {
+    // 로그인 상태를 확인하는 로직을 여기에 구현합니다.
+    // 예를 들어, 세션이나 토큰을 확인할 수 있습니다.
+    return true; // 로그인 상태를 가정한 예시
+  }
+
+  // 로그인된 사용자 정보 가져오기
+  String getLoggedInUserName() {
+    // 실제 로그인된 사용자 이름을 반환하는 로직을 여기에 구현합니다.
+    // 예를 들어, 데이터베이스에서 사용자 정보를 가져오는 로직을 작성합니다.
+    return "홍길동"; // 로그인된 사용자 이름 예시
+  }
+
+  // 사용자 이름 업데이트
+  void updateUserName() {
+    if (isLoggedIn()) {
+      setState(() {
+        userName = getLoggedInUserName();
+      });
+    } else {
+      setState(() {
+        userName = "게스트";
+      });
+    }
   }
 
   Future<void> _fetchUserData() async {
@@ -82,7 +128,7 @@ class _MyPageState extends State<MyPage> {
                                 SizedBox(height: 8),
                                 TextButton(
                                   onPressed: () {
-                                    // Add functionality here
+                                    _pickImage();
                                   },
                                   style: TextButton.styleFrom(
                                     padding: EdgeInsets.zero,
@@ -260,6 +306,12 @@ class _MyPageState extends State<MyPage> {
               ),
               onTap: () {
                 // 내 문의글 클릭 시 동작
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InqurityDetails(),
+                  ),
+                );
               },
             ),
           ),
@@ -314,6 +366,12 @@ class _MyPageState extends State<MyPage> {
               ),
               onTap: () {
                 // 내 게시글 클릭 시 동작
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyPost(),
+                  ),
+                );
               },
             ),
           ),
@@ -338,6 +396,12 @@ class _MyPageState extends State<MyPage> {
               ),
               onTap: () {
                 // 고객센터 클릭 시 동작
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CustomerService(),
+                  ),
+                );
               },
             ),
           ),
@@ -853,7 +917,6 @@ class PersonalInfoEditPage extends StatelessWidget {
                   color: Color(0xff787878),),
                 onTap: () {
                   // 회원탈퇴 처리
-
                   Navigator.push(
                     context,
                     MaterialPageRoute(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wonroom/Finding_Pw.dart';
+import 'package:wonroom/findingPw.dart';
 import 'package:wonroom/Finding_Pw/Finding_Pw_functions.dart';
 import 'package:wonroom/Login/LoginValidators.dart';
 import 'package:wonroom/Splash/splash_functions.dart';
@@ -227,15 +227,19 @@ class _LoginState extends State<Login> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () async {
+                          onPressed: () async
+                          {
+                            // 로그인시 사용되는 버튼
+
                             // 로그인 버튼 클릭 시 실행될 코드
-                            // String? check = await LoginValidators.validateLogin(_idController.text, _passwordController.text);
-                            print("check");
-                            print("check");
-                            print("check");
-                            print("check");
+                            
+                            // 버튼이 누를 수 있는 상태를 미리 bool형으로 저장해둠
+                            // 그걸 기준으로 버튼 클릭시 작동을 정함
                             if(_buttonAble == true)
                             {
+                              // 버튼이 누를 수 있는 경우
+                              // LoginValidators는 로그인시 중복되는값이나 규칙을 미리 만들어둔 클래스
+                              // 규칙에 전부 맞으면 check는 환영합니다 라고 리턴함
                               String check = await LoginValidators.validateLogin(_idController.text, _passwordController.text) ?? "예외상황 발생";
                               print(check);
                               print(check);

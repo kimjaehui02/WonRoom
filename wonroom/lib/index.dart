@@ -343,8 +343,14 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               _buildHomePage(),
               PlantDictionary(),
               Community(),
+              // 추가
               Container(),
               // CustomerService(),
+              // _buildPlantDictionaryPage(),
+              // PlantDictionary(),
+              // _buildPlantClinicPage('식물클리닉 페이지'),
+              // _buildCommunityPage('커뮤니티 페이지'),
+              // _buildCustomerServicePage('고객센터 페이지'),
             ],
           ),
           if (_isFabVisible)
@@ -1373,4 +1379,37 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   //     child: Text(text),
   //   );
   // }
+// Widget _buildPlantDictionaryPage() {
+//   return SingleChildScrollView(
+//     controller: _scrollController,
+//     padding: const EdgeInsets.all(16),
+//     child: Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         const SizedBox(height: 50),
+//         const SizedBox(height: 50),
+//         const SizedBox(height: 40),
+//       ],
+//     ),
+//   );
+// }
+
+
+// Widget _buildPlantClinicPage(String text) {
+//   return Center(
+//     child: Text(text),
+//   );
+// }
+
+// Widget _buildCommunityPage(String text) {
+//   return Center(
+//     child: Text(text),
+//   );
+// }
+
+// Widget _buildCustomerServicePage(String text) {
+//   return Center(
+//     child: Text(text),
+//   );
+// }
 }
