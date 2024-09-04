@@ -721,7 +721,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Myplant()),
+                    MaterialPageRoute(builder: (context) => MyplantNull()),
                   );
                 },
                 style: ButtonStyle(
@@ -1009,7 +1009,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Myplant()),
+                    MaterialPageRoute(builder: (context) => MyplantNull()),
                   );
                 },
                 child: Row(
