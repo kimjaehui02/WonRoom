@@ -39,341 +39,210 @@ class MyplantNull extends StatefulWidget {
 }
 
 class _MyplantNullState extends State<MyplantNull> {
-
-  // 당신의 식물 정보
+  // 사용자 식물 목록 저장
   List<UserPlant> _userPlants = [];
 
-  // 당신의 식물 정보의 일정들
+  // 각 식물에 대한 관리 일정 저장 (이중 리스트 구조)
   List<List<PlantManagementRecord>> _PMR = [];
 
-  // 당신의 식물 정보의 위젯들
+  // UI에서 사용될 액션 위젯들 저장
   List<Widget> actionContainers = [];
 
-  // 현재 값이 존재 하는지 아닌지
+  // 데이터 로딩 완료 여부를 나타내는 플래그
   bool checks = false;
 
-  // 현재 로딩이 완료되었는지 아닌디
+  // 데이터 로딩 상태를 나타내는 플래그
   bool _isLoading = false;
 
-  // 지금 보고 있는 식물의 인덱스값
+  // 현재 선택된 식물의 인덱스
   int plantIndex = 0;
 
-  final UserService _us = new UserService();
-  final StorageManager _sm = new StorageManager();
-
-
-  // Table: user_plants
-  // Columns:
-  // plant_id int AI PK
-  // user_id varchar(50)
-  // catalog_number int
-  // diary_title varchar(255)
-  // next_watering_date date
-  // created_at timestamp
-
+  // 현재 사용자의 정보 저장
   User? user;
 
-  // 1. diary_title
-  // 식물 이름쯔음이면 되겟따
+  // 일기 제목 저장
   String diary_title = "";
-  
 
-  // 2. 일정 라벨링
-  // 리스트 - 맵 - 리스트
-  // 인덱스(식물별) - 일정종류 - 일정 낱개
+  // 각 식물별로 관리 일정들을 타입별로 그룹화하여 저장
   List<Map<ManagementType, List<PlantManagementRecord>>> sortedGroupedRecords = [{}];
 
-  // 3. 별체크
-  // 즐겨찾기 항목이라면 별을 체크합니다
+  // 사용자가 선택한 즐겨찾는 식물의 ID 저장
   int _userfav = -10;
 
+  // 현재 선택된 식물이 즐겨찾기에 등록된 식물인지 여부를 나타내는 플래그
   bool _fullStar = false;
 
-  bool _1 = true;
-  bool _2 = true;
-  bool _3 = true;
-  bool _4 = true;
-  bool _5 = true;
-
-  // 불값들을관리해줄 콜백함수입니다
-  // void boolcalback(bool _input, int numb)
-  // {
-  //   // switch(numb)
-  //   // {
-  //   //   case 1:
-  //   //     _1 = _input;
-  //   //     break;
-  //   //   case 2:
-  //   //     _2 = _input;
-  //   //     break;
-  //   //   case 3:
-  //   //     _3 = _input;
-  //   //     break;
-  //   //   case 4:
-  //   //     _4 = _input;
-  //   //     break;
-  //   //   case 5:
-  //   //     _5 = _input;
-  //   //     break;
-  //   // }
-  //
-  // }
+  // 외부 서비스 호출에 필요한 객체들 초기화
+  final UserService _us = new UserService();
+  final StorageManager _sm = new StorageManager();
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _loadData(); // 페이지가 처음 로드될 때 데이터를 불러옵니다.
-
-    });
+    // 위젯이 처음 생성될 때 데이터를 초기화
+    _initializeData();
   }
 
-  void _loading() async
-  {
-    // StorageManager _sm = new StorageManager();
-
-    final _id = await _sm.readUserData();
-
-
-// favorite_plant_id를 8로 업데이트
-//     await _sm.updateFavoritePlantId(8);
-
-// favorite_plant_id 값을 읽어와서 출력
-//     final _userfav = await _sm.getUserFav();
-//     print(_userfav);
-//     print(_userfav);
-//     print(_userfav);
-//     print(_userfav);
-//     print(_userfav);
-
-// 업데이트된 데이터를 다시 읽어서 확인
-    final updatedData = await _sm.readUserData();
-    print(updatedData?["favorite_plant_id"] ?? "");
-
-    print("페이버릿입니다");
-
-    setState(() {
-
-      _loadData(); // 페이지가 처음 로드될 때 데이터를 불러옵니다.
-
-    });
-  }
-
-  // db연결을 이용해 값을 최신화 합니다
-  // 자주 부르면 안됩니다
-  void _loadData() async
-  {
-    // StorageManager _sm = new StorageManager();
-
-    // _sm.updateFavoritePlantId(8);
-
-    // int _input = _us.getUserInfo()[""];
-
-    print("데이터 불러오기 작업을 수행합니다. inputss: $plantIndex");
-    user = await _sm.readUser(); // user 객체 가져오기
-    print("User? user = await readUser();");
-
-
-
+  // 초기 데이터를 로딩하는 함수
+  void _initializeData() async {
+    // 사용자의 정보를 로컬 저장소에서 불러옴
+    user = await _sm.readUser();
     if (user != null) {
-      // print(user.getuserId()); // 사용자 ID 출력
-      // print(user.getuserId()); // 사용자 ID 출력
-      // print(user.getuserId()); // 사용자 ID 출력
-
-      String? userId = user?.getuserId(); // 사용자 ID 변수에 할당
-      if (userId != null) {
-        UserPlantService ups = UserPlantService();
-
-        // 비동기 호출로 사용자 식별자에 따라 식물 목록 가져오기
-        List<UserPlant>? userPlants = await ups.getPlants(userId);
-
-        if (userPlants != null) {
-          setState(() {
-            _userPlants = userPlants; // 데이터 할당 후 상태 업데이트
-
-
-            _updateDoubleList();
-
-
-
-            checks = true;
-            _isLoading = true;
-          });
-        } else {
-          print("No plants found for user ID: $userId");
-        }
-      } else {
-        print("User ID is null.");
-      }
-    } else {
-      print("User object is null.");
+      // 사용자가 존재할 경우, 사용자 식물 정보 로딩
+      await _loadUserPlants(user!);
     }
-
+    // 첫 번째 식물 정보를 화면에 업데이트
     _updatePlant(plantIndex);
   }
 
+  // 사용자 식물 정보를 불러오는 함수
+  Future<void> _loadUserPlants(User user) async {
+    // 사용자의 ID를 가져옴
+    String? userId = user.getuserId();
+    if (userId != null) {
+      // 사용자 식물 서비스에서 식물 목록을 가져옴
+      UserPlantService ups = UserPlantService();
+      List<UserPlant>? userPlants = await ups.getPlants(userId);
 
+      if (userPlants != null) {
+        // 식물 목록을 로컬 상태에 저장하고 로딩 상태를 갱신
+        setState(() {
+          _userPlants = userPlants;
+          checks = true;
+          _isLoading = true;
+        });
+        // 식물에 대한 일정 데이터를 불러옴
+        await _loadPlantSchedules();
+      } else {
+        // 식물을 찾을 수 없는 경우에 대한 처리
+        print("No plants found for user ID: $userId");
+      }
+    }
+  }
 
-  // db연결을 이용해 값을 최신화 합니다
-  // 자주 부르면 안됩니다
-  // 그중에서도 일정을 최신화 해줍니다
-  void _updateDoubleList() async {
-
-    // 식물매니저서비스를 소환합니다
+  // 각 식물에 대한 관리 일정을 로딩하는 함수
+  Future<void> _loadPlantSchedules() async {
+    // 식물 관리 서비스 객체 생성
     PlantManagementService pms = PlantManagementService();
 
-    // 식물 일정이 담긴 이중 리스트를 초기화합니다
+    // 식물의 수만큼 관리 일정 리스트를 초기화
     int numbOfPlant = _userPlants.length;
 
-    // 이중 리스트 초기화 (각 식물에 대해 빈 리스트 생성)
-    _PMR = List.generate(numbOfPlant, (index) => []);
+    _PMR = List.generate(numbOfPlant, (_) => []);
+    sortedGroupedRecords = List.generate(numbOfPlant, (_) => {
+      ManagementType.Watering: [],
+      ManagementType.Pruning: [],
+      ManagementType.Repotting: [],
+      ManagementType.Fertilizing: [],
+      ManagementType.Diagnosis: [],
+    });
 
-
-    // sortedGroupedRecords를 빈 Map으로 초기화
-    sortedGroupedRecords = List.generate(
-        numbOfPlant,
-            (index) => {
-          ManagementType.Watering: [],
-          ManagementType.Pruning: [],
-          ManagementType.Repotting: [],
-          ManagementType.Fertilizing: [],
-          ManagementType.Diagnosis: [],
-        }
-    );
-
+    // 각 식물의 관리 일정을 순차적으로 불러옴
     for (int i = 0; i < numbOfPlant; i++) {
-      // 식물 ID를 가져옵니다
       int plantId = _userPlants[i].plantId ?? -1;
-
-      if (plantId == -1) {
-        // 식물 ID가 유효하지 않으면 건너뜁니다
-        continue;
-      }
-
-      try {
-        // 식물 ID로 식물 관리 기록을 가져옵니다
-
-        // PlantManagementRecord pmr2 = new PlantManagementRecord
-        //   (catalogNumber: plantId*2,
-        //     managementDate: DateTime.now(),
-        //     managementType: ManagementType.Repotting,
-        //     details: "디테일" + plantId.toString(),
-        //     plantId: plantId);
-        //
-        // pms.addRecord(pmr2);
-        List<PlantManagementRecord>? pmr = await pms.getRecords(plantId);
-
-        if (pmr != null) {
-
-          _PMR[i] = pmr;
-
-          // 식물 관리 기록을 더 쉽게 관리하기위해 매핑합니다
-          sortedGroupedRecords[i] = sortAndGroupRecords(_PMR[i]);
-
-
-
+      if (plantId != -1) {
+        try {
+          // 식물 ID에 맞는 관리 일정 데이터를 불러옴
+          List<PlantManagementRecord>? pmr = await pms.getRecords(plantId);
+          if (pmr != null) {
+            // 불러온 데이터를 로컬 리스트에 저장하고 일정 타입별로 분류
+            _PMR[i] = pmr;
+            sortedGroupedRecords[i] = sortAndGroupRecords(pmr);
+          }
+        } catch (e) {
+          // 관리 일정 로딩 중 오류 발생 시 처리
+          print("Error loading plant management records: $e");
         }
-      } catch (e) {
-        print("Error loading plant management records: $e");
       }
     }
 
-
-
-    print(sortedGroupedRecords.length);
-    print(sortedGroupedRecords.length);
-    print(sortedGroupedRecords.length);
-    print(sortedGroupedRecords.length);
+    // 첫 번째 식물의 정보를 화면에 업데이트
     _updatePlant(plantIndex);
-    // 이중 리스트 초기화 후 추가적인 작업이 필요하다면 여기에 추가합니다
     print("식물 일정 이중 리스트가 업데이트되었습니다.");
   }
 
-
-  // 식물 일정이 담긴 이중리스트를 초기화 합니다
-  // _PMS = List.generate(userPlants.length, (index) => []);
-
-  // 지금 식물 일정들이 담긴 이중리스트를 초기화 해야 합니다
-  // 그렇기 위해서 for문이 2개가 필요하고
-  // 첫번째 포문에선 식물의갯수만큼
-  // 두번째 포문에선 인덱싱된 식물id로 셀렉트 한 일정길이만큼
-
-  // 그러면 일단 2가지의 변수를 먼저 준비해둔다
-
-
-  // db연결 없이 이미 가진 값들로 화면을 최신화합니다
   void _updatePlant(int index) {
+    // 리스트의 유효성 확인
+    if (index < 0 || index >= _userPlants.length) {
+      print("Invalid plant index: $index");
+      return; // 유효하지 않은 인덱스일 경우 함수 종료
+    }
+
     setState(() {
-      // 현재 날짜를 MM.DD 형식으로 가져오기
-      String todayDate = DateFormat('MM.dd').format(DateTime.now());
+      try {
+        // 오늘의 날짜를 MM.dd 형식으로 포맷팅
+        String todayDate = DateFormat('MM.dd').format(DateTime.now());
 
-      // 내가 가장 좋아하는 식물인지 체크합니다
-      _fullStar = _userPlants[index].plantId == _userfav;
-      
-      // UserPlant의 다이어리 제목 설정
-      diary_title = _userPlants[index].diaryTitle ?? 'Default Title';
+        // 선택된 식물이 즐겨찾기인지 여부 갱신
+        _fullStar = _userPlants[index].plantId == _userfav;
 
-      // UserPlant의 식물 ID 설정
-      // _plantid = _userPlants[index].plantId ?? -1;
+        // 일기 제목을 갱신 (해당 식물의 일기 제목이 없으면 기본값으로 설정)
+        diary_title = _userPlants[index].diaryTitle ?? 'Default Title';
 
-      // 각 ManagementType에 대해 안전하게 접근
-      String getActionDate(List<PlantManagementRecord>? records) {
-        return (records != null && records.isNotEmpty)
-            ? records[0].getFormattedDate()
-            : "--.--";
+        // 선택된 식물의 관리 일정에 따라 필요한 액션들을 생성
+        List<PlantAction> plantActions = _buildPlantActions(index, todayDate);
+
+        // 생성된 액션들을 UI에 반영하기 위한 컨테이너 리스트로 변환
+        actionContainers = buildPlantActionContainers
+          (
+            plantActions,
+            _userPlants[index].plantId,
+            _initializeData,
+            _updatePlant,
+            plantIndex
+        );
+      } catch (e) {
+        print("Error updating plant: $e");
       }
+    });
+  }
 
-      bool isActive(List<PlantManagementRecord>? records) {
-        return (records != null && records.isNotEmpty)
-            ? records[0].getFormattedDate() != todayDate
-            : true;
-      }
 
-      // PlantAction 리스트를 생성하면서 날짜에 따라 active 값을 설정
-      List<PlantAction> plantActions = [
-        PlantAction(
+  // 주어진 인덱스의 식물에 대해 관리할 액션 리스트를 생성하는 함수
+  List<PlantAction> _buildPlantActions(int index, String todayDate) {
+    // 관리 일정에서 가장 빠른 날짜를 가져오는 함수
+    String getActionDate(List<PlantManagementRecord>? records) {
+      return (records != null && records.isNotEmpty) ? records[0].getFormattedDate() : "--.--";
+    }
+
+    // 관리 일정이 오늘과 다른 날짜인지 확인하는 함수 (액션 활성화 여부 결정)
+    bool isActive(List<PlantManagementRecord>? records) {
+      return (records != null && records.isNotEmpty) ? records[0].getFormattedDate() != todayDate : true;
+    }
+
+    // 물주기, 영양제, 가지치기, 분갈이, 진단 등의 액션을 생성
+    return [
+      PlantAction(
           label: "물주기",
           icon: Icons.water_drop,
           actionDate: getActionDate(sortedGroupedRecords[index][ManagementType.Watering]),
-          active: isActive(sortedGroupedRecords[index][ManagementType.Watering]),
-        ),
-        PlantAction(
+          active: isActive(sortedGroupedRecords[index][ManagementType.Watering])
+      ),
+      PlantAction(
           label: "영양제",
-          imageAsset: 'images/potion.png', // 영양제 아이콘
+          imageAsset: 'images/potion.png',
           actionDate: getActionDate(sortedGroupedRecords[index][ManagementType.Fertilizing]),
-          active: isActive(sortedGroupedRecords[index][ManagementType.Fertilizing]),
-        ),
-        PlantAction(
+          active: isActive(sortedGroupedRecords[index][ManagementType.Fertilizing])
+      ),
+      PlantAction(
           label: "가지치기",
-          imageAsset: 'images/scissor.png', // 가지치기 아이콘
+          imageAsset: 'images/scissor.png',
           actionDate: getActionDate(sortedGroupedRecords[index][ManagementType.Pruning]),
-          active: isActive(sortedGroupedRecords[index][ManagementType.Pruning]),
-        ),
-        PlantAction(
+          active: isActive(sortedGroupedRecords[index][ManagementType.Pruning])
+      ),
+      PlantAction(
           label: "분갈이",
-          imageAsset: 'images/soil.png', // 분갈이 아이콘
+          imageAsset: 'images/soil.png',
           actionDate: getActionDate(sortedGroupedRecords[index][ManagementType.Repotting]),
-          active: isActive(sortedGroupedRecords[index][ManagementType.Repotting]),
-        ),
-        PlantAction(
+          active: isActive(sortedGroupedRecords[index][ManagementType.Repotting])
+      ),
+      PlantAction(
           label: "진단",
           icon: Icons.eco,
           actionDate: getActionDate(sortedGroupedRecords[index][ManagementType.Diagnosis]),
-          active: isActive(sortedGroupedRecords[index][ManagementType.Diagnosis]),
-        ),
-      ];
-
-      // PlantActionContainers를 빌드
-      actionContainers = buildPlantActionContainers(plantActions, _userPlants[index].plantId, _loading);
-    });
-
-    print("최신화입니다");
-    print("최신화입니다");
-    print("최신화입니다");
-    print("최신화입니다");
-    print("최신화입니다");
-    print("최신화입니다");
-    print("최신화입니다");
+          active: isActive(sortedGroupedRecords[index][ManagementType.Diagnosis])
+      ),
+    ];
   }
 
 
@@ -631,26 +500,25 @@ class _MyplantNullState extends State<MyplantNull> {
                                 icon: Icon(_fullStar ? Icons.star_rounded : Icons.star_border_rounded, color: _fullStar ? Colors.amber : Color(0xff787878)),
                                 onPressed: () async {
                                   // 아이콘 클릭 시 실행될 기능 구현
-                                  // UserService _us = new UserService();
+                                  int? currentPlantId = _userPlants[plantIndex].plantId;
 
-                                  await _us.updateUserInfo(favoritePlantId:  _userPlants[plantIndex].plantId);
-                                  setState(() {
-                                    _loadData(); // 페이지가 처음 로드될 때 데이터를 불러옵니다.
+                                  if (currentPlantId != null) {
+                                    // 즐겨찾기 식물 정보 업데이트
+                                    await _us.updateUserInfo(favoritePlantId: currentPlantId);
 
-                                  });
-                                  print(_userPlants[plantIndex].plantId);
-                                  print(_userPlants[plantIndex].plantId);
-                                  print(_userfav);
-                                  print(_userfav);
+                                    // 즐겨찾기 상태를 직접 업데이트하여 전체 데이터를 다시 로드하지 않음
+                                    setState(() {
+                                      _userfav = currentPlantId;
+                                      _fullStar = currentPlantId == _userfav; // 즐겨찾기 여부 업데이트
+                                    });
 
+                                    print("현재 즐겨찾기 식물 ID: $currentPlantId");
+                                    print("업데이트된 즐겨찾기 식물 ID: $_userfav");
+                                  }
 
-                                  // showDeletionSuccessDialog(context: context);
-                                  print("즐겨찾기");
-                                  print("즐겨찾기");
-                                  print("즐겨찾기");
-                                  print("즐겨찾기");
-                                  print("즐겨찾기");
+                                  print("즐겨찾기 업데이트 완료");
                                 },
+
                               ),
                             ),
                           ),

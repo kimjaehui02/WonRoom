@@ -167,7 +167,6 @@ def check_email():
         cursor.close()
         db.close()
 
-
 @users.route("/update", methods=['POST'])
 def update():
     data = request.get_json()
@@ -224,7 +223,18 @@ def update():
         cursor.close()
         db.close()
 
-    return jsonify({"status": "success"}) if row > 0 else jsonify({"status": "fail", "message": "User not found"}), 404
+    # 업데이트가 없더라도 성공 처리
+    if row == 0:
+        # user_id가 실제로 존재하는지 확인 (업데이트된 내용이 없을 경우 체크)
+        cursor = db.cursor()
+        cursor.execute("SELECT COUNT(1) FROM users WHERE user_id = %s", (user_id,))
+        user_exists = cursor.fetchone()[0]
+        cursor.close()
+        if user_exists == 0:
+            return jsonify({"status": "fail", "message": "User not found"}), 404
+
+    return jsonify({"status": "success"}), 200
+
 
 @users.route('/delete', methods=['POST'])
 def delete():
