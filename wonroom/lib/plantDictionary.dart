@@ -172,7 +172,7 @@ class _PlantDictionaryState extends State<PlantDictionary> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    PlantDetailPage(),
+                                    PlantDetailPage(data: {}),
                               ),
                             );
                         },

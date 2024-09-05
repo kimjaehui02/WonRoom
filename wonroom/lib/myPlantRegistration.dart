@@ -31,7 +31,7 @@ void showPlantRegistrationModal(BuildContext context) {
                 bool _isUploading = false;
                 TextEditingController _plantNameController = TextEditingController();
 
-                Future<void> _uploadImage(File image, StateSetter setState) async {
+                Future<void> _uploadImage(File image) async {
                   setState(() {
                     _isUploading = true;
                   });
@@ -41,7 +41,7 @@ void showPlantRegistrationModal(BuildContext context) {
                     final base64Image = base64Encode(imageBytes);
 
                     final response = await http.post(
-                      Uri.parse('https://16b5-34-91-150-31.ngrok-free.app/plant_register'),
+                      Uri.parse('https://2470-34-125-171-238.ngrok-free.app/plant_register'),
                       headers: {'Content-Type': 'application/json'},
                       body: json.encode({'image': base64Image}),
                     );
@@ -49,8 +49,8 @@ void showPlantRegistrationModal(BuildContext context) {
                     if (response.statusCode == 200) {
                       final data = json.decode(response.body);
                       setState(() {
-                        _plantName = data['name'] ?? '알 수 없음';
-                        _plantNameController.text = _plantName; // 텍스트 필드 업데이트
+                        _plantName = data['plant_name'] ?? '알 수 없음';
+                        _plantNameController.text = _plantName; // Update text field
                       });
                     } else {
                       print('API 호출 오류: ${response.statusCode}');
@@ -71,7 +71,7 @@ void showPlantRegistrationModal(BuildContext context) {
                     setState(() {
                       _image = selectedImage;
                     });
-                    await _uploadImage(selectedImage, setState);
+                    await _uploadImage(selectedImage);
                   }
                 }
 
@@ -120,11 +120,23 @@ void showPlantRegistrationModal(BuildContext context) {
                               ],
                             ),
                             SizedBox(height: 20),
-                            if (_image != null) ...[
+                            if (_isUploading)
+                              Center(child: CircularProgressIndicator()),
+                            if (_image != null && !_isUploading) ...[
                               Center(
                                 child: Stack(
                                   children: [
-                                    Image.file(_image!),
+                                    Container(
+                                      width: 100,
+                                      height: 100,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        image: DecorationImage(
+                                          image: FileImage(_image!),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
                                     Positioned(
                                       right: 0,
                                       top: 0,
@@ -134,7 +146,7 @@ void showPlantRegistrationModal(BuildContext context) {
                                           setState(() {
                                             _image = null;
                                             _plantName = '';
-                                            _plantNameController.clear(); // 텍스트 필드 초기화
+                                            _plantNameController.clear();
                                           });
                                         },
                                       ),
@@ -174,10 +186,6 @@ void showPlantRegistrationModal(BuildContext context) {
                               child: _buildDatePicker(context, label: '마지막 가지치기', enabled: !_isUploading),
                             ),
                             SizedBox(height: 24),
-                            if (_isUploading)
-                              Center(
-                                child: CircularProgressIndicator(),
-                              ),
                           ],
                         ),
                       ),
@@ -207,7 +215,9 @@ void showPlantRegistrationModal(BuildContext context) {
                           SizedBox(width: 16),
                           Expanded(
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                // Save or handle the final data here
+                              },
                               child: Text('등록', style: TextStyle(fontSize: 25, color: Colors.white)),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green,
@@ -243,8 +253,6 @@ Widget _buildImageButton({
         border: Border(
           top: BorderSide(color: Color(0xffc2c2c2)),
           bottom: BorderSide(color: Color(0xffc2c2c2)),
-          // left: BorderSide(color: Colors.grey),
-          // right: BorderSide(color: Colors.grey),
         ),
       ),
       child: TextButton.icon(
@@ -288,7 +296,7 @@ Widget _buildTextField({
         decoration: InputDecoration(
           hintText: hintText,
           border: OutlineInputBorder(),
-          contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         ),
       ),
     ],
@@ -296,8 +304,6 @@ Widget _buildTextField({
 }
 
 Widget _buildDatePicker(BuildContext context, {required String label, required bool enabled}) {
-  TextEditingController dateController = TextEditingController();
-
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -310,28 +316,25 @@ Widget _buildDatePicker(BuildContext context, {required String label, required b
       ),
       SizedBox(height: 10),
       GestureDetector(
-        onTap: enabled
-            ? () async {
-          DateTime? pickedDate = await showDatePicker(
+        onTap: enabled ? () async {
+          final DateTime? selectedDate = await showDatePicker(
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime(2000),
             lastDate: DateTime(2101),
           );
-          if (pickedDate != null) {
-            dateController.text = "${pickedDate.toLocal()}".split(' ')[0];
+          if (selectedDate != null && selectedDate != DateTime.now()) {
+            // Handle date selection
           }
-        }
-            : null,
+        } : null,
         child: AbsorbPointer(
           child: TextField(
-            controller: dateController,
-            enabled: enabled,
             decoration: InputDecoration(
-              hintText: '날짜 선택',
+              suffixIcon: Icon(Icons.calendar_today),
               border: OutlineInputBorder(),
-              contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
+              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             ),
+            enabled: false,
           ),
         ),
       ),
