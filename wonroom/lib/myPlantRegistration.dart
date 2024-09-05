@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
 
 void showPlantRegistrationModal(BuildContext context) {
+  final picker = ImagePicker();
+
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -18,217 +24,206 @@ void showPlantRegistrationModal(BuildContext context) {
           maxChildSize: 0.9,
           minChildSize: 0.5,
           builder: (BuildContext context, ScrollController scrollController) {
-            return Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Container(
-                            width: 60,
-                            height: 5,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Center(
-                          child: Text(
-                            '식물 등록',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                File? _image;
+                String _plantName = '';
+                bool _isUploading = false;
+                TextEditingController _plantNameController = TextEditingController();
+
+                Future<void> _uploadImage(File image, StateSetter setState) async {
+                  setState(() {
+                    _isUploading = true;
+                  });
+
+                  try {
+                    final imageBytes = await image.readAsBytes();
+                    final base64Image = base64Encode(imageBytes);
+
+                    final response = await http.post(
+                      Uri.parse('https://16b5-34-91-150-31.ngrok-free.app/plant_register'),
+                      headers: {'Content-Type': 'application/json'},
+                      body: json.encode({'image': base64Image}),
+                    );
+
+                    if (response.statusCode == 200) {
+                      final data = json.decode(response.body);
+                      setState(() {
+                        _plantName = data['name'] ?? '알 수 없음';
+                        _plantNameController.text = _plantName; // 텍스트 필드 업데이트
+                      });
+                    } else {
+                      print('API 호출 오류: ${response.statusCode}');
+                    }
+                  } catch (e) {
+                    print('API 호출 중 오류 발생: $e');
+                  } finally {
+                    setState(() {
+                      _isUploading = false;
+                    });
+                  }
+                }
+
+                Future<void> _pickImage(ImageSource source) async {
+                  final pickedFile = await picker.pickImage(source: source);
+                  if (pickedFile != null) {
+                    final selectedImage = File(pickedFile.path);
+                    setState(() {
+                      _image = selectedImage;
+                    });
+                    await _uploadImage(selectedImage, setState);
+                  }
+                }
+
+                return Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildImageButton(
-                              icon: Icons.camera_alt_outlined,
-                              label: '사진 촬영',
-                              onPressed: () {},
-                            ),
-
-                            Container(
-                              width: 1,
-                              height: 50,
-                              color: Color(0xffc2c2c2),
-                            ),
-
-                            _buildImageButton(
-                              icon: Icons.photo_library_outlined,
-                              label: '앨범에서 선택',
-                              onPressed: () {},
-                            ),
-                          ],
-                        ),
-
-                        SizedBox(height: 20),
-
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: _buildTextField(label: '식물 이름', hintText: '파키라'),
-                        ),
-                        SizedBox(height: 10),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: _buildDatePicker(context, label: '마지막 물준날'),
-                        ),
-                        SizedBox(height: 24),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: _buildDatePicker(context, label: '마지막 영양제'),
-                        ),
-                        SizedBox(height: 24),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: _buildDatePicker(context, label: '마지막 분갈이'),
-                        ),
-                        SizedBox(height: 24),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: _buildDatePicker(context, label: '마지막 가지치기'),
-                        ),
-                        SizedBox(height: 24),
-                      ],
-                    ),
-                  ),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          height: 45,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text('취소', style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18
-                            )),
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor: Color(0xffc2c2c2),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                            Center(
+                              child: Container(
+                                width: 60,
+                                height: 5,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-
-                      SizedBox(width: 10),
-
-                      Expanded(
-                        child: SizedBox(
-                          height: 45,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // 로그인 안된 상태일때
-
-
-                              // 로그인 상태일때
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Dialog(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 30, horizontal: 16),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(
-                                            '등록되었습니다.',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          SizedBox(height: 5),
-                                          Text(
-                                            '등록된 식물은 다이어리에서\n확인하실 수 있습니다.',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.grey),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          SizedBox(height: 24),
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.black,
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 10,
-                                                    horizontal: 32),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                ),
-                                              ),
-                                              child: Container(
-                                                width: MediaQuery.of(context).size.width *0.5,
-                                                child: Text(
-                                                  '확인',
-                                                  style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: Colors.white,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                          ),
-                                        ],
+                            SizedBox(height: 16),
+                            Center(
+                              child: Text(
+                                '식물 등록',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                _buildImageButton(
+                                  icon: Icons.camera_alt,
+                                  label: '사진촬영',
+                                  onPressed: _isUploading ? null : () => _pickImage(ImageSource.camera),
+                                ),
+                                _buildImageButton(
+                                  icon: Icons.photo_library,
+                                  label: '앨범에서 선택',
+                                  onPressed: _isUploading ? null : () => _pickImage(ImageSource.gallery),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            if (_image != null) ...[
+                              Center(
+                                child: Stack(
+                                  children: [
+                                    Image.file(_image!),
+                                    Positioned(
+                                      right: 0,
+                                      top: 0,
+                                      child: IconButton(
+                                        icon: Icon(Icons.close, color: Colors.red),
+                                        onPressed: () {
+                                          setState(() {
+                                            _image = null;
+                                            _plantName = '';
+                                            _plantNameController.clear(); // 텍스트 필드 초기화
+                                          });
+                                        },
                                       ),
                                     ),
-                                  );
-                                },
-                              );
-                            },
-                            child: Text('등록',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.white
-                                )),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                                  ],
+                                ),
                               ),
-                              minimumSize: Size(150, 50),
+                              SizedBox(height: 20),
+                            ],
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: _buildTextField(
+                                controller: _plantNameController,
+                                label: '식물 이름',
+                                hintText: '파키라',
+                                enabled: !_isUploading,
+                              ),
                             ),
-                          ),
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: _buildDatePicker(context, label: '마지막 물준날', enabled: !_isUploading),
+                            ),
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: _buildDatePicker(context, label: '마지막 영양제', enabled: !_isUploading),
+                            ),
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: _buildDatePicker(context, label: '마지막 분갈이', enabled: !_isUploading),
+                            ),
+                            SizedBox(height: 24),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: _buildDatePicker(context, label: '마지막 가지치기', enabled: !_isUploading),
+                            ),
+                            SizedBox(height: 24),
+                            if (_isUploading)
+                              Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text('취소', style: TextStyle(fontSize: 25)),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: Colors.grey,
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                side: BorderSide(color: Colors.grey),
+                                minimumSize: Size(150, 50),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 16),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              child: Text('등록', style: TextStyle(fontSize: 25, color: Colors.white)),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                minimumSize: Size(150, 50),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
             );
           },
         ),
@@ -240,7 +235,7 @@ void showPlantRegistrationModal(BuildContext context) {
 Widget _buildImageButton({
   required IconData icon,
   required String label,
-  required VoidCallback onPressed,
+  required VoidCallback? onPressed,
 }) {
   return Expanded(
     child: Container(
@@ -270,7 +265,12 @@ Widget _buildImageButton({
   );
 }
 
-Widget _buildTextField({required String label, required String hintText}) {
+Widget _buildTextField({
+  required String label,
+  required String hintText,
+  required TextEditingController controller,
+  required bool enabled,
+}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -283,6 +283,8 @@ Widget _buildTextField({required String label, required String hintText}) {
       ),
       SizedBox(height: 10),
       TextField(
+        controller: controller,
+        enabled: enabled,
         decoration: InputDecoration(
           hintText: hintText,
           border: OutlineInputBorder(),
@@ -293,7 +295,7 @@ Widget _buildTextField({required String label, required String hintText}) {
   );
 }
 
-Widget _buildDatePicker(BuildContext context, {required String label}) {
+Widget _buildDatePicker(BuildContext context, {required String label, required bool enabled}) {
   TextEditingController dateController = TextEditingController();
 
   return Column(
@@ -308,7 +310,8 @@ Widget _buildDatePicker(BuildContext context, {required String label}) {
       ),
       SizedBox(height: 10),
       GestureDetector(
-        onTap: () async {
+        onTap: enabled
+            ? () async {
           DateTime? pickedDate = await showDatePicker(
             context: context,
             initialDate: DateTime.now(),
@@ -318,10 +321,12 @@ Widget _buildDatePicker(BuildContext context, {required String label}) {
           if (pickedDate != null) {
             dateController.text = "${pickedDate.toLocal()}".split(' ')[0];
           }
-        },
+        }
+            : null,
         child: AbsorbPointer(
           child: TextField(
             controller: dateController,
+            enabled: enabled,
             decoration: InputDecoration(
               hintText: '날짜 선택',
               border: OutlineInputBorder(),
