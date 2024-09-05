@@ -4,7 +4,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:wonroom/DB/user_plants/user_plants_service.dart';
+
 void showPlantRegistrationModal(BuildContext context) {
+  final UserPlantService _ups = new UserPlantService();
+
   final picker = ImagePicker();
 
   showModalBottomSheet(

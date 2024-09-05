@@ -38,7 +38,7 @@ class _PlantDictionaryState extends State<PlantDictionary> {
   }
 
   // 초기 데이터를 로드하는 함수
-  void _loadInitialItems()async  {
+  void _loadInitialItems() async {
     // 비동기적으로 데이터를 로드
     List<Map<String, String>> initialItems = await Future.wait(
         List.generate(10, (index) => _addItems(index))
@@ -56,13 +56,10 @@ class _PlantDictionaryState extends State<PlantDictionary> {
       _isLoading = true;
     });
 
-    // 서버 또는 데이터베이스에서 데이터를 가져오는 것을 시뮬레이션
-    // await Future.delayed(Duration(milliseconds: 500)); // 로딩 시간 단축
-
     // 비동기적으로 데이터를 로드
     List<Map<String, String>> newItems = await Future.wait(
         List.generate(10, (index) async {
-          int itemIndex = _currentPage * 10 + index;
+          int itemIndex = _currentPage * 10 + index + 1; // 첫 번째 인덱스 제외
           return await _addItems(itemIndex);
         })
     );
@@ -89,13 +86,13 @@ class _PlantDictionaryState extends State<PlantDictionary> {
     // CSV 데이터를 파싱하기
     List<List<dynamic>> rows = const CsvToListConverter().convert(csvData);
 
-    // 지정된 인덱스의 이미지와 이름을 반환하기
+    // 첫 번째 행은 제목일 수 있으므로 무시
     if (index < 0 || index >= rows.length) {
       throw Exception('Index out of bounds');
     }
 
     // 이미지 URL과 이름을 리스트에서 추출
-    final row = rows[index];
+    final row = rows[index + 1]; // 첫 번째 행을 무시하므로 +1
     final imageUrl = row[0] as String;
     final name = row[1] as String;
 
@@ -105,16 +102,15 @@ class _PlantDictionaryState extends State<PlantDictionary> {
     };
   }
 
-
-  Future<Map<String, String>> _addItems(itemIndex)
-  {
-    dynamic gets = loadCSV(itemIndex) ??
-        {
-          "image": "http://www.nongsaro.go.kr/cms_contents/301/12938_MF_REPR_ATTACH_01_TMB.jpg", // Placeholder 이미지
-          "name": "Plant $itemIndex",
-        };
-    return gets;
-
+  Future<Map<String, String>> _addItems(int itemIndex) async {
+    try {
+      return await loadCSV(itemIndex);
+    } catch (e) {
+      return {
+        "image": "http://www.nongsaro.go.kr/cms_contents/301/12938_MF_REPR_ATTACH_01_TMB.jpg", // Placeholder 이미지
+        "name": "Plant $itemIndex",
+      };
+    }
   }
 
   @override
@@ -147,73 +143,52 @@ class _PlantDictionaryState extends State<PlantDictionary> {
                       }
                       return GestureDetector(
                         onTap: () async {
-                          // final String plantName = _items[index]["name"]!;
-                          // try {
-                          //   String analysisResult =
-                          //   await sendNameToServer(plantName, 'plant_name');
-                          //
-                          //   Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           PlantDetailPage(analysisResult: analysisResult),
-                          //     ),
-                          //   );
-                          // } catch (e) {
-                          //   // Handle error
-                          //   // ScaffoldMessenger.of(context).showSnackBar(
-                          //   //   SnackBar(
-                          //   //     content: Text('Failed to fetch plant details.'),
-                          //   //   ),
-                          //   // );
-                          //   print("Failed to fetch plant details");
-                          // }
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    PlantDetailPage(data: {}),
-                              ),
-                            );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PlantDetailPage(data: {}),
+                            ),
+                          );
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade300,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black26,
-                                      blurRadius: 4, // 그림자의 흐림 정도
-                                      offset: Offset(2, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(
-                                    _items[index]["image"]!,
-                                    fit: BoxFit.cover,
+                            Container(
+                              height: 150, // 고정된 높이
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    blurRadius: 4, // 그림자의 흐림 정도
+                                    offset: Offset(2, 2),
                                   ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.network(
+                                  _items[index]["image"]!,
+                                  fit: BoxFit.cover, // 이미지 크기를 컨테이너에 맞게 조정
                                 ),
                               ),
                             ),
                             SizedBox(height: 8),
-
                             Padding(
-                              padding: const EdgeInsets.only(left: 16),
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
                               child: Text(
                                 _items[index]["name"]!,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),
-                                textAlign: TextAlign.left,
+                                textAlign: TextAlign.center, // 텍스트 중앙 정렬
+                                overflow: TextOverflow.ellipsis, // 텍스트가 넘칠 경우 줄임표로 표시
+                                maxLines: 1, // 최대 2줄까지 표시
                               ),
                             ),
+
                           ],
                         ),
                       );
@@ -224,7 +199,7 @@ class _PlantDictionaryState extends State<PlantDictionary> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 24,
-                    childAspectRatio: 1,
+                    childAspectRatio: 1, // 비율을 1:1로 설정
                   ),
                 ),
               ],

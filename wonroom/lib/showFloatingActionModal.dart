@@ -12,7 +12,8 @@ import 'myPlantRegistration.dart';
 
 final ImagePicker _picker = ImagePicker();
 
-void showFloatingActionModal(BuildContext context) {
+void showFloatingActionModal(BuildContext context)
+{
   showModalBottomSheet(
     context: context,
     shape: RoundedRectangleBorder(
