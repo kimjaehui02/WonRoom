@@ -2,89 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:wonroom/DB/users/users_model.dart';
 import 'package:wonroom/Flask/storage_manager.dart';
 
-final Dio dio = Dio();
-final String baseUrl = "http://192.168.219.81:8087/";
-
-
-// <editor-fold desc="회원가입용 아이디, 닉네임, 이메일중복검사">
-// 아이디 중복 검사
-Future<bool> checkUserId(String user_id) async {
-  final String url = "$baseUrl/users/check_id";
-
-  try {
-    Response response = await dio.post(
-      url,
-      data: {"user_id": user_id},
-    );
-
-    if (response.statusCode == 200) {
-      final responseData = response.data;
-      return responseData['status'] == 'success';
-    } else {
-      print('Unexpected status code: ${response.statusCode}');
-      return false;
-    }
-  } catch (e) {
-    print("Error: $e");
-    return false;
-  }
-}
-
-// 닉네임 중복 검사
-Future<bool> checkUserNickname(String user_nick) async {
-  final String url = "$baseUrl/users/check_nickname";
-
-  try {
-    Response response = await dio.post(
-      url,
-      data: {"user_nick": user_nick},
-    );
-
-    if (response.statusCode == 200) {
-      final responseData = response.data;
-      return responseData['status'] == 'success';
-    } else {
-      print('Unexpected status code: ${response.statusCode}');
-      return false;
-    }
-  } catch (e) {
-    print("Error: $e");
-    return false;
-  }
-}
-
-// 이메일 중복 검사
-Future<bool> checkUserEmail(String user_email) async {
-  final String url = "$baseUrl/users/check_email";
-
-  try {
-    Response response = await dio.post(
-      url,
-      data: {"user_email": user_email},
-    );
-
-    if (response.statusCode == 200) {
-      final responseData = response.data;
-      return responseData['status'] == 'success';
-    } else {
-      print('Unexpected status code: ${response.statusCode}');
-      return false;
-    }
-  } catch (e) {
-    print("Error: $e");
-    return false;
-  }
-}
-// </editor-fold>
-
-// </editor-fold>
-
-// UserService 클래스
 class UserService {
   final Dio dio = Dio();
   final String baseUrl = "http://192.168.219.81:8087/";
+  final StorageManager _storageManager = StorageManager();
 
-  // 회원 가입 요청
+  // 사용자 등록
   Future<void> usersInsert(User user) async {
     final String url = "$baseUrl/users/insert";
 
@@ -98,7 +21,7 @@ class UserService {
     }
   }
 
-  // 로그인
+  // 사용자 로그인
   Future<Map<String, dynamic>> usersLogin(String userId, String userPw) async {
     final String url = "$baseUrl/users/login";
 
@@ -110,10 +33,6 @@ class UserService {
           "user_pw": userPw,
         },
       );
-
-      print('Status Code: ${response.statusCode}');
-      print('Response URL: ${response.realUri}');
-      print('Response Data: ${response.data}');
 
       if (response.statusCode == 200) {
         final responseData = response.data;
@@ -145,10 +64,6 @@ class UserService {
         },
       );
 
-      print('Status Code: ${response.statusCode}');
-      print('Response URL: ${response.realUri}');
-      print('Response Data: ${response.data}');
-
       if (response.statusCode == 200) {
         final responseData = response.data;
 
@@ -168,7 +83,7 @@ class UserService {
 
   // 사용자 정보 업데이트
   Future<void> usersUpdate(String userPw, String userNick, String userEmail, int? favoritePlantId) async {
-    String? userId = await storage.read(key: 'user_id');
+    String? userId = await _storageManager.getUserId();
 
     if (userId == null) {
       print('No user_id found in storage');
@@ -189,10 +104,6 @@ class UserService {
         },
       );
 
-      print('Status Code: ${response.statusCode}');
-      print('Response URL: ${response.realUri}');
-      print('Response Data: ${response.data}');
-
       if (response.statusCode == 200) {
         final responseData = response.data;
 
@@ -209,10 +120,63 @@ class UserService {
     }
   }
 
+  Future<void> updateUserInfo({
+    String? userPw,
+    String? userNick,
+    String? userEmail,
+    int? favoritePlantId,
+  }) async {
+    // 현재 저장된 사용자 정보 읽기
+    User? currentUser = await _storageManager.readUser();
+
+    // 저장된 사용자 정보가 없으면 종료
+    if (currentUser == null) {
+      print('No user data found in storage');
+      return;
+    }
+
+    // 입력된 값으로 사용자 정보를 업데이트
+    final updatedUser = User(
+      userId: currentUser.userId, // 기존 userId 유지
+      userPw: userPw ?? currentUser.userPw,
+      userNick: userNick ?? currentUser.userNick,
+      userEmail: userEmail ?? currentUser.userEmail,
+      regDate: currentUser.regDate, // 변경하지 않음
+      favoritePlantId: favoritePlantId ?? currentUser.favoritePlantId,
+    );
+
+    // 업데이트할 데이터 준비
+    final String url = "$baseUrl/users/update";
+
+    try {
+      Response response = await dio.post(
+        url,
+        data: updatedUser.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+
+        if (responseData['status'] == 'success') {
+          print('User information updated successfully.');
+          // 업데이트된 사용자 정보를 다시 저장 (선택 사항)
+          await _storageManager.writeUser(updatedUser);
+        } else {
+          print('Update failed: ${responseData['message']}');
+        }
+      } else {
+        print('Unexpected status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+
+
   // 사용자 삭제
   Future<void> usersDelete() async {
     final String url = "$baseUrl/users/delete";
-    String? userId = await storage.read(key: 'user_id');
+    String? userId = await _storageManager.getUserId();
 
     try {
       Response response = await dio.post(
@@ -221,10 +185,6 @@ class UserService {
           "user_id": userId,
         },
       );
-
-      print('Status Code: ${response.statusCode}');
-      print('Response URL: ${response.realUri}');
-      print('Response Data: ${response.data}');
 
       if (response.statusCode == 200) {
         final responseData = response.data;
@@ -239,6 +199,46 @@ class UserService {
       }
     } catch (e) {
       print("Error: $e");
+    }
+  }
+
+  // 사용자 정보 가져오기
+  Future<User?> getUserInfo() async {
+    final String url = "$baseUrl/users/get_user_info"; // 서버에서 사용자 정보를 가져오는 API 엔드포인트
+
+    String? userId = await _storageManager.getUserId();
+
+    if (userId == null) {
+      print('No user_id found in storage');
+      return null;
+    }
+
+    try {
+      Response response = await dio.post(
+        url,
+        data: {
+          "user_id": userId,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+
+        if (responseData['status'] == 'success') {
+          // 서버에서 받은 데이터로 User 객체 생성
+          final user = User.fromJson(responseData['user']);
+          return user;
+        } else {
+          print('Failed to get user info: ${responseData['message']}');
+          return null;
+        }
+      } else {
+        print('Unexpected status code: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print("Error: $e");
+      return null;
     }
   }
 
@@ -311,9 +311,10 @@ class UserService {
     }
   }
 
+  // 즐겨 찾기 식물 ID 업데이트
   Future<void> updateFavoritePlantIdService(int newFavoritePlantId) async {
     // 사용자 정보 읽기
-    User? currentUser = await readUser();
+    User? currentUser = await _storageManager.readUser();
 
     if (currentUser == null) {
       print('No user data found in storage');
@@ -335,7 +336,6 @@ class UserService {
 
     // 업데이트된 사용자 정보를 다시 저장 (선택 사항)
     currentUser.favoritePlantId = newFavoritePlantId;
-    await writeUser(currentUser);
+    await _storageManager.writeUser(currentUser);
   }
-
 }

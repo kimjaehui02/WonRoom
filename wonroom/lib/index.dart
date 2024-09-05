@@ -107,7 +107,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   // 식물값을 얻어오는 함수
   Future<UserPlant?> _getPlants() async {
     UserPlantService ups = UserPlantService();
-    final _data = await readUserData();
+    StorageManager _sm = new StorageManager();
+
+    final _data = await _sm.readUserData();
     List<UserPlant>? _plants = await ups.getPlants(_data?["user_id"]);
 
     // _plants가 null이거나 비어있으면 null 반환

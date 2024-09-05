@@ -5,7 +5,8 @@ import 'package:wonroom/Flask/storage_manager.dart';
 
 
 Future<void> checkLoginStatus(BuildContext context) async {
-  String? isLoggedIn = await readData('userData'); // 로그인 상태 읽기
+  StorageManager _sm = new StorageManager();
+  String? isLoggedIn = await _sm.readData('userData'); // 로그인 상태 읽기
 
   if (isLoggedIn != 'true') {
     // 로그인이 안된 상태라면 팝업을 띄움

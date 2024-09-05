@@ -42,13 +42,14 @@ class _MyplantNullState extends State<MyplantNull> {
 
   // 당신의 식물 정보
   List<UserPlant> _userPlants = [];
+
   // 당신의 식물 정보의 일정들
   List<List<PlantManagementRecord>> _PMR = [];
 
   // 당신의 식물 정보의 위젯들
   List<Widget> actionContainers = [];
 
-  // 현재 값이 존재하는지 아닌지
+  // 현재 값이 존재 하는지 아닌지
   bool checks = false;
 
   // 현재 로딩이 완료되었는지 아닌디
@@ -56,6 +57,10 @@ class _MyplantNullState extends State<MyplantNull> {
 
   // 지금 보고 있는 식물의 인덱스값
   int plantIndex = 0;
+
+  final UserService _us = new UserService();
+  final StorageManager _sm = new StorageManager();
+
 
   // Table: user_plants
   // Columns:
@@ -81,7 +86,8 @@ class _MyplantNullState extends State<MyplantNull> {
   // 3. 별체크
   // 즐겨찾기 항목이라면 별을 체크합니다
   int _userfav = -10;
-  int _plantid = -100;
+
+  bool _fullStar = false;
 
   bool _1 = true;
   bool _2 = true;
@@ -124,21 +130,24 @@ class _MyplantNullState extends State<MyplantNull> {
 
   void _loading() async
   {
-    final _id = await readUserData();
+    // StorageManager _sm = new StorageManager();
+
+    final _id = await _sm.readUserData();
+
 
 // favorite_plant_id를 8로 업데이트
-    await updateFavoritePlantId(8);
+//     await _sm.updateFavoritePlantId(8);
 
 // favorite_plant_id 값을 읽어와서 출력
-    final _userfav = await getUserFav();
-    print(_userfav);
-    print(_userfav);
-    print(_userfav);
-    print(_userfav);
-    print(_userfav);
+//     final _userfav = await _sm.getUserFav();
+//     print(_userfav);
+//     print(_userfav);
+//     print(_userfav);
+//     print(_userfav);
+//     print(_userfav);
 
 // 업데이트된 데이터를 다시 읽어서 확인
-    final updatedData = await readUserData();
+    final updatedData = await _sm.readUserData();
     print(updatedData?["favorite_plant_id"] ?? "");
 
     print("페이버릿입니다");
@@ -154,9 +163,17 @@ class _MyplantNullState extends State<MyplantNull> {
   // 자주 부르면 안됩니다
   void _loadData() async
   {
+    // StorageManager _sm = new StorageManager();
+
+    // _sm.updateFavoritePlantId(8);
+
+    // int _input = _us.getUserInfo()[""];
+
     print("데이터 불러오기 작업을 수행합니다. inputss: $plantIndex");
-    user = await readUser(); // user 객체 가져오기
+    user = await _sm.readUser(); // user 객체 가져오기
     print("User? user = await readUser();");
+
+
 
     if (user != null) {
       // print(user.getuserId()); // 사용자 ID 출력
@@ -290,11 +307,14 @@ class _MyplantNullState extends State<MyplantNull> {
       // 현재 날짜를 MM.DD 형식으로 가져오기
       String todayDate = DateFormat('MM.dd').format(DateTime.now());
 
+      // 내가 가장 좋아하는 식물인지 체크합니다
+      _fullStar = _userPlants[index].plantId == _userfav;
+      
       // UserPlant의 다이어리 제목 설정
       diary_title = _userPlants[index].diaryTitle ?? 'Default Title';
 
       // UserPlant의 식물 ID 설정
-      _plantid = _userPlants[index].plantId ?? -1;
+      // _plantid = _userPlants[index].plantId ?? -1;
 
       // 각 ManagementType에 대해 안전하게 접근
       String getActionDate(List<PlantManagementRecord>? records) {
@@ -608,16 +628,20 @@ class _MyplantNullState extends State<MyplantNull> {
                             child: Padding(
                               padding: EdgeInsets.only(left: 32),
                               child: IconButton(
-                                icon: Icon(_userfav == _plantid ? Icons.star_border_rounded : Icons.star_rounded, color: _userfav == _plantid ? Color(0xff787878) : Colors.amber),
+                                icon: Icon(_fullStar ? Icons.star_rounded : Icons.star_border_rounded, color: _fullStar ? Colors.amber : Color(0xff787878)),
                                 onPressed: () async {
                                   // 아이콘 클릭 시 실행될 기능 구현
-                                  UserService _us = new UserService();
-                                  Map<String, dynamic> _read = await readUserData() ?? {};
-                                  _us.usersUpdate(
-                                      _read["user_pw"],
-                                      _read["user_nick"],
-                                      _read["user_email"],
-                                      7);
+                                  // UserService _us = new UserService();
+
+                                  await _us.updateUserInfo(favoritePlantId:  _userPlants[plantIndex].plantId);
+                                  setState(() {
+                                    _loadData(); // 페이지가 처음 로드될 때 데이터를 불러옵니다.
+
+                                  });
+                                  print(_userPlants[plantIndex].plantId);
+                                  print(_userPlants[plantIndex].plantId);
+                                  print(_userfav);
+                                  print(_userfav);
 
 
                                   // showDeletionSuccessDialog(context: context);

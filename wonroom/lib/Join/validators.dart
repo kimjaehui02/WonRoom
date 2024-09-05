@@ -13,7 +13,8 @@ class Validators {
     final idValid = CommonValidators.validateUserId(id);
     if (idValid != null) return idValid;
 
-    final result = await checkUserId(id);
+    UserService _us = new UserService();
+    final result = await _us.checkUserId(id);
     if (!result) {
       return '중복된 아이디 입니다.';
     }
@@ -25,7 +26,8 @@ class Validators {
     final nicknameValid = CommonValidators.validateNickname(nickname);
     if (nicknameValid != null) return nicknameValid;
 
-    final result = await checkUserNickname(nickname!);
+    UserService _us = new UserService();
+    final result = await _us.checkUserNickname(nickname!);
     if (!result) {
       return '중복된 닉네임 입니다.';
     }
@@ -37,7 +39,8 @@ class Validators {
     final emailValid = CommonValidators.validateEmail(email);
     if (emailValid != null) return emailValid;
 
-    final result = await checkUserEmail(email!);
+    UserService _us = new UserService();
+    final result = await _us.checkUserEmail(email!);
     if (!result) {
       return '중복된 이메일 입니다.';
     }

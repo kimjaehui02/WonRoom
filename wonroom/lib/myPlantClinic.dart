@@ -24,7 +24,9 @@ class MyPlantClinic extends StatelessWidget {
       ),
       body: Column(
         children: [
-          SizedBox(height: 3,),
+          SizedBox(
+            height: 3,
+          ),
           Container(
             padding: EdgeInsets.all(16),
             width: MediaQuery.of(context).size.width,
@@ -46,15 +48,19 @@ class MyPlantClinic extends StatelessWidget {
                   fontSize: 14,
                 ),
                 children: [
-                  TextSpan(text: '치료 완료 시 \'치료요망\'을 눌러주세요.',
-                      style: TextStyle(color: Color(0xff787878),)
-                  ),
+                  TextSpan(
+                      text: '치료 완료 시 \'치료요망\'을 눌러주세요.',
+                      style: TextStyle(
+                        color: Color(0xff787878),
+                      )),
                 ],
               ),
             ),
           ),
 
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
 
           Container(
             child: Padding(
@@ -73,7 +79,9 @@ class MyPlantClinic extends StatelessWidget {
                     ),
                   ),
 
-                  SizedBox(width: 24,),
+                  SizedBox(
+                    width: 24,
+                  ),
 
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,17 +89,15 @@ class MyPlantClinic extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 3),
                         child: Text('24.08.12',
-                            style: TextStyle(fontSize: 14, color: Color(0xff787878)
-                            )
-                        ),
+                            style: TextStyle(
+                                fontSize: 14, color: Color(0xff787878))),
                       ),
-
-                      Text('시들음병',
+                      Text(
+                        '시들음병',
                         style: TextStyle(
                             fontSize: 20,
                             color: Color(0xff595959),
-                            fontWeight: FontWeight.bold
-                        ),
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -112,12 +118,15 @@ class MyPlantClinic extends StatelessWidget {
                   // ),
 
                   // 치료 완료 -> 치료요망 버튼 눌렀을 시
-                  ElevatedButton(onPressed: null,
-                    child: Text('치료완료', style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold
-                    ),),
+                  ElevatedButton(
+                    onPressed: null,
+                    child: Text(
+                      '치료완료',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
                     style: ElevatedButton.styleFrom(
                       // backgroundColor: Color(0xff6fb348),
                       // elevation: 0
@@ -157,7 +166,9 @@ class MyPlantClinic extends StatelessWidget {
                     ),
                   ),
 
-                  SizedBox(width: 24,),
+                  SizedBox(
+                    width: 24,
+                  ),
 
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,17 +176,15 @@ class MyPlantClinic extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 3),
                         child: Text('24.08.12',
-                            style: TextStyle(fontSize: 14, color: Color(0xff787878)
-                            )
-                        ),
+                            style: TextStyle(
+                                fontSize: 14, color: Color(0xff787878))),
                       ),
-
-                      Text('시들음병',
+                      Text(
+                        '시들음병',
                         style: TextStyle(
                             fontSize: 20,
                             color: Color(0xff595959),
-                            fontWeight: FontWeight.bold
-                        ),
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -196,12 +205,15 @@ class MyPlantClinic extends StatelessWidget {
                   // ),
 
                   // 치료 완료 -> 치료요망 버튼 눌렀을 시
-                  ElevatedButton(onPressed: null,
-                    child: Text('치료완료', style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold
-                    ),),
+                  ElevatedButton(
+                    onPressed: null,
+                    child: Text(
+                      '치료완료',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
                     style: ElevatedButton.styleFrom(
                       // backgroundColor: Color(0xff6fb348),
                       // elevation: 0
@@ -241,7 +253,9 @@ class MyPlantClinic extends StatelessWidget {
                     ),
                   ),
 
-                  SizedBox(width: 24,),
+                  SizedBox(
+                    width: 24,
+                  ),
 
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,29 +263,30 @@ class MyPlantClinic extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 3),
                         child: Text('24.08.12',
-                            style: TextStyle(fontSize: 14, color: Color(0xff787878)
-                            )
-                        ),
+                            style: TextStyle(
+                                fontSize: 14, color: Color(0xff787878))),
                       ),
-
-                      Text('시들음병',
+                      Text(
+                        '시들음병',
                         style: TextStyle(
                             fontSize: 20,
                             color: Color(0xff595959),
-                            fontWeight: FontWeight.bold
-                        ),
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
 
                   Spacer(),
 
-                  ElevatedButton(onPressed: (){},
-                    child: Text('치료요망', style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold
-                    ),),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text(
+                      '치료요망',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold),
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xfffc5230),
                       elevation: 0,
@@ -307,7 +322,6 @@ class MyPlantClinic extends StatelessWidget {
             ),
           ),
 
-
           // 내역이 없는 경우 안내 메시지
           // Expanded(
           //   child: Center(
@@ -332,10 +346,8 @@ class MyPlantClinic extends StatelessWidget {
           //     ),
           //   ),
           // ),
-
         ],
       ),
-
 
       // body: Padding(
       //   padding: const EdgeInsets.all(16),

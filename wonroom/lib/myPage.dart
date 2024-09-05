@@ -69,8 +69,10 @@ class _MyPageState extends State<MyPage> {
   }
 
   Future<void> _fetchUserData() async {
+    StorageManager _sm = new StorageManager();
+
     // 비동기 작업 수행
-    final data = await readUserData();
+    final data = await _sm.readUserData();
     // 상태 업데이트
     setState(() {
       userName = data?["user_id"];

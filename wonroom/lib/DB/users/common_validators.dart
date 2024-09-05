@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-// 공통 유효성 검사 관련 메서드를 제공하는 클래스
 class CommonValidators {
-  // 아이디 유효성 검사
   static String? validateUserId(String? value) {
     if (value == null || value.isEmpty) {
       return '아이디를 입력해 주세요.';
@@ -13,7 +11,6 @@ class CommonValidators {
     return null;
   }
 
-  // 비밀번호 유효성 검사
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return '비밀번호를 입력해 주세요.';
@@ -24,7 +21,6 @@ class CommonValidators {
     return null;
   }
 
-  // 비밀번호 확인 유효성 검사
   static String? validatePasswordConfirm(String? value, String password) {
     if (value == null || value.isEmpty) {
       return '비밀번호 확인을 입력해 주세요.';
@@ -35,7 +31,6 @@ class CommonValidators {
     return null;
   }
 
-  // 닉네임 유효성 검사
   static String? validateNickname(String? value) {
     if (value == null || value.isEmpty) {
       return '닉네임을 입력해 주세요.';
@@ -46,7 +41,6 @@ class CommonValidators {
     return null;
   }
 
-  // 이메일 유효성 검사
   static String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return '이메일을 입력해 주세요.';

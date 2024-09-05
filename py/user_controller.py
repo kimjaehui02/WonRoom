@@ -167,28 +167,54 @@ def check_email():
         cursor.close()
         db.close()
 
+
 @users.route("/update", methods=['POST'])
 def update():
     data = request.get_json()
-    if not all(key in data for key in ('user_id', 'user_pw', 'user_nick', 'user_email')):
-        return jsonify({"status": "fail", "message": "Missing required fields"}), 400
+    
+    # 필수 필드 확인
+    if 'user_id' not in data:
+        return jsonify({"status": "fail", "message": "Missing required field: user_id"}), 400
 
     user_id = data.get('user_id')
-    user_pw = data.get('user_pw')
-    user_nick = data.get('user_nick')
-    user_email = data.get('user_email')
+    user_pw = data.get('user_pw', None)
+    user_nick = data.get('user_nick', None)  # 수신하되 업데이트에는 사용하지 않음
+    user_email = data.get('user_email', None)
+    favorite_plant_id = data.get('favorite_plant_id', None)
+
+    # 업데이트할 필드와 값을 저장할 딕셔너리 생성
+    update_fields = {}
+    if user_pw is not None and user_pw != "":
+        update_fields['user_pw'] = user_pw
+    if user_email is not None and user_email != "":
+        update_fields['user_email'] = user_email
+    if favorite_plant_id is not None:  # Check if favorite_plant_id is provided
+        update_fields['favorite_plant_id'] = favorite_plant_id
+
+    # 필드가 없으면 반환
+    if not update_fields:
+        return jsonify({"status": "fail", "message": "No fields to update"}), 400
+
+    # 동적으로 SQL 쿼리 생성
+    set_clause = ", ".join(f"{field} = %s" for field in update_fields.keys())
+    sql = f"UPDATE users SET {set_clause} WHERE user_id = %s"
+    values = list(update_fields.values()) + [user_id]
 
     db = get_db_connection()
     cursor = db.cursor()
 
-    sql = '''
-    UPDATE users
-    SET user_pw = %s, user_nick = %s, user_email = %s
-    WHERE user_id = %s
-    '''
+    print("/update")
+    print(user_id)
+    print(user_pw)
+    print(user_nick)  # 닉네임을 수신하되 업데이트에 사용하지 않음
+    print(user_email)
+    print(favorite_plant_id)
+    print(sql)
+    print(set_clause)
+    print(values)
 
     try:
-        cursor.execute(sql, (user_pw, user_nick, user_email, user_id))
+        cursor.execute(sql, values)
         db.commit()
         row = cursor.rowcount
     except Exception as e:

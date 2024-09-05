@@ -13,6 +13,10 @@ class UserDeletePw extends StatefulWidget {
 }
 
 class _UserDeletePwState extends State<UserDeletePw> {
+  StorageManager _sm = new StorageManager();
+
+
+
   // 컨트롤러 추가
   final TextEditingController _confirmPasswordController = TextEditingController();
   bool _obscureConfirmPassword = true;
@@ -35,7 +39,7 @@ class _UserDeletePwState extends State<UserDeletePw> {
   void getUser() async
   {
     // 유저 데이터를 핸드폰 기본 스토리지에서 json형태로 가져온다
-    userData = await readUserData();
+    userData = await _sm.readUserData();
     // 가져온 json에서 user_id만 가져온다 ?? 뒤의 문자열은 에외처리
     // userData?["user_id"]가 널이면 ??뒤의 문자열로 userId를 초기화 해준다
     userId = userData?["user_id"] ?? "user_id";

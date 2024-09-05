@@ -75,7 +75,8 @@ class LoginValidators {
 
       // 로그인 성공 여부 확인
       if (result["status"] == "success") {
-        writeUserData(result);
+        StorageManager _sm = new StorageManager();
+        _sm.writeUserData(result);
 
         return '환영합니다.';
       } else {
