@@ -61,7 +61,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   bool _4 = true;
 
   UserPlant? indexPlant = null;
-  
+
   @override
   void initState() {
     super.initState();
@@ -73,26 +73,26 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
 
     //   추가
     // Tab change listener
-  //   _tabController.addListener(() {
-  //     if (_tabController.index == 3 && !_hasNavigatedToCustomerService) {
-  //       _hasNavigatedToCustomerService = true;
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => CustomerService()),
-  //       ).then((_) {
-  //         if (mounted) {
-  //           setState(() {
-  //             _tabController.index = 0;
-  //             WidgetsBinding.instance?.addPostFrameCallback((_) {
-  //               _tabController.index = 0;
-  //             });
-  //           });
-  //         }
-  //         _hasNavigatedToCustomerService = false;
-  //       });
-  //     }
-  //   });
-  // }
+    //   _tabController.addListener(() {
+    //     if (_tabController.index == 3 && !_hasNavigatedToCustomerService) {
+    //       _hasNavigatedToCustomerService = true;
+    //       Navigator.push(
+    //         context,
+    //         MaterialPageRoute(builder: (context) => CustomerService()),
+    //       ).then((_) {
+    //         if (mounted) {
+    //           setState(() {
+    //             _tabController.index = 0;
+    //             WidgetsBinding.instance?.addPostFrameCallback((_) {
+    //               _tabController.index = 0;
+    //             });
+    //           });
+    //         }
+    //         _hasNavigatedToCustomerService = false;
+    //       });
+    //     }
+    //   });
+    // }
     _tabController.addListener(() {
       if (_tabController.index == 3 && !_hasNavigatedToCustomerService) {
         _hasNavigatedToCustomerService = true;
@@ -269,7 +269,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       curve: Curves.easeInOut,
     );
   }
-  
+
   // 다이어리 이동하기로 화면을 이동시킵니다
   void _moveDiary()
   {
@@ -278,206 +278,222 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       MaterialPageRoute(builder: (context) => MyplantNull()), // MyPage로 이동
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset : false,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(Icons.search),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Search()),
-            );
-          },
+    return WillPopScope(
+      onWillPop: () async{
+        if (_tabController.index != 0) {
+          // 현재 인덱스가 홈이 아니면 홈으로 이동
+          setState(() {
+            _tabController.index = 0;
+          });
+          return false; // 뒤로가기를 처리하지 않고 홈으로 이동
+        }
+        return true; // 홈이면 뒤로가기 동작을 그대로 수행
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset : false,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Search()),
+              );
+            },
+          ),
+          title: GestureDetector(
+            onTap: () {
+              _tabController.animateTo(0); // 홈으로 탭 이동
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => Index()), // HomePage로 이동
+              // );
+            },
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Won',
+                    style: TextStyle(
+                      color: Color(0xff779d60),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'DMSerifDisplay',
+                      letterSpacing: 2,
+                      fontSize: 28,
+                    ),
+                  ),
+                  TextSpan(
+                    text: '-Room',
+                    style: TextStyle(
+                      color: Color(0xff595959),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'DMSerifDisplay',
+                      letterSpacing: 1,
+                      fontSize: 28,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.notifications_none_outlined),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotificationPage()),
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.person_outline),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyPage()), // MyPage로 이동
+                );
+              },
+            ),
+          ],
+          centerTitle: true,
+          bottom: TabBar(
+            controller: _tabController,
+            isScrollable: true,
+            labelColor: Colors.green,
+            labelStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+
+
+            indicatorColor: Colors.green,
+            indicatorPadding: EdgeInsets.zero,
+            indicatorWeight: 3.0,
+            tabAlignment: TabAlignment.center,
+            labelPadding: EdgeInsets.symmetric(horizontal: 20.0),
+            tabs: const
+            [
+              Tab(text: '홈'),
+              Tab(text: '식물사전'),
+              Tab(text: '커뮤니티'),
+              Tab(text: '고객센터'),
+            ],
+          ),
         ),
-        title: GestureDetector(
-          onTap: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => Index()), // HomePage로 이동
-            );
-          },
-          child: RichText(
-            text: TextSpan(
+        body: Stack(
+          children: [
+            TabBarView(
+              controller: _tabController,
               children: [
-                TextSpan(
-                  text: 'Won',
-                  style: TextStyle(
-                    color: Color(0xff779d60),
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'DMSerifDisplay',
-                    letterSpacing: 2,
-                    fontSize: 28,
+                _buildHomePage(),
+                PlantDictionary(),
+                Community(),
+                // 추가
+                Container(),
+              ],
+            ),
+            if (_isFabVisible)
+              Positioned(
+                right: 16,
+                bottom: 30,
+                child: FloatingActionButton(
+                  onPressed: _scrollToTop,
+                  child: Icon(Icons.arrow_upward, color: Colors.white,),
+                  backgroundColor: Colors.black.withOpacity(0.6),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
                   ),
+                  elevation: 0,
                 ),
-                TextSpan(
-                  text: '-Room',
-                  style: TextStyle(
-                    color: Color(0xff595959),
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'DMSerifDisplay',
-                    letterSpacing: 1,
-                    fontSize: 28,
+              ),
+          ],
+        ),
+
+        // bottom app bar
+        // extendBody: true, // Body를 appBar와 bottomNavigationBar 위로 확장
+        floatingActionButton: Container(
+          width: 70,
+          height: 70,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Color(0xff6bbe45), // 연두색
+          ),
+          child: FloatingActionButton(
+            onPressed: () {
+              showFloatingActionModal(context);
+            },
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            child: const Icon(Icons.camera_alt_outlined,
+              color: Colors.white,
+              size: 32,
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12.withOpacity(0.1),
+                spreadRadius: 0,
+                blurRadius: 4,
+                // offset: Offset(0, 0), // 그림자를 위쪽으로 이동
+              ),
+            ],
+          ),
+          child: BottomAppBar(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            height: 70,
+            color: Colors.white,
+            shape: const CircularNotchedRectangle(),
+            notchMargin: 5,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                _buildBottomNavBarItem(
+                  icon: ColorFiltered(
+                    colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+                    child: Image.asset(
+                      'images/diary.png',
+                      width: 26,
+                      height: 26,
+                    ),
                   ),
+                  label: '다이어리',
+                  index: 0,
+                ),
+                SizedBox(width: 40),
+                _buildBottomNavBarItem(
+                  icon: ColorFiltered(
+                    colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+                    child: Image.asset(
+                      'images/chat-bot.png',
+                      width: 30,
+                      height: 30,
+                    ),
+                  ),
+                  label: '챗(AI)',
+                  index: 1,
                 ),
               ],
             ),
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_none_outlined),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => NotificationPage()),
-              );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.person_outline),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyPage()), // MyPage로 이동
-              );
-            },
-          ),
-        ],
-        centerTitle: true,
-        bottom: TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          labelColor: Colors.green,
-          labelStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
 
 
-          indicatorColor: Colors.green,
-          indicatorPadding: EdgeInsets.zero,
-          indicatorWeight: 3.0,
-          tabAlignment: TabAlignment.center,
-          labelPadding: EdgeInsets.symmetric(horizontal: 20.0),
-          tabs: const
-          [
-            Tab(text: '홈'),
-            Tab(text: '식물사전'),
-            Tab(text: '커뮤니티'),
-            Tab(text: '고객센터'),
-          ],
-        ),
       ),
-      body: Stack(
-        children: [
-          TabBarView(
-            controller: _tabController,
-            children: [
-              _buildHomePage(),
-              PlantDictionary(),
-              Community(),
-              // 추가
-              // Container(),
-            ],
-          ),
-          if (_isFabVisible)
-            Positioned(
-              right: 16,
-              bottom: 30,
-              child: FloatingActionButton(
-                onPressed: _scrollToTop,
-                child: Icon(Icons.arrow_upward, color: Colors.white,),
-                backgroundColor: Colors.black.withOpacity(0.6),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                elevation: 0,
-              ),
-            ),
-        ],
-      ),
-
-      // bottom app bar
-      // extendBody: true, // Body를 appBar와 bottomNavigationBar 위로 확장
-      floatingActionButton: Container(
-        width: 70,
-        height: 70,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Color(0xff6bbe45), // 연두색
-        ),
-        child: FloatingActionButton(
-          onPressed: () {
-            showFloatingActionModal(context);
-          },
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          child: const Icon(Icons.camera_alt_outlined,
-            color: Colors.white,
-            size: 32,
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12.withOpacity(0.1),
-              spreadRadius: 0,
-              blurRadius: 4,
-              // offset: Offset(0, 0), // 그림자를 위쪽으로 이동
-            ),
-          ],
-        ),
-        child: BottomAppBar(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          height: 70,
-          color: Colors.white,
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 5,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              _buildBottomNavBarItem(
-                icon: ColorFiltered(
-                  colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
-                  child: Image.asset(
-                    'images/diary.png',
-                    width: 26,
-                    height: 26,
-                  ),
-                ),
-                label: '다이어리',
-                index: 0,
-              ),
-              SizedBox(width: 40),
-              _buildBottomNavBarItem(
-                icon: ColorFiltered(
-                  colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
-                  child: Image.asset(
-                    'images/chat-bot.png',
-                    width: 30,
-                    height: 30,
-                  ),
-                ),
-                label: '챗(AI)',
-                index: 1,
-              ),
-            ],
-          ),
-        ),
-      ),
-
-
     );
   }
+
+
+
   Widget _buildBottomNavBarItem({
     required Widget icon,
     // required dynamic icon,
@@ -526,8 +542,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         children: [
           // 다이어리 빈곳 유무를 교체할 때 쓰는곳
           // if (false)
-            indexPlant != null ?_buildMyPlantsSection():
-            _buildMyPlantsSectionNull(),
+          indexPlant != null ?_buildMyPlantsSection():
+          _buildMyPlantsSectionNull(),
 
 
           const SizedBox(height: 30),
@@ -763,7 +779,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                     padding: EdgeInsets.zero,
                   ),
                   child: const Text(
-                    '다이어리 이동하기ddd >',
+                    '다이어리 이동하기 >',
                     style: TextStyle(color: Color(0xff787878)),
                     overflow: TextOverflow.ellipsis,
                   ),

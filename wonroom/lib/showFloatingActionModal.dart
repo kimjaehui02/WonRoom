@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:wonroom/plantClinicChat.dart';
 import 'dart:convert';
 import 'dart:io';
 
@@ -64,16 +65,22 @@ void showFloatingActionModal(BuildContext context) {
             ),
 
             GestureDetector(
-              onTap: () async {
-                Navigator.pop(context);
-                final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-                if (image != null) {
-                  File imageFile = File(image.path);
-                  String base64Image = base64Encode(imageFile.readAsBytesSync());
-
-                  await sendImageToServer(base64Image, 'plant_pest');
-                }
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PlantClinicChat()),
+                );
               },
+              // onTap: () async {
+              //   Navigator.pop(context);
+              //   final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+              //   if (image != null) {
+              //     File imageFile = File(image.path);
+              //     String base64Image = base64Encode(imageFile.readAsBytesSync());
+              //
+              //     await sendImageToServer(base64Image, 'plant_pest');
+              //   }
+              // },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Row(

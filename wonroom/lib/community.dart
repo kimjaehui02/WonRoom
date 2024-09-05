@@ -131,30 +131,6 @@ class _CommunityState extends State<Community> {
                       ),
                     ),
                     SizedBox(width: 10),
-
-
-
-                    OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 20),
-                        side: BorderSide(
-                          color: Color(0xffc2c2c2),
-                          width: 1,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      onPressed: () {
-                        // Button click action
-                      },
-                      child: Text(
-                        '질문하기',
-                        style: TextStyle(color: Color(0xff787878)),
-                      ),
-                    ),
                   ],
                 ),
               ),
