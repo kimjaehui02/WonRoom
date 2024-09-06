@@ -29,7 +29,7 @@ void showPlantRegistrationModal(BuildContext context) {
                 File? _image;
                 String _plantName = '';
                 bool _isUploading = false;
-                TextEditingController _plantNameController = TextEditingController();
+                final TextEditingController _plantNameController = TextEditingController();
 
                 Future<void> _uploadImage(File image) async {
                   setState(() {
@@ -40,17 +40,20 @@ void showPlantRegistrationModal(BuildContext context) {
                     final imageBytes = await image.readAsBytes();
                     final base64Image = base64Encode(imageBytes);
 
+                    // 서버로 이미지를 전송하여 텍스트(식물 이름)를 받아옴
                     final response = await http.post(
-                      Uri.parse('https://2470-34-125-171-238.ngrok-free.app/plant_register'),
+                      Uri.parse('https://2822-34-75-121-152.ngrok-free.app/plant_register'), // 서버 URL에 맞게 변경
                       headers: {'Content-Type': 'application/json'},
                       body: json.encode({'image': base64Image}),
                     );
 
                     if (response.statusCode == 200) {
                       final data = json.decode(response.body);
+
+                      // 서버에서 받아온 텍스트를 TextField에 입력
                       setState(() {
                         _plantName = data['plant_name'] ?? '알 수 없음';
-                        _plantNameController.text = _plantName; // Update text field
+                        _plantNameController.text = _plantName; // 받아온 식물 이름 설정
                       });
                     } else {
                       print('API 호출 오류: ${response.statusCode}');
@@ -69,9 +72,9 @@ void showPlantRegistrationModal(BuildContext context) {
                   if (pickedFile != null) {
                     final selectedImage = File(pickedFile.path);
                     setState(() {
-                      _image = selectedImage;
+                      _image = selectedImage; // 이미지를 표시하기 위해 설정
                     });
-                    await _uploadImage(selectedImage);
+                    await _uploadImage(selectedImage); // 이미지를 서버로 전송
                   }
                 }
 
@@ -127,12 +130,12 @@ void showPlantRegistrationModal(BuildContext context) {
                                 child: Stack(
                                   children: [
                                     Container(
-                                      width: 100,
-                                      height: 100,
+                                      width: 200,
+                                      height: 200,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         image: DecorationImage(
-                                          image: FileImage(_image!),
+                                          image: FileImage(_image!), // 찍은 이미지만 표시
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -160,6 +163,7 @@ void showPlantRegistrationModal(BuildContext context) {
                               padding: const EdgeInsets.symmetric(horizontal: 16.0),
                               child: _buildTextField(
                                 controller: _plantNameController,
+                                hintText: '', // 힌트 텍스트를 제거하고 서버에서 받아온 텍스트 사용
                                 label: '식물 이름',
                                 enabled: !_isUploading,
                               ),
@@ -215,7 +219,7 @@ void showPlantRegistrationModal(BuildContext context) {
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () {
-                                // Save or handle the final data here
+                                // 저장 또는 처리하는 코드 추가
                               },
                               child: Text('등록', style: TextStyle(fontSize: 25, color: Colors.white)),
                               style: ElevatedButton.styleFrom(

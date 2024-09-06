@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:wonroom/DB/plant_management_records/plant_management_model.dart';
 import 'package:wonroom/DB/plant_management_records/plant_management_records_service.dart';
@@ -19,9 +21,12 @@ import 'package:wonroom/plantClinicChat.dart';
 import 'package:wonroom/search.dart';
 import 'package:wonroom/showFloatingActionModal.dart';
 import 'plantDictionary.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 
 class Index extends StatefulWidget {
   const Index({super.key});
+
   @override
   _IndexState createState() => _IndexState();
 }
@@ -48,6 +53,7 @@ final List<Map<String, String>> data = [
   },
 ];
 
+
 class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _selectedIndex = 0;
@@ -62,7 +68,13 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   // 다이어리 이동 페이지의 화면을 표시하기위해
   // 식물인덱스의0번째나 즐겨찾기꺼를 담습니다
   UserPlant? indexPlant = null;
-  
+  String _weatherDescription = '날씨 정보를 가져오는중....';
+  String? _weatherIcon;
+  double? _temperature;
+  double? _feelsLikeTemperature;
+  int? _humidity;
+  double? _windSpeed;
+  String? _serverResponseText;
   @override
   void initState() {
     super.initState();
@@ -71,7 +83,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
 
     // 비동기 작업을 위해 별도의 메서드 호출
     _initializeIndexPlant();
-
+    _getCurrentLocationAndFetchWeather();
 
 
     //   추가
@@ -87,6 +99,90 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         });
       }
     });
+  }
+  Future<void> _getCurrentLocationAndFetchWeather() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      await _fetchWeatherData(position.latitude, position.longitude);
+    } catch (e) {
+      // 위치 정보를 가져오지 못할 경우 기본 좌표 설정 (예: 서울)
+      double defaultLatitude = 35.14677706;
+      double defaultLongitude = 126.8404805;
+      await _fetchWeatherData(defaultLatitude, defaultLongitude);
+    }
+  }
+
+  // 위치 정보 가져오기
+  Future<void> _fetchWeatherData(double latitude, double longitude) async {
+    try {
+      String apiKey = 'adb92b5b8f9929dfbbc76ed53f914840'; // OpenWeatherMap API 키
+      String url =
+          'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&units=metric&lang=kr&appid=$apiKey';
+
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final weatherData = json.decode(response.body);
+
+        // 날씨 데이터 변수에 저장
+        setState(() {
+          _temperature = weatherData['main']['temp']; // 온도
+          _feelsLikeTemperature = weatherData['main']['feels_like']; // 체감 온도
+          _humidity = weatherData['main']['humidity']; // 습도
+          _windSpeed = weatherData['wind']['speed']; // 풍속
+          _weatherDescription = weatherData['weather'][0]['description']; // 날씨 설명 (한글)
+          _weatherIcon = weatherData['weather'][0]['icon']; // 날씨 아이콘 코드
+        });
+
+        // 저장한 데이터를 서버로 전송
+        await _sendWeatherDataToServer();
+      } else {
+        print('날씨 데이터를 가져오는 데 실패했습니다.');
+      }
+    } catch (e) {
+      print('날씨 데이터를 가져오는 중 오류 발생: $e');
+    }
+  }
+  Future<void> _sendWeatherDataToServer() async {
+    try {
+      String serverUrl = 'https://2822-34-75-121-152.ngrok-free.app/weather'; // 서버 URL
+      Map<String, String> headers = {"Content-Type": "application/json"};
+
+      // 서버로 전송할 날씨 데이터
+      Map<String, dynamic> weatherData = {
+        "temperature": _temperature,
+        "feels_like": _feelsLikeTemperature,
+        "humidity": _humidity,
+        "wind_speed": _windSpeed,
+        "description": _weatherDescription,
+        "icon": _weatherIcon,
+      };
+
+      String body = json.encode(weatherData);
+
+      // 서버로 POST 요청
+      final response = await http.post(
+        Uri.parse(serverUrl),
+        headers: headers,
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          // 서버로부터 받은 응답 텍스트를 변수에 저장
+          final responseData = json.decode(response.body);
+
+          // 서버 응답에서 필요한 데이터를 추출 (예: gpt_response 필드)
+          _serverResponseText = (responseData['gpt_response'] ?? '응답 없음').replaceAll('%', '');
+        });
+        print('서버로 데이터 전송 성공: $_serverResponseText');
+      } else {
+        print('서버에 데이터를 전송하는 데 실패했습니다. 상태 코드: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('서버로 데이터를 전송하는 중 오류 발생: $e');
+    }
   }
 
 
@@ -541,7 +637,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '중구 을지로 1가',
+                  '현재 위치',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -573,7 +669,14 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start, // 텍스트 상단 정렬
               children: [
                 SizedBox(width: 45),
-                Icon(
+                _weatherIcon != null
+                    ? Image.network(
+                  'https://openweathermap.org/img/wn/$_weatherIcon.png',
+                  width: iconSize,
+                  height: iconSize,
+                  fit: BoxFit.contain,
+                )
+                    : Icon(
                   Icons.wb_sunny,
                   color: Colors.orange,
                   size: iconSize,
@@ -583,7 +686,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '맑음',
+                      _weatherDescription, // 날씨 설명
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -592,7 +695,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                       ),
                     ),
                     Text(
-                      '30.9',
+                      _temperature != null
+                          ? '${_temperature!.toStringAsFixed(1)}°C'
+                          : '온도 정보를 가져오는 중...',
                       style: TextStyle(
                         fontSize: temperatureFontSize,
                         fontWeight: FontWeight.bold,
@@ -608,7 +713,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             // 메시지
             Center(
               child: Text(
-                '" 오늘은 광합성하기 좋은 날씨입니다 "',
+
+                '${_serverResponseText ?? 'N/A'}% ',// 이 메시지는 변경하지 않음
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.black,
@@ -630,7 +736,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                       text: '습도 ',
                     ),
                     TextSpan(
-                      text: '66% ',
+                      text: '${_humidity ?? 'N/A'}% ', // 습도 정보
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -646,7 +752,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                       text: '체감 ',
                     ),
                     TextSpan(
-                      text: '31.9° ',
+                      text: '${_feelsLikeTemperature ?? 'N/A'}° ', // 체감 온도
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -659,26 +765,10 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                       ),
                     ),
                     TextSpan(
-                      text: '서풍 ',
+                      text: '풍속 ',
                     ),
                     TextSpan(
-                      text: '1.9m/s ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(
-                      text: ' |  ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                    TextSpan(
-                      text: '미세 ',
-                    ),
-                    TextSpan(
-                      text: '좋음',
+                      text: '${_windSpeed ?? 'N/A'}m/s ', // 풍속 정보
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -692,6 +782,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
+
+
 
   // 다이어리 있을 때 코드
   Widget _buildMyPlantsSection() {

@@ -284,7 +284,7 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
   Future<void> _sendMessageToServer({String? text, String? image}) async {
     try {
       final Uri apiUrl = Uri.parse(
-          'https://22f1-34-75-121-152.ngrok-free.app/plant_pest'); // 수정된 URL
+          'https://2822-34-75-121-152.ngrok-free.app/plant_pest'); // 수정된 URL
 
       final requestBody = <String, dynamic>{
         if (text != null && text.isNotEmpty) 'text': text,

@@ -267,7 +267,7 @@ class _PlantDictionaryState extends State<PlantDictionary> {
 // }
 Future<String> sendNameToServer(String plantName, String category) async {
   var response = await http.post(
-    Uri.parse('https://your-server-url/plantDetail'),
+    Uri.parse('https://de32-34-75-121-152.ngrok-free.app/plantDetail'),
     headers: {'Content-Type': 'application/json'},
     body: jsonEncode({'name': plantName, 'category': category}),
   );
