@@ -6,6 +6,41 @@ import 'dart:io';
 
 void showPlantRegistrationModal(BuildContext context) {
   final picker = ImagePicker();
+  final TextEditingController _plantNameController = TextEditingController(); // 여기에만 정의
+
+  Future<void> _showConfirmationDialog(
+      BuildContext context,
+      String plantName,
+      void Function(void Function()) setState,
+      ) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('식물 이름 확인'),
+          content: Text('받아온 식물 이름 "$plantName"이(가) 맞나요?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('아니요'),
+              onPressed: () {
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+              },
+            ),
+            TextButton(
+              child: Text('네'),
+              onPressed: () {
+                setState(() {
+                  // 텍스트 필드에 값 반영
+                  _plantNameController.text = plantName;  // 제대로 동작할 것입니다
+                });
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   showModalBottomSheet(
     context: context,
@@ -29,7 +64,6 @@ void showPlantRegistrationModal(BuildContext context) {
                 File? _image;
                 String _plantName = '';
                 bool _isUploading = false;
-                final TextEditingController _plantNameController = TextEditingController();
 
                 Future<void> _uploadImage(File image) async {
                   setState(() {
@@ -42,19 +76,18 @@ void showPlantRegistrationModal(BuildContext context) {
 
                     // 서버로 이미지를 전송하여 텍스트(식물 이름)를 받아옴
                     final response = await http.post(
-                      Uri.parse('https://2822-34-75-121-152.ngrok-free.app/plant_register'), // 서버 URL에 맞게 변경
+                      Uri.parse('https://375c-34-75-121-152.ngrok-free.app/plant_register'), // 서버 URL에 맞게 변경
                       headers: {'Content-Type': 'application/json'},
                       body: json.encode({'image': base64Image}),
                     );
 
                     if (response.statusCode == 200) {
                       final data = json.decode(response.body);
+                      print('서버 응답: $data');
 
-                      // 서버에서 받아온 텍스트를 TextField에 입력
-                      setState(() {
-                        _plantName = data['plant_name'] ?? '알 수 없음';
-                        _plantNameController.text = _plantName; // 받아온 식물 이름 설정
-                      });
+                      // 서버에서 받아온 텍스트 확인 후 적용하는 다이얼로그 호출
+                      _showConfirmationDialog(
+                          context, data['plant_name'], setState); // setState 추가
                     } else {
                       print('API 호출 오류: ${response.statusCode}');
                     }
@@ -113,12 +146,16 @@ void showPlantRegistrationModal(BuildContext context) {
                                 _buildImageButton(
                                   icon: Icons.camera_alt,
                                   label: '사진촬영',
-                                  onPressed: _isUploading ? null : () => _pickImage(ImageSource.camera),
+                                  onPressed: _isUploading
+                                      ? null
+                                      : () => _pickImage(ImageSource.camera),
                                 ),
                                 _buildImageButton(
                                   icon: Icons.photo_library,
                                   label: '앨범에서 선택',
-                                  onPressed: _isUploading ? null : () => _pickImage(ImageSource.gallery),
+                                  onPressed: _isUploading
+                                      ? null
+                                      : () => _pickImage(ImageSource.gallery),
                                 ),
                               ],
                             ),
@@ -135,7 +172,7 @@ void showPlantRegistrationModal(BuildContext context) {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         image: DecorationImage(
-                                          image: FileImage(_image!), // 찍은 이미지만 표시
+                                          image: FileImage(_image!),
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -160,7 +197,8 @@ void showPlantRegistrationModal(BuildContext context) {
                               SizedBox(height: 20),
                             ],
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 16.0),
                               child: _buildTextField(
                                 controller: _plantNameController,
                                 hintText: '', // 힌트 텍스트를 제거하고 서버에서 받아온 텍스트 사용
@@ -170,23 +208,39 @@ void showPlantRegistrationModal(BuildContext context) {
                             ),
                             SizedBox(height: 20),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: _buildDatePicker(context, label: '마지막 물준날', enabled: !_isUploading),
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: _buildDatePicker(
+                                  context,
+                                  label: '마지막 물준날',
+                                  enabled: !_isUploading),
                             ),
                             SizedBox(height: 20),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: _buildDatePicker(context, label: '마지막 영양제', enabled: !_isUploading),
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: _buildDatePicker(
+                                  context,
+                                  label: '마지막 영양제',
+                                  enabled: !_isUploading),
                             ),
                             SizedBox(height: 20),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: _buildDatePicker(context, label: '마지막 분갈이', enabled: !_isUploading),
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: _buildDatePicker(
+                                  context,
+                                  label: '마지막 분갈이',
+                                  enabled: !_isUploading),
                             ),
                             SizedBox(height: 24),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: _buildDatePicker(context, label: '마지막 가지치기', enabled: !_isUploading),
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: _buildDatePicker(
+                                  context,
+                                  label: '마지막 가지치기',
+                                  enabled: !_isUploading),
                             ),
                             SizedBox(height: 24),
                           ],
@@ -203,7 +257,8 @@ void showPlantRegistrationModal(BuildContext context) {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: Text('취소', style: TextStyle(fontSize: 25)),
+                              child:
+                              Text('취소', style: TextStyle(fontSize: 25)),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: Colors.grey,
                                 backgroundColor: Colors.white,
@@ -221,7 +276,9 @@ void showPlantRegistrationModal(BuildContext context) {
                               onPressed: () {
                                 // 저장 또는 처리하는 코드 추가
                               },
-                              child: Text('등록', style: TextStyle(fontSize: 25, color: Colors.white)),
+                              child: Text('등록',
+                                  style: TextStyle(
+                                      fontSize: 25, color: Colors.white)),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green,
                                 shape: RoundedRectangleBorder(
@@ -244,7 +301,6 @@ void showPlantRegistrationModal(BuildContext context) {
     },
   );
 }
-
 Widget _buildImageButton({
   required IconData icon,
   required String label,

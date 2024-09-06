@@ -146,7 +146,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   }
   Future<void> _sendWeatherDataToServer() async {
     try {
-      String serverUrl = 'https://2822-34-75-121-152.ngrok-free.app/weather'; // 서버 URL
+      String serverUrl = 'https://9d96-34-75-121-152.ngrok-free.app/weather'; // 서버 URL
       Map<String, String> headers = {"Content-Type": "application/json"};
 
       // 서버로 전송할 날씨 데이터
@@ -619,7 +619,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         padding: EdgeInsets.all(24),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: Colors.white.withOpacity(0.8),
+          color: Colors.white.withOpacity(1),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.13),
@@ -668,12 +668,12 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start, // 텍스트 상단 정렬
               children: [
-                SizedBox(width: 45),
+                SizedBox(width: 10),
                 _weatherIcon != null
                     ? Image.network(
                   'https://openweathermap.org/img/wn/$_weatherIcon.png',
-                  width: iconSize,
-                  height: iconSize,
+                  width: iconSize*1.2,
+                  height: iconSize*1.2,
                   fit: BoxFit.contain,
                 )
                     : Icon(
@@ -714,7 +714,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
             Center(
               child: Text(
 
-                '${_serverResponseText ?? 'N/A'}% ',// 이 메시지는 변경하지 않음
+                '${_serverResponseText ?? 'N/A'} ',// 이 메시지는 변경하지 않음
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.black,

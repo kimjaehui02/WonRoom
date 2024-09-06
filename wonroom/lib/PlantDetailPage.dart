@@ -88,6 +88,7 @@ class PlantDetailPage extends StatelessWidget {
                   Text(
                     '${(data['functional_info'] as List<dynamic>?)?.map((info) => '• $info').join('\n') ?? '정보가 없습니다.'}',
                     style: TextStyle(fontSize: 16, color: Color(0xff595959)),
+                    textAlign: TextAlign.left,
                   ),
                   SizedBox(height: 20),
                   Row(
