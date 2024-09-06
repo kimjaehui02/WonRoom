@@ -423,13 +423,13 @@ class _PostDetailPageState extends State<PostDetailPage> {
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.zero,
                                     ),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
                                     ),
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                   ),
                                 ),
                               ),
@@ -522,13 +522,13 @@ class _PostDetailPageState extends State<PostDetailPage> {
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.zero,
                                     ),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
                                     ),
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                   ),
                                 ),
                               ),
