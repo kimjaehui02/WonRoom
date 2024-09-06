@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:wonroom/DB/chat_messages/chat_messages_model.dart';
 import 'package:wonroom/DB/chat_messages/chat_messages_service.dart';
 import 'package:wonroom/DB/comments/comments_model.dart';
@@ -24,6 +26,7 @@ import 'package:wonroom/MyPlant/myPlant_functions.dart';
 import 'package:wonroom/myPlantClinic.dart';
 import 'package:wonroom/myPlantRegistration.dart';
 import 'package:wonroom/showFloatingActionModal.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:intl/intl.dart';
 
@@ -197,7 +200,8 @@ class _MyplantNullState extends State<MyplantNull> {
             _userPlants[index].plantId,
             _initializeData,
             _updatePlant,
-            plantIndex
+            plantIndex,
+            _getImageFromCamera
         );
       } catch (e) {
         print("Error updating plant: $e");
@@ -438,6 +442,133 @@ class _MyplantNullState extends State<MyplantNull> {
       },
     );
   }
+
+
+
+  // -----------------------------------------------------------------------
+  File? _image;
+  String? _diagnosisResult; // 서버에서 받은 결과값 저장
+  // bool _isLoading = false;  // 로딩 상태를 나타내는 변수
+
+
+  // 카메라에서 이미지를 가져오는 함수
+  Future<void> _getImageFromCamera() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+      // 이미지 서버로 업로드 후 결과 받아오기
+      _uploadImageAsBase64(_image!);
+    }
+  }
+
+
+  // 이미지를 base64로 인코딩하여 서버로 업로드하는 함수
+  Future<void> _uploadImageAsBase64(File image) async {
+    setState(() {
+      _isLoading = true;  // 로딩 시작
+    });
+
+    try {
+      // 파일을 base64로 인코딩
+      List<int> imageBytes = await image.readAsBytes();
+      String base64Image = base64Encode(imageBytes);
+
+      // 서버로 요청을 보낼 데이터
+      var requestData = json.encode({
+        'image': base64Image, // base64로 인코딩된 이미지
+      });
+
+      // 코랩 서버로 요청 보내기
+      var response = await http.post(
+        Uri.parse('https://22f1-34-75-121-152.ngrok-free.app/myplant_pest'), // 코랩의 API 엔드포인트
+        headers: {"Content-Type": "application/json"},
+        body: requestData,
+      );
+
+      if (response.statusCode == 200) {
+        // 응답 본문 출력 (디버깅용)
+        print(response.body);
+
+        // 서버 응답에서 결과를 파싱
+        var responseBody = json.decode(response.body);
+
+        // 코랩에서 'pest_info'로 응답했을 때 처리
+        if (responseBody is Map && responseBody.containsKey('pest_info')) {
+          setState(() {
+            _diagnosisResult = responseBody['pest_info'].toString(); // 결과를 문자열로 변환
+          });
+        } else {
+          setState(() {
+            _diagnosisResult = '잘못된 응답 형식입니다.'; // 오류 메시지 설정
+          });
+        }
+
+        // 결과값을 모달로 띄움
+        _showResultDialog(context, _diagnosisResult!);
+
+      } else {
+        setState(() {
+          _diagnosisResult = '서버 요청 실패';
+        });
+        _showResultDialog(context, _diagnosisResult!);
+      }
+    } catch (e) {
+      // 예외 처리
+      setState(() {
+        _diagnosisResult = '오류 발생: $e';
+      });
+      _showResultDialog(context, _diagnosisResult!);
+    } finally {
+      setState(() {
+        _isLoading = false;  // 로딩 종료
+      });
+    }
+  }
+
+  // 결과값을 모달창으로 띄우는 함수
+  void _showResultDialog(BuildContext context, String result) {
+    bool isHealthy = result == "건강"; // 결과가 '건강'인지 여부 확인
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          contentPadding: EdgeInsets.all(20),
+          title: Text('진단 결과'),
+          content: Text(
+            isHealthy
+                ? '당신의 식물은 건강합니다. 등록하시겠습니까?'
+                : '$result가 의심됩니다. 등록하시겠습니까?',
+            style: TextStyle(fontSize: 18),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 모달 닫기
+              },
+              child: Text('취소'),
+            ),
+            TextButton(
+              onPressed: () {
+                // 등록 버튼 클릭 시 처리할 로직
+                Navigator.of(context).pop(); // 모달 닫기
+                // 등록 기능을 추가할 수 있습니다.
+              },
+              child: Text('등록'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+  // -----------------------------------------------------------------------
 
 
   @override

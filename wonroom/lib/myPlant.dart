@@ -21,6 +21,7 @@ class _MyplantState extends State<Myplant> {
   String? _diagnosisResult; // 서버에서 받은 결과값 저장
   bool _isLoading = false;  // 로딩 상태를 나타내는 변수
 
+
   // 카메라에서 이미지를 가져오는 함수
   Future<void> _getImageFromCamera() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
@@ -32,6 +33,7 @@ class _MyplantState extends State<Myplant> {
       _uploadImageAsBase64(_image!);
     }
   }
+
 
   // 이미지를 base64로 인코딩하여 서버로 업로드하는 함수
   Future<void> _uploadImageAsBase64(File image) async {
@@ -142,6 +144,8 @@ class _MyplantState extends State<Myplant> {
       child: CircularProgressIndicator(),
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {

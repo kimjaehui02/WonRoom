@@ -59,7 +59,7 @@ List<Widget> menuButton(int count, black, setState, _userPlants)
 
 // PlantAction을 매개변수로 받아 컨테이너를 생성하는 함수
 // 사진 바로 아래의 일정들을 표기해주는 역할을 한다
-List<Widget> buildPlantActionContainers(List<PlantAction> actions, _id, _loading, _updatePlant, index) {
+List<Widget> buildPlantActionContainers(List<PlantAction> actions, _id, _loading, _updatePlant, index, _getImageFromCamera) {
   return actions.map((action) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -76,9 +76,18 @@ List<Widget> buildPlantActionContainers(List<PlantAction> actions, _id, _loading
         children: [
           OutlinedButton.icon(
             onPressed: () async {
-              // 버튼의 로직은 그대로 유지
-              await plants(action.label, _id, _loading);
-              _updatePlant(index);
+              if(action.label != '진단')
+                {
+                  // 버튼의 로직은 그대로 유지
+                  await plants(action.label, _id, _loading);
+                  _updatePlant(index);
+                }
+              else
+                {
+                  _getImageFromCamera();
+                }
+              
+
             },
             icon: action.imageAsset.isNotEmpty
                 ? Image.asset(
