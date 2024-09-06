@@ -20,7 +20,8 @@ import 'package:wonroom/search.dart';
 import 'package:wonroom/showFloatingActionModal.dart';
 import 'plantDictionary.dart';
 
-class Index extends StatefulWidget {
+class Index extends StatefulWidget
+{
   const Index({super.key});
   @override
   _IndexState createState() => _IndexState();
@@ -62,7 +63,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   // 다이어리 이동 페이지의 화면을 표시하기위해
   // 식물인덱스의0번째나 즐겨찾기꺼를 담습니다
   UserPlant? indexPlant = null;
-  
+
   @override
   void initState() {
     super.initState();
@@ -241,7 +242,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       curve: Curves.easeInOut,
     );
   }
-  
+
   // 다이어리 이동하기로 화면을 이동시킵니다
   void _moveDiary()
   {
@@ -250,7 +251,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       MaterialPageRoute(builder: (context) => MyplantNull()), // MyPage로 이동
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -383,7 +384,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         ),
         child: FloatingActionButton(
           onPressed: () {
-            showFloatingActionModal(context);
+            showFloatingActionModal(context, _initializeIndexPlant);
           },
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -1047,11 +1048,10 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
               onPressed: ()
               {
                 // 새로운 페이지로 이동
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => MyplantNull()),
-                // );
-                showFloatingActionModal(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyplantNull()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xff6bbe45),
@@ -1354,70 +1354,4 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     );
   }
 
-  // Widget _buildPlantDictionaryPage() {
-  //   return SingleChildScrollView(
-  //     controller: _scrollController,
-  //     padding: const EdgeInsets.all(16),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         const SizedBox(height: 50),
-  //         const SizedBox(height: 50),
-  //         const SizedBox(height: 40),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-
-  // Widget _buildPlantClinicPage(String text) {
-  //   return Center(
-  //     child: Text(text),
-  //   );
-  // }
-
-  // Widget _buildCommunityPage(String text) {
-  //   return Center(
-  //     child: Text(text),
-  //   );
-  // }
-
-  // Widget _buildCustomerServicePage(String text) {
-  //   return Center(
-  //     child: Text(text),
-  //   );
-  // }
-// Widget _buildPlantDictionaryPage() {
-//   return SingleChildScrollView(
-//     controller: _scrollController,
-//     padding: const EdgeInsets.all(16),
-//     child: Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         const SizedBox(height: 50),
-//         const SizedBox(height: 50),
-//         const SizedBox(height: 40),
-//       ],
-//     ),
-//   );
-// }
-
-
-// Widget _buildPlantClinicPage(String text) {
-//   return Center(
-//     child: Text(text),
-//   );
-// }
-
-// Widget _buildCommunityPage(String text) {
-//   return Center(
-//     child: Text(text),
-//   );
-// }
-
-// Widget _buildCustomerServicePage(String text) {
-//   return Center(
-//     child: Text(text),
-//   );
-// }
 }

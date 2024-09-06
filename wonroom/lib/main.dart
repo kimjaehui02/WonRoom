@@ -1,60 +1,79 @@
+import 'dart:typed_data'; // Int64List를 사용하기 위한 import
 import 'package:flutter/material.dart';
-import 'package:wonroom/CreatePost.dart';
-import 'package:wonroom/findingPw.dart';
-import 'package:wonroom/findingPwTemporarily.dart';
-import 'package:wonroom/InquriryDetailsNull.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wonroom/PlantDetailPage.dart';
-import 'package:wonroom/community.dart';
-import 'package:wonroom/customerService.dart';
-import 'package:wonroom/findingId.dart';
-import 'package:wonroom/findingIdSuccess.dart';
 import 'package:wonroom/index.dart';
-import 'package:wonroom/inqurityDetails.dart';
-import 'package:wonroom/intro.dart';
-import 'package:wonroom/intro.dart';
-import 'package:wonroom/join.dart';
-import 'package:wonroom/login.dart';
-import 'package:wonroom/myComments.dart';
-import 'package:wonroom/myCommentsNull.dart';
-import 'package:wonroom/myPage.dart';
-import 'package:wonroom/myPlant.dart';
-import 'package:wonroom/myPlantClinic.dart';
-import 'package:wonroom/myPlantNull.dart';
-import 'package:wonroom/myPost.dart';
-import 'package:wonroom/myPostNull.dart';
-import 'package:wonroom/notificationPage.dart';
-import 'package:wonroom/notificationNulll.dart';
-import 'package:wonroom/plantClinicChat.dart';
-import 'package:wonroom/plantDictionary.dart';
-import 'package:wonroom/PostDetailPage.dart';
-import 'package:wonroom/pwChange.dart';
-import 'package:wonroom/search.dart';
 import 'package:wonroom/splash.dart';
-import 'package:wonroom/userDeletePW.dart';
-import 'package:wonroom/writeInquiry.dart';
-import 'package:wonroom/writePage.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+  final InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+  // 알림 채널 설정
+  const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'your_channel_id', // 채널 ID
+    'your_channel_name', // 채널 이름
+    description: 'Your channel description', // 채널 설명
+    importance: Importance.max, // 중요도 설정
+  );
+
+  final AndroidFlutterLocalNotificationsPlugin androidFlutterLocalNotificationsPlugin =
+  flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()!;
+
+  await androidFlutterLocalNotificationsPlugin.createNotificationChannel(channel);
+
   runApp(const MyApp());
 }
-// 주석
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    theme: ThemeData(
-      fontFamily: 'Pretendard',
-      scaffoldBackgroundColor: Colors.white,
-      primaryColor : Colors.white,
-      appBarTheme: AppBarTheme(
-        backgroundColor: Colors.white, // 앱바 배경색
+      theme: ThemeData(
+        fontFamily: 'Pretendard',
+        scaffoldBackgroundColor: Colors.white,
+        primaryColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.white,
+        ),
       ),
-    ),
-      home: Index(),
+      home: Splash(),
     );
   }
 }
 
+Future<void> showNotification() async {
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  // `const` 제거
+  final AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    'your_channel_id', // 채널 ID
+    'your_channel_name', // 채널 이름
+    importance: Importance.max, // 중요도
+    priority: Priority.high, // 우선 순위
+    vibrationPattern: Int64List.fromList([1000, 1000, 1000, 1000]), // 진동 패턴
+    enableVibration: true, // 진동 활성화
+    enableLights: true, // 조명 효과 활성화
+    ticker: 'ticker', // 티커
+  );
+
+  final NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+
+  print('Showing notification...');
+  await flutterLocalNotificationsPlugin.show(
+    0,
+    'Hello, Flutter!',
+    'This is a test notification.',
+    platformChannelSpecifics,
+    payload: 'item x',
+  );
+  print('Notification shown.');
+}

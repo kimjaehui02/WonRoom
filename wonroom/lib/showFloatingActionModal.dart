@@ -12,7 +12,7 @@ import 'myPlantRegistration.dart';
 
 final ImagePicker _picker = ImagePicker();
 
-void showFloatingActionModal(BuildContext context)
+void showFloatingActionModal(BuildContext context, _initializeData)
 {
   showModalBottomSheet(
     context: context,
@@ -171,7 +171,7 @@ void showFloatingActionModal(BuildContext context)
             GestureDetector(
               onTap: () async {
                 Navigator.pop(context);
-                showPlantRegistrationModal(context);
+                showPlantRegistrationModal(context, _initializeData);
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),

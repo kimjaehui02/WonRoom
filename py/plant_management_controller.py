@@ -171,6 +171,7 @@ def update_record():
         cursor.close()
         db.close()
 
+
 @plant_management.route("/delete", methods=['POST'])
 def delete_record():
     # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
@@ -214,3 +215,48 @@ def delete_record():
     finally:
         cursor.close()
         db.close()
+
+
+
+@plant_management.route("/delete_by_plant_id", methods=['POST'])
+def delete_records_by_plant_id():
+    # 0. 데이터 받아주기 (JSON 형식으로 받아오기)
+    data = request.get_json()
+    plant_id = data.get('plant_id')
+
+    if not plant_id:
+        return jsonify({"status": "fail", "message": "Missing plant_id"}), 400
+
+    # 1. DB 연결
+    db = pymysql.connect(
+        host='project-db-cgi.smhrd.com',  # URL
+        user='plant',                     # 사용자 이름
+        password='1234',                  # 비밀번호
+        db='plant',                       # 데이터베이스 이름
+        charset='utf8',                   # 인코딩
+        port=3307                         # 포트
+    )
+    cursor = db.cursor()
+
+    # 2. SQL문 작성
+    sql = '''
+    DELETE FROM plant_management_records WHERE plant_id = %s
+    '''
+
+    # 3. delete 실행, 파라미터 채워주기
+    try:
+        cursor.execute(sql, (plant_id,))
+        db.commit()
+
+        if cursor.rowcount > 0:
+            return jsonify({"status": "success", "message": "Records deleted successfully"})
+        else:
+            return jsonify({"status": "fail", "message": "No records found for this plant"}), 404
+    except Exception as e:
+        db.rollback()
+        return jsonify({"status": "fail", "message": str(e)}), 500
+    finally:
+        cursor.close()
+        db.close()
+
+        

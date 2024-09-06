@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:wonroom/Splash/splash_functions.dart';
 import 'package:wonroom/index.dart';
 import 'package:wonroom/intro.dart';
@@ -26,6 +27,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
 
     // 애니메이션이 끝난 후 페이지 전환
     if(widget.data2 != null)
@@ -171,3 +173,4 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
     );
   }
 }
+

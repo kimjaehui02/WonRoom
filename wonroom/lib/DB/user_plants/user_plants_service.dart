@@ -36,6 +36,40 @@ class UserPlantService {
     }
   }
 
+  // 새로운 함수: 식물 추가 후 ID 반환
+  Future<int?> addPlantAndGetId(UserPlant userPlant) async {
+    final String url = "$baseUrl/user_plants/insert_and_get_id";
+
+    try {
+      Response response = await dio.post(
+        url,
+        data: userPlant.toJson(),  // UserPlant 모델을 JSON으로 변환하여 전송
+      );
+
+      print('Status Code: ${response.statusCode}');
+      print('Response URL: ${response.realUri}');
+      print('Response Data: ${response.data}');
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        if (responseData['status'] == 'success') {
+          print('Plant added successfully.');
+          int? plantId = responseData['plant_id'];
+          print('New Plant ID: $plantId');
+          return plantId;
+        } else {
+          print('Plant addition failed: ${responseData['message']}');
+        }
+      } else {
+        print('Unexpected status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
+
+    return null;
+  }
+
   // 식물 조회
   Future<List<UserPlant>?> getPlants(String userId) async {
     final String url = "$baseUrl/user_plants/select";
@@ -136,6 +170,7 @@ class UserPlantService {
     }
   }
 
+
   // 식물 삭제
   Future<void> deletePlant(int plantId) async {
     final String url = "$baseUrl/user_plants/delete";
@@ -157,7 +192,7 @@ class UserPlantService {
         if (responseData['status'] == 'success') {
           print('Plant deleted successfully.');
         } else {
-          print('Plant deletion failed: ${responseData['message']}');
+          print('Failed to delete plant: ${responseData['message']}');
         }
       } else {
         print('Unexpected status code: ${response.statusCode}');
@@ -166,4 +201,53 @@ class UserPlantService {
       print("Error: $e");
     }
   }
+
+
+
+  Future<void> deletePlantRecords(int plantId) async {
+    final String url = "$baseUrl/plant_management/delete_by_plant_id";
+
+    try {
+      Response response = await dio.post(
+        url,
+        data: {
+          "plant_id": plantId,
+        },
+      );
+
+      print('Status Code: ${response.statusCode}');
+      print('Response URL: ${response.realUri}');
+      print('Response Data: ${response.data}');
+
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        if (responseData['status'] == 'success') {
+          print('Plant management records deleted successfully.');
+        } else {
+          print('Failed to delete plant records: ${responseData['message']}');
+        }
+      } else {
+        print('Unexpected status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+
+
+  // 식물과 관련된 기록을 삭제한 후 식물을 삭제하는 함수
+  Future<void> deletePlantWithRecords(int plantId) async {
+    try {
+      // 1. 먼저 기록 삭제
+      await deletePlantRecords(plantId);
+
+      // 2. 기록 삭제 후 식물 삭제
+      await deletePlant(plantId);
+    } catch (e) {
+      print("Error while deleting plant and records: $e");
+    }
+  }
+
+
 }
+

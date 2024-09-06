@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:wonroom/index.dart';
 import 'package:wonroom/join.dart';
 import 'package:wonroom/login.dart';
+import 'package:wonroom/main.dart';
+import 'package:wonroom/splash.dart';
 
 class Intro extends StatelessWidget {
   const Intro({super.key});
@@ -67,6 +69,7 @@ class Intro extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   child: ElevatedButton(
                     onPressed: () {
+                      // showNotification();
                       // 로그인 버튼 클릭 시 동작
                       Navigator.push(
                         context,

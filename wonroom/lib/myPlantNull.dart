@@ -75,6 +75,7 @@ class _MyplantNullState extends State<MyplantNull> {
   // 외부 서비스 호출에 필요한 객체들 초기화
   final UserService _us = new UserService();
   final StorageManager _sm = new StorageManager();
+  final UserPlantService _ups = new UserPlantService();
 
   @override
   void initState() {
@@ -103,6 +104,12 @@ class _MyplantNullState extends State<MyplantNull> {
       // 사용자 식물 서비스에서 식물 목록을 가져옴
       UserPlantService ups = UserPlantService();
       List<UserPlant>? userPlants = await ups.getPlants(userId);
+
+      print(userId);
+      print(userId);
+      print(userId);
+      print(userId);
+      print(userId);
 
       if (userPlants != null) {
         // 식물 목록을 로컬 상태에 저장하고 로딩 상태를 갱신
@@ -164,6 +171,7 @@ class _MyplantNullState extends State<MyplantNull> {
   void _updatePlant(int index) {
     // 리스트의 유효성 확인
     if (index < 0 || index >= _userPlants.length) {
+      print(_userPlants.length);
       print("Invalid plant index: $index");
       return; // 유효하지 않은 인덱스일 경우 함수 종료
     }
@@ -279,6 +287,12 @@ class _MyplantNullState extends State<MyplantNull> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
+
+                    setState(() {
+                      plantIndex = 0;
+                      _updatePlant(plantIndex);
+                      // return index1;
+                    });
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
@@ -356,6 +370,10 @@ class _MyplantNullState extends State<MyplantNull> {
                   ),
                   ElevatedButton(
                     onPressed: () {
+
+
+                      _ups.deletePlantWithRecords(_userPlants[plantIndex].plantId ?? -1);
+
                       Navigator.pop(context);
                       _showDeletionSuccessDialog(context);
                     },
@@ -403,7 +421,7 @@ class _MyplantNullState extends State<MyplantNull> {
                 onTap: () {
                   // 수정하기 기능 추가
                   Navigator.pop(context);
-                  showPlantRegistrationModal(context);
+                  showPlantRegistrationModal(context, _initializeData);
                 },
               ),
               ListTile(
@@ -537,6 +555,7 @@ class _MyplantNullState extends State<MyplantNull> {
                             ),
                           ),
                         ),
+
                         Flexible(
                           flex: 1,
                           child: Align(
@@ -544,10 +563,12 @@ class _MyplantNullState extends State<MyplantNull> {
                             child: Padding(
                               padding: EdgeInsets.only(right: 32),
                               child: IconButton(
-                                icon: Icon(Icons.more_vert, color: Color(0xff787878)),
+                                icon: Icon(Icons.delete_outline_outlined, color: Color(0xff787878)),
                                 onPressed: () {
                                   // 아이콘 클릭 시 실행될 기능 구현
-                                  _showBottomSheet(context);
+                                  // _showBottomSheet(context);
+                                  _showDeleteConfirmationSheet(context);
+
                                 },
                               ),
                             ),
@@ -903,31 +924,34 @@ class _MyplantNullState extends State<MyplantNull> {
                 //     ],
                 //   ),
                 // ),
+
                 makeBox(context, Icons.eco, "진단 기록", sortedGroupedRecords[plantIndex], ManagementType.Diagnosis),
-                SizedBox(height: 100,),
 
-                Padding(
-                    padding: const EdgeInsets.all(16),
-                    // 버튼
-                    child: ElevatedButton(onPressed: (){
+                // SizedBox(height: 100,),
+                //
+                // Padding(
+                //     padding: const EdgeInsets.all(16),
+                //     // 버튼
+                //     child: ElevatedButton(onPressed: (){
+                //
+                //     },
+                //       style: ElevatedButton.styleFrom(
+                //         backgroundColor: Color(0xff595959),
+                //         elevation: 0,
+                //         shape: RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.circular(10),
+                //         ),
+                //         minimumSize: const Size.fromHeight(50),
+                //       ),
+                //       child: const Text('해당 식물 정보 알아보기',
+                //         style: TextStyle(
+                //           fontSize: 16,
+                //           color: Colors.white,
+                //         ),
+                //       ),
+                //     )
+                // ),
 
-                    },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff595959),
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        minimumSize: const Size.fromHeight(50),
-                      ),
-                      child: const Text('해당 식물 정보 알아보기',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
-                    )
-                ),
               ],
             ),
           ),
@@ -1037,7 +1061,7 @@ class _MyplantNullState extends State<MyplantNull> {
               // ChatMessagesService chatMessagesService = new ChatMessagesService();
               // ChatMessage chatMessage = new ChatMessage
               //   (chatId: 1, chatText: "채팅내역2", speaker: true, chatTime: DateTime.now());
-              showPlantRegistrationModal(context);
+              showPlantRegistrationModal(context, _initializeData);
               // chatMessagesService.getChatMessages(DateTime(2000), DateTime(2100));
 
               // chatMessagesService.updateChatMessage(chatMessage);

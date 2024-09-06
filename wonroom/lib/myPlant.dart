@@ -177,7 +177,7 @@ class _MyplantState extends State<Myplant> {
                   onTap: () {
                     // 수정하기 기능 추가
                     Navigator.pop(context);
-                    showPlantRegistrationModal(context);
+                    showPlantRegistrationModal(context, null);
                   },
                 ),
                 ListTile(
