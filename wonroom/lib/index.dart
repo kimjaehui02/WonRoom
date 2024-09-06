@@ -53,16 +53,15 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
   final ScrollController _scrollController = ScrollController();
   bool _isFabVisible = false;
+  bool _hasNavigatedToCustomerService = false;
 
   bool _1 = true;
   bool _2 = true;
   bool _3 = true;
   bool _4 = true;
 
-  // 다이어리 이동 페이지의 화면을 표시하기위해
-  // 식물인덱스의0번째나 즐겨찾기꺼를 담습니다
   UserPlant? indexPlant = null;
-  
+
   @override
   void initState() {
     super.initState();
@@ -72,21 +71,56 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     // 비동기 작업을 위해 별도의 메서드 호출
     _initializeIndexPlant();
 
-
-
     //   추가
     // Tab change listener
+    //   _tabController.addListener(() {
+    //     if (_tabController.index == 3 && !_hasNavigatedToCustomerService) {
+    //       _hasNavigatedToCustomerService = true;
+    //       Navigator.push(
+    //         context,
+    //         MaterialPageRoute(builder: (context) => CustomerService()),
+    //       ).then((_) {
+    //         if (mounted) {
+    //           setState(() {
+    //             _tabController.index = 0;
+    //             WidgetsBinding.instance?.addPostFrameCallback((_) {
+    //               _tabController.index = 0;
+    //             });
+    //           });
+    //         }
+    //         _hasNavigatedToCustomerService = false;
+    //       });
+    //     }
+    //   });
+    // }
     _tabController.addListener(() {
-      if (_tabController.index == 3) { // 고객센터 탭이 선택되었을 때
+      if (_tabController.index == 3 && !_hasNavigatedToCustomerService) {
+        _hasNavigatedToCustomerService = true;
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>
-              CustomerService()), // customerService.dart로 이동
+          MaterialPageRoute(builder: (context) => CustomerService()),
         ).then((_) {
-          _tabController.index = 0; // 홈 탭으로 되돌아가도록 설정
+          if (mounted) {
+            WidgetsBinding.instance?.addPostFrameCallback((_) {
+              if (_tabController.index != 0) {
+                _tabController.index = 0; // 홈 화면으로 이동
+              }
+            });
+            setState(() {
+              _hasNavigatedToCustomerService = false;
+            });
+          }
         });
       }
     });
+
+    // Bottom Navigation Bar에서 탭 변경 시 인덱스 설정
+    void _onBottomNavBarItemTapped(int index) {
+      setState(() {
+        _selectedIndex = index;
+        _tabController.index = index; // 탭 인덱스 직접 설정
+      });
+    }
   }
 
 
@@ -133,7 +167,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     int indexPlantId = indexPlant?.plantId ?? -1;
     await plants(input, indexPlantId, null);
 
-
     setState(() {
       initializeBooleans(indexPlantId);
     });
@@ -160,11 +193,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     // print(ManagementType.Watering);
 
     bool isDateDuplicate1 = await isDateDuplicate(plantId, ManagementType.Watering, _pms);
-
     bool isDateDuplicate2 = await isDateDuplicate(plantId, ManagementType.Fertilizing, _pms);
-
     bool isDateDuplicate3 = await isDateDuplicate(plantId, ManagementType.Pruning, _pms);
-
     bool isDateDuplicate4 = await isDateDuplicate(plantId, ManagementType.Repotting, _pms);
 
     // 비동기 작업이 완료된 후 상태 업데이트
@@ -239,7 +269,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       curve: Curves.easeInOut,
     );
   }
-  
+
   // 다이어리 이동하기로 화면을 이동시킵니다
   void _moveDiary()
   {
@@ -248,204 +278,222 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       MaterialPageRoute(builder: (context) => MyplantNull()), // MyPage로 이동
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset : false,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(Icons.search),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Search()),
-            );
-          },
-        ),
-        title: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: 'Won',
-                style: TextStyle(
-                  color: Color(0xff779d60),
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'DMSerifDisplay',
-                  letterSpacing: 2,
-                  fontSize: 28,
-                ),
-              ),
-              TextSpan(
-                text: '-Room',
-                style: TextStyle(
-                  color: Color(0xff595959),
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'DMSerifDisplay',
-                  letterSpacing: 1,
-                  fontSize: 28,
-                ),
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_none_outlined),
+    return WillPopScope(
+      onWillPop: () async{
+        if (_tabController.index != 0) {
+          // 현재 인덱스가 홈이 아니면 홈으로 이동
+          setState(() {
+            _tabController.index = 0;
+          });
+          return false; // 뒤로가기를 처리하지 않고 홈으로 이동
+        }
+        return true; // 홈이면 뒤로가기 동작을 그대로 수행
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset : false,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: const Icon(Icons.search),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => NotificationPage()),
+                MaterialPageRoute(builder: (context) => Search()),
               );
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.person_outline),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyPage()), // MyPage로 이동
-              );
+          title: GestureDetector(
+            onTap: () {
+              _tabController.animateTo(0); // 홈으로 탭 이동
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => Index()), // HomePage로 이동
+              // );
             },
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Won',
+                    style: TextStyle(
+                      color: Color(0xff779d60),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'DMSerifDisplay',
+                      letterSpacing: 2,
+                      fontSize: 28,
+                    ),
+                  ),
+                  TextSpan(
+                    text: '-Room',
+                    style: TextStyle(
+                      color: Color(0xff595959),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'DMSerifDisplay',
+                      letterSpacing: 1,
+                      fontSize: 28,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ],
-        centerTitle: true,
-        bottom: TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          labelColor: Colors.green,
-          labelStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-
-
-          indicatorColor: Colors.green,
-          indicatorPadding: EdgeInsets.zero,
-          indicatorWeight: 3.0,
-          tabAlignment: TabAlignment.center,
-          labelPadding: EdgeInsets.symmetric(horizontal: 20.0),
-          tabs: const
-          [
-            Tab(text: '홈'),
-            Tab(text: '식물사전'),
-            Tab(text: '커뮤니티'),
-            Tab(text: '고객센터'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.notifications_none_outlined),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotificationPage()),
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.person_outline),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyPage()), // MyPage로 이동
+                );
+              },
+            ),
           ],
-        ),
-      ),
-      body: Stack(
-        children: [
-          TabBarView(
+          centerTitle: true,
+          bottom: TabBar(
             controller: _tabController,
-            children: [
-              _buildHomePage(),
-              PlantDictionary(),
-              Community(),
-              // 추가
-              Container(),
-              // CustomerService(),
-              // _buildPlantDictionaryPage(),
-              // PlantDictionary(),
-              // _buildPlantClinicPage('식물클리닉 페이지'),
-              // _buildCommunityPage('커뮤니티 페이지'),
-              // _buildCustomerServicePage('고객센터 페이지'),
+            isScrollable: true,
+            labelColor: Colors.green,
+            labelStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+
+
+            indicatorColor: Colors.green,
+            indicatorPadding: EdgeInsets.zero,
+            indicatorWeight: 3.0,
+            tabAlignment: TabAlignment.center,
+            labelPadding: EdgeInsets.symmetric(horizontal: 20.0),
+            tabs: const
+            [
+              Tab(text: '홈'),
+              Tab(text: '식물사전'),
+              Tab(text: '커뮤니티'),
+              Tab(text: '고객센터'),
             ],
           ),
-          if (_isFabVisible)
-            Positioned(
-              right: 16,
-              bottom: 30,
-              child: FloatingActionButton(
-                onPressed: _scrollToTop,
-                child: Icon(Icons.arrow_upward, color: Colors.white,),
-                backgroundColor: Colors.black.withOpacity(0.6),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
+        ),
+        body: Stack(
+          children: [
+            TabBarView(
+              controller: _tabController,
+              children: [
+                _buildHomePage(),
+                PlantDictionary(),
+                Community(),
+                // 추가
+                Container(),
+              ],
+            ),
+            if (_isFabVisible)
+              Positioned(
+                right: 16,
+                bottom: 30,
+                child: FloatingActionButton(
+                  onPressed: _scrollToTop,
+                  child: Icon(Icons.arrow_upward, color: Colors.white,),
+                  backgroundColor: Colors.black.withOpacity(0.6),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  elevation: 0,
                 ),
-                elevation: 0,
               ),
-            ),
-        ],
-      ),
-
-      // bottom app bar
-      // extendBody: true, // Body를 appBar와 bottomNavigationBar 위로 확장
-      floatingActionButton: Container(
-        width: 70,
-        height: 70,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Color(0xff6bbe45), // 연두색
-        ),
-        child: FloatingActionButton(
-          onPressed: () {
-            showFloatingActionModal(context);
-          },
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          child: const Icon(Icons.camera_alt_outlined,
-            color: Colors.white,
-            size: 32,
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12.withOpacity(0.1),
-              spreadRadius: 0,
-              blurRadius: 4,
-              // offset: Offset(0, 0), // 그림자를 위쪽으로 이동
-            ),
           ],
         ),
-        child: BottomAppBar(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+
+        // bottom app bar
+        // extendBody: true, // Body를 appBar와 bottomNavigationBar 위로 확장
+        floatingActionButton: Container(
+          width: 70,
           height: 70,
-          color: Colors.white,
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 5,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              _buildBottomNavBarItem(
-                icon: ColorFiltered(
-                  colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
-                  child: Image.asset(
-                    'images/diary.png',
-                    width: 26,
-                    height: 26,
-                  ),
-                ),
-                label: '다이어리',
-                index: 0,
-              ),
-              SizedBox(width: 40),
-              _buildBottomNavBarItem(
-                icon: ColorFiltered(
-                  colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
-                  child: Image.asset(
-                    'images/chat-bot.png',
-                    width: 30,
-                    height: 30,
-                  ),
-                ),
-                label: '챗(AI)',
-                index: 1,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Color(0xff6bbe45), // 연두색
+          ),
+          child: FloatingActionButton(
+            onPressed: () {
+              showFloatingActionModal(context);
+            },
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            child: const Icon(Icons.camera_alt_outlined,
+              color: Colors.white,
+              size: 32,
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12.withOpacity(0.1),
+                spreadRadius: 0,
+                blurRadius: 4,
+                // offset: Offset(0, 0), // 그림자를 위쪽으로 이동
               ),
             ],
           ),
+          child: BottomAppBar(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            height: 70,
+            color: Colors.white,
+            shape: const CircularNotchedRectangle(),
+            notchMargin: 5,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                _buildBottomNavBarItem(
+                  icon: ColorFiltered(
+                    colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+                    child: Image.asset(
+                      'images/diary.png',
+                      width: 26,
+                      height: 26,
+                    ),
+                  ),
+                  label: '다이어리',
+                  index: 0,
+                ),
+                SizedBox(width: 40),
+                _buildBottomNavBarItem(
+                  icon: ColorFiltered(
+                    colorFilter: ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+                    child: Image.asset(
+                      'images/chat-bot.png',
+                      width: 30,
+                      height: 30,
+                    ),
+                  ),
+                  label: '챗(AI)',
+                  index: 1,
+                ),
+              ],
+            ),
+          ),
         ),
+
+
       ),
-
-
     );
   }
+
+
+
   Widget _buildBottomNavBarItem({
     required Widget icon,
     // required dynamic icon,
@@ -494,8 +542,8 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
         children: [
           // 다이어리 빈곳 유무를 교체할 때 쓰는곳
           // if (false)
-            indexPlant != null ?_buildMyPlantsSection():
-            _buildMyPlantsSectionNull(),
+          indexPlant != null ?_buildMyPlantsSection():
+          _buildMyPlantsSectionNull(),
 
 
           const SizedBox(height: 30),
@@ -717,22 +765,28 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 '다이어리',
                 style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyplantNull()),
-                  );
-                },
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(EdgeInsets.zero),
-                  minimumSize: MaterialStateProperty.all<Size>(Size.zero),
+              Container(
+                width: 200,
+                color: Colors.blue,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyplantNull()),
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                  ),
+                  child: const Text(
+                    '다이어리 이동하기 >',
+                    style: TextStyle(color: Color(0xff787878)),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                child: const Text(
-                  '다이어리 이동하기 >',
-                  style: TextStyle(color: Color(0xff787878)),
-                ),
-              ),
+              )
+
+
             ],
           ),
           const SizedBox(height: 10),
@@ -1012,6 +1066,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                     MaterialPageRoute(builder: (context) => MyplantNull()),
                   );
                 },
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                ),
                 child: Row(
                   children: const [
                     Text(
@@ -1020,7 +1077,6 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                         color: Colors.grey,
                       ),
                     ),
-                    SizedBox(width: 5),
                   ],
                 ),
               ),
@@ -1345,71 +1401,4 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
-  // Widget _buildPlantDictionaryPage() {
-  //   return SingleChildScrollView(
-  //     controller: _scrollController,
-  //     padding: const EdgeInsets.all(16),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         const SizedBox(height: 50),
-  //         const SizedBox(height: 50),
-  //         const SizedBox(height: 40),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-
-  // Widget _buildPlantClinicPage(String text) {
-  //   return Center(
-  //     child: Text(text),
-  //   );
-  // }
-
-  // Widget _buildCommunityPage(String text) {
-  //   return Center(
-  //     child: Text(text),
-  //   );
-  // }
-
-  // Widget _buildCustomerServicePage(String text) {
-  //   return Center(
-  //     child: Text(text),
-  //   );
-  // }
-// Widget _buildPlantDictionaryPage() {
-//   return SingleChildScrollView(
-//     controller: _scrollController,
-//     padding: const EdgeInsets.all(16),
-//     child: Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         const SizedBox(height: 50),
-//         const SizedBox(height: 50),
-//         const SizedBox(height: 40),
-//       ],
-//     ),
-//   );
-// }
-
-
-// Widget _buildPlantClinicPage(String text) {
-//   return Center(
-//     child: Text(text),
-//   );
-// }
-
-// Widget _buildCommunityPage(String text) {
-//   return Center(
-//     child: Text(text),
-//   );
-// }
-
-// Widget _buildCustomerServicePage(String text) {
-//   return Center(
-//     child: Text(text),
-//   );
-// }
 }

@@ -59,7 +59,8 @@ class _MyPageState extends State<MyPage> {
   void updateUserName() {
     if (isLoggedIn()) {
       setState(() {
-        userName = getLoggedInUserName();
+        // userName = getLoggedInUserName();
+        _fetchUserData();
       });
     } else {
       setState(() {
@@ -526,7 +527,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                       ),
                       child: CircleAvatar(
                         radius: 50, // Adjusted radius to fit the container
-                        backgroundImage: AssetImage('images/plant_0.jpg'),
+                        backgroundImage: AssetImage('images/defaultProfile.png'),
                       ),
                     ),
                     Positioned(
@@ -933,7 +934,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (BuildContext context) {
+                    builder: (BuildContext context)  {
                       return Dialog(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),

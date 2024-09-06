@@ -13,6 +13,7 @@ class Community extends StatefulWidget {
 }
 
 class _CommunityState extends State<Community> {
+  int _selectedIndex = 0;
   final ScrollController _scrollController = ScrollController();
   String _sortOption = '인기글';
 
@@ -30,6 +31,25 @@ class _CommunityState extends State<Community> {
     );
   }
 
+  // 버튼스타일
+  ButtonStyle _buttonStyle(bool isSelected) {
+    return ElevatedButton.styleFrom(
+      backgroundColor: isSelected ? Color(0xff595959) : Colors.white,
+      padding: EdgeInsets.symmetric(vertical: 3, horizontal: 18),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(color: Color(0xffcccccc), width: 1),
+      ),
+      elevation: 0,
+    );
+  }
+  TextStyle _buttonTextStyle(bool isSelected) {
+    return TextStyle(
+      color: isSelected ? Colors.white : Colors.grey,
+      fontSize: 16,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,99 +61,77 @@ class _CommunityState extends State<Community> {
           children: [
             // 버튼 컨테이너
             Container(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 14),
               color: Color(0xffeeeeee),
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xff595959),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 20),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
+                  Row(
+                    children: [
+                      // 전체 버튼
+                      Container(
+                        margin: EdgeInsets.only(right: 5),
+                        child: ElevatedButton(
+                          style: _buttonStyle(_selectedIndex == 0),
                           onPressed: () {
-                            // Button click action
+                            setState(() {
+                              _selectedIndex = 0;
+                            });
                           },
                           child: Text(
                             '전체',
-                            style: TextStyle(color: Colors.white),
+                            style: _buttonTextStyle(_selectedIndex == 0),
                           ),
                         ),
-                        SizedBox(width: 10),
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 20),
-                            side: BorderSide(
-                              color: Color(0xffc2c2c2),
-                              width: 1,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
+                      ),
+                      // 질문하기 버튼
+                      Container(
+                        margin: EdgeInsets.only(right: 5),
+                        child: ElevatedButton(
+                          style: _buttonStyle(_selectedIndex == 1),
                           onPressed: () {
-                            // Button click action
+                            setState(() {
+                              _selectedIndex = 1;
+                            });
                           },
                           child: Text(
                             '질문하기',
-                            style: TextStyle(color: Color(0xff787878)),
+                            style: _buttonTextStyle(_selectedIndex == 1),
                           ),
                         ),
-                        SizedBox(width: 10),
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 20),
-                            side: BorderSide(
-                              color: Color(0xffc2c2c2),
-                              width: 1,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
+                      ),
+                      // 자랑하기 버튼
+                      Container(
+                        margin: EdgeInsets.only(right: 5),
+                        child: ElevatedButton(
+                          style: _buttonStyle(_selectedIndex == 2),
                           onPressed: () {
-                            // Button click action
+                            setState(() {
+                              _selectedIndex = 2;
+                            });
                           },
                           child: Text(
                             '자랑하기',
-                            style: TextStyle(color: Color(0xff787878)),
+                            style: _buttonTextStyle(_selectedIndex == 2),
                           ),
                         ),
-                        SizedBox(width: 10),
-                        OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 20),
-                            side: BorderSide(
-                              color: Color(0xffc2c2c2),
-                              width: 1,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
+                      ),
+                      // 자유게시판 버튼
+                      Container(
+                        child: ElevatedButton(
+                          style: _buttonStyle(_selectedIndex == 3),
                           onPressed: () {
-                            // Button click action
+                            setState(() {
+                              _selectedIndex = 3;
+                            });
                           },
                           child: Text(
                             '자유게시판',
-                            style: TextStyle(color: Color(0xff787878)),
+                            style: _buttonTextStyle(_selectedIndex == 3),
                           ),
                         ),
-                        SizedBox(width: 10),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
