@@ -161,7 +161,6 @@ void showPlantRegistrationModal(BuildContext context) {
                               child: _buildTextField(
                                 controller: _plantNameController,
                                 label: '식물 이름',
-                                hintText: '파키라',
                                 enabled: !_isUploading,
                               ),
                             ),

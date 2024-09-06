@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wonroom/plantClinicChat.dart';
 
 class MyPlantClinic extends StatelessWidget {
   const MyPlantClinic({super.key});
@@ -175,16 +176,35 @@ class MyPlantClinic extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 3),
-                        child: Text('24.08.12',
-                            style: TextStyle(
-                                fontSize: 14, color: Color(0xff787878))),
+                        child: Text(
+                          '24.08.12',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff787878),
+                          ),
+                        ),
                       ),
-                      Text(
-                        '시들음병',
-                        style: TextStyle(
+                      // GestureDetector로 감싸서 클릭 가능하게 만듦
+                      GestureDetector(
+                        onTap: () {
+                          // 클릭 시 PlantClinicChat 페이지로 이동하면서 병 이름 전달
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PlantClinicChat(
+                                diseaseName: '시들음병', // 넘길 병 이름
+                              ),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          '시들들음병',
+                          style: TextStyle(
                             fontSize: 20,
                             color: Color(0xff595959),
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ],
                   ),
