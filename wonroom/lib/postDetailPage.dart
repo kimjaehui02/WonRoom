@@ -423,6 +423,12 @@ class _PostDetailPageState extends State<PostDetailPage> {
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.zero,
                                     ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
+                                    ),
                                     contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                   ),
                                 ),
@@ -515,6 +521,12 @@ class _PostDetailPageState extends State<PostDetailPage> {
                                     hintText: '대댓글을 입력하세요...',
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.zero,
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
                                     ),
                                     contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                   ),
@@ -653,47 +665,33 @@ class _PostDetailPageState extends State<PostDetailPage> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  SizedBox(width: 4,),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isFavoriteInput = !isFavoriteInput;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      child: Icon(
-                        isFavoriteInput ? Icons.favorite : Icons.favorite_border_outlined,
-                        size: 27,
-                        color: isFavoriteInput ? Colors.red : Colors.grey,
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10,),
                   Expanded(
-                    child: TextField(
-                      controller: _commentController,
-                      decoration: InputDecoration(
-                        hintText: '댓글을 입력하세요...',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.zero,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: TextField(
+                        controller: _commentController,
+                        decoration: InputDecoration(
+                          hintText: '댓글을 입력하세요...',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.zero,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xff6bbe45), width: 2.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xffc2c2c2), width: 1.0),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(width: 3),
+                  SizedBox(width: 2),
                   IconButton(
                     icon: Icon(
                       Icons.telegram,
                       color: _isCommentNotEmpty ? Color(0xff6bbe45) : Colors.grey,
-                      size: 50,
+                      size: 47,
                     ),
                     onPressed: () {
                       // 댓글 전송 기능 추가
