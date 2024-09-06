@@ -7,11 +7,13 @@ import 'package:http/http.dart' as http;
 class PlantClinicChat extends StatefulWidget {
   final Map<String, dynamic>? jsonData;
   final String? imagePath;
+  final String? diseaseName;
 
   const PlantClinicChat({
     Key? key,
     this.jsonData,
     this.imagePath,
+    this.diseaseName,
   }) : super(key: key);
 
   @override
@@ -23,7 +25,15 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
   final List<Map<String, dynamic>> _messages = [];
   final ImagePicker _picker = ImagePicker();
   bool _isSending = false; // 요청 중 여부를 확인할 변수
-
+  
+  @override
+  void initState(){
+    super.initState();
+    if (widget.diseaseName != null){
+      _sendMessage(text: widget.diseaseName, isUser: true);
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -274,7 +284,7 @@ class _PlantClinicChatState extends State<PlantClinicChat> {
   Future<void> _sendMessageToServer({String? text, String? image}) async {
     try {
       final Uri apiUrl = Uri.parse(
-          'https://2470-34-125-171-238.ngrok-free.app/plant_pest'); // 수정된 URL
+          'https://22f1-34-75-121-152.ngrok-free.app/plant_pest'); // 수정된 URL
 
       final requestBody = <String, dynamic>{
         if (text != null && text.isNotEmpty) 'text': text,
