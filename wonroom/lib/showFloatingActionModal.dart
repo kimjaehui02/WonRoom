@@ -199,7 +199,7 @@ void showFloatingActionModal(BuildContext context) {
 
 Future<Map<String, dynamic>> sendImageToServer(String base64Image, String category) async {
   final String url = category == 'plant_info'
-      ? 'https://2496-34-23-46-115.ngrok-free.app/plant_info'
+      ? 'https://62e4-34-23-46-115.ngrok-free.app/plant_info'
       : 'https://cfee-34-75-121-152.ngrok-free.app/plant_pest';
 
   try {

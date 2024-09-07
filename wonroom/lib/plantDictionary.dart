@@ -147,34 +147,26 @@ class _PlantDictionaryState extends State<PlantDictionary> {
                       }
                       return GestureDetector(
                         onTap: () async {
-                          // final String plantName = _items[index]["name"]!;
-                          // try {
-                          //   String analysisResult =
-                          //   await sendNameToServer(plantName, 'plant_name');
-                          //
-                          //   Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           PlantDetailPage(analysisResult: analysisResult),
-                          //     ),
-                          //   );
-                          // } catch (e) {
-                          //   // Handle error
-                          //   // ScaffoldMessenger.of(context).showSnackBar(
-                          //   //   SnackBar(
-                          //   //     content: Text('Failed to fetch plant details.'),
-                          //   //   ),
-                          //   // );
-                          //   print("Failed to fetch plant details");
-                          // }
+                          final String plantName = _items[index]["name"]!;
+                          try {
+                            Map<String, dynamic> analysisResult = await sendNameToServer(plantName, 'plant_name');
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    PlantDetailPage(data: {}),
+                                builder: (context) => PlantDetailPage(data: analysisResult), // data를 Map으로 전달
                               ),
                             );
+                          } catch (e) {
+                            // Handle error
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   SnackBar(
+                            //     content: Text('Failed to fetch plant details.'),
+                            //   ),
+                            // );
+                            print("Failed to fetch plant details");
+                          }
+
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -265,15 +257,15 @@ class _PlantDictionaryState extends State<PlantDictionary> {
 //     );
 //   }
 // }
-Future<String> sendNameToServer(String plantName, String category) async {
+Future<Map<String, dynamic>> sendNameToServer(String plantName, String category) async {
   var response = await http.post(
-    Uri.parse('https://de32-34-75-121-152.ngrok-free.app/plantDetail'),
+    Uri.parse('https://7c06-34-23-46-115.ngrok-free.app/plant_detail'),
     headers: {'Content-Type': 'application/json'},
-    body: jsonEncode({'name': plantName, 'category': category}),
+    body: jsonEncode({'plant_name': plantName, 'category': category}),
   );
 
   if (response.statusCode == 200) {
-    return jsonDecode(response.body)['result'];
+    return jsonDecode(response.body);  // JSON을 Map으로 파싱
   } else {
     throw Exception('이미지 분석 실패: ${response.statusCode}');
   }

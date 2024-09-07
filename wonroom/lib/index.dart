@@ -146,7 +146,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   }
   Future<void> _sendWeatherDataToServer() async {
     try {
-      String serverUrl = 'https://2f60-34-23-46-115.ngrok-free.app/weather'; // 서버 URL
+      String serverUrl = 'https://c7bf-34-23-46-115.ngrok-free.app/weather'; // 서버 URL
       Map<String, String> headers = {"Content-Type": "application/json"};
 
       // 서버로 전송할 날씨 데이터
