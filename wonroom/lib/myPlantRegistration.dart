@@ -7,6 +7,11 @@ import 'dart:io';
 void showPlantRegistrationModal(BuildContext context) {
   final picker = ImagePicker();
   final TextEditingController _plantNameController = TextEditingController();
+  final TextEditingController _lastWateredController = TextEditingController();
+  final TextEditingController _lastFertilizedController = TextEditingController();
+  final TextEditingController _lastRepottedController = TextEditingController();
+  final TextEditingController _lastPrunedController = TextEditingController();
+
   File? _image;
   bool _showImageInField = false; // 네 버튼을 눌렀을 때 이미지를 표시할지 여부
 
@@ -56,6 +61,19 @@ void showPlantRegistrationModal(BuildContext context) {
     );
   }
 
+  Future<void> _pickDate(BuildContext context, TextEditingController controller) async {
+    final DateTime? selectedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (selectedDate != null) {
+      // 선택된 날짜를 텍스트 필드에 반영
+      controller.text = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+    }
+  }
+
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -81,7 +99,7 @@ void showPlantRegistrationModal(BuildContext context) {
                 Future<void> _uploadImage(File image) async {
                   setState(() {
                     _isUploading = true;
-                    _plantNameController.text = "분석중입니다..."; // 검색중일 때 표시
+                    _plantNameController.text = "검색중입니다..."; // 검색중일 때 표시
                   });
 
                   try {
@@ -90,8 +108,7 @@ void showPlantRegistrationModal(BuildContext context) {
 
                     // 서버로 이미지를 전송하여 텍스트(식물 이름)를 받아옴
                     final response = await http.post(
-                      Uri.parse(
-                          'https://2f60-34-23-46-115.ngrok-free.app/plant_register'),
+                      Uri.parse('https://2f60-34-23-46-115.ngrok-free.app/plant_register'),
                       headers: {'Content-Type': 'application/json'},
                       body: json.encode({'image': base64Image}),
                     );
@@ -196,15 +213,13 @@ void showPlantRegistrationModal(BuildContext context) {
                                       right: 0,
                                       top: 0,
                                       child: IconButton(
-                                        icon: Icon(Icons.close,
-                                            color: Colors.red),
+                                        icon: Icon(Icons.close, color: Colors.red),
                                         onPressed: () {
                                           setState(() {
                                             _image = null;
                                             _plantName = '';
                                             _plantNameController.clear();
-                                            _showImageInField =
-                                            false; // 이미지 표시 플래그 초기화
+                                            _showImageInField = false; // 이미지 표시 플래그 초기화
                                           });
                                         },
                                       ),
@@ -226,37 +241,61 @@ void showPlantRegistrationModal(BuildContext context) {
                             SizedBox(height: 20),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: _buildDatePicker(
-                                context,
-                                label: '마지막 물준날',
-                                enabled: !_isUploading,
+                              child: GestureDetector(
+                                onTap: () => _pickDate(context, _lastWateredController),
+                                child: AbsorbPointer(
+                                  child: _buildTextField(
+                                    controller: _lastWateredController,
+                                    hintText: '날짜를 선택하세요',
+                                    label: '마지막 물준날',
+                                    enabled: !_isUploading,
+                                  ),
+                                ),
                               ),
                             ),
                             SizedBox(height: 20),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: _buildDatePicker(
-                                context,
-                                label: '마지막 영양제',
-                                enabled: !_isUploading,
+                              child: GestureDetector(
+                                onTap: () => _pickDate(context, _lastFertilizedController),
+                                child: AbsorbPointer(
+                                  child: _buildTextField(
+                                    controller: _lastFertilizedController,
+                                    hintText: '날짜를 선택하세요',
+                                    label: '마지막 영양제',
+                                    enabled: !_isUploading,
+                                  ),
+                                ),
                               ),
                             ),
                             SizedBox(height: 20),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: _buildDatePicker(
-                                context,
-                                label: '마지막 분갈이',
-                                enabled: !_isUploading,
+                              child: GestureDetector(
+                                onTap: () => _pickDate(context, _lastRepottedController),
+                                child: AbsorbPointer(
+                                  child: _buildTextField(
+                                    controller: _lastRepottedController,
+                                    hintText: '날짜를 선택하세요',
+                                    label: '마지막 분갈이',
+                                    enabled: !_isUploading,
+                                  ),
+                                ),
                               ),
                             ),
                             SizedBox(height: 24),
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: _buildDatePicker(
-                                context,
-                                label: '마지막 가지치기',
-                                enabled: !_isUploading,
+                              child: GestureDetector(
+                                onTap: () => _pickDate(context, _lastPrunedController),
+                                child: AbsorbPointer(
+                                  child: _buildTextField(
+                                    controller: _lastPrunedController,
+                                    hintText: '날짜를 선택하세요',
+                                    label: '마지막 가지치기',
+                                    enabled: !_isUploading,
+                                  ),
+                                ),
                               ),
                             ),
                             SizedBox(height: 24),
@@ -373,48 +412,6 @@ Widget _buildTextField({
           hintText: hintText,
           border: OutlineInputBorder(),
           contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        ),
-      ),
-    ],
-  );
-}
-
-Widget _buildDatePicker(BuildContext context,
-    {required String label, required bool enabled}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(left: 6),
-        child: Text(
-          label,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-      ),
-      SizedBox(height: 10),
-      GestureDetector(
-        onTap: enabled
-            ? () async {
-          final DateTime? selectedDate = await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2000),
-            lastDate: DateTime(2101),
-          );
-          if (selectedDate != null && selectedDate != DateTime.now()) {
-            // Handle date selection
-          }
-        }
-            : null,
-        child: AbsorbPointer(
-          child: TextField(
-            decoration: InputDecoration(
-              suffixIcon: Icon(Icons.calendar_today),
-              border: OutlineInputBorder(),
-              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            ),
-            enabled: false,
-          ),
         ),
       ),
     ],
