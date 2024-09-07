@@ -30,7 +30,16 @@ import 'package:http/http.dart' as http;
 
 import 'package:intl/intl.dart';
 
+class diagnosis {
+  String _diagnosisResult;
 
+  String getstring()
+  {
+    return _diagnosisResult;
+  }
+
+  diagnosis(this._diagnosisResult);
+}
 
 class MyplantNull extends StatefulWidget {
   const MyplantNull({super.key});
@@ -88,7 +97,8 @@ class _MyplantNullState extends State<MyplantNull> {
   }
 
   // 초기 데이터를 로딩하는 함수
-  void _initializeData() async {
+  void _initializeData() async
+  {
     // 사용자의 정보를 로컬 저장소에서 불러옴
     user = await _sm.readUser();
     if (user != null) {
@@ -193,16 +203,33 @@ class _MyplantNullState extends State<MyplantNull> {
         // 선택된 식물의 관리 일정에 따라 필요한 액션들을 생성
         List<PlantAction> plantActions = _buildPlantActions(index, todayDate);
 
+        int plantIndex2 = plantIndex;
         // 생성된 액션들을 UI에 반영하기 위한 컨테이너 리스트로 변환
-        actionContainers = buildPlantActionContainers
-          (
+        actionContainers = buildPlantActionContainers(
             plantActions,
-            _userPlants[index].plantId,
-            _initializeData,
-            _updatePlant,
-            plantIndex,
-            _getImageFromCamera
+            _userPlants[index].plantId ?? -1, // plantId가 null인 경우 -1로 처리
+            _initializeData, // 데이터를 로드하는 함수
+                (int plantIndex) {
+              _updatePlant(plantIndex); // 콜백 함수 호출 시 매개변수 전달
+            },
+            plantIndex, // 식물의 인덱스
+              (String label, id, loading, details) {
+              // 함수가 null로 전달되지 않도록 안전하게 처리
+              if (label != null && id != null && _initializeData != null && details != null) {
+                return _getImageFromCamera(label, id, _initializeData, details);
+              } else {
+                return Future.value(); // null 방지용으로 빈 Future 반환
+              }
+            },
+            _diagnosis2 // 진단 객체
         );
+
+
+
+        //   int id,
+      //       Function() loading,
+      //       Function(int) updatePlant,
+      // diagnosis detailss,
       } catch (e) {
         print("Error updating plant: $e");
       }
@@ -447,79 +474,62 @@ class _MyplantNullState extends State<MyplantNull> {
 
   // -----------------------------------------------------------------------
   File? _image;
-  String? _diagnosisResult; // 서버에서 받은 결과값 저장
+  // String? _diagnosisResult; // 서버에서 받은 결과값 저장.
+  diagnosis _diagnosis2 = new diagnosis("");
   // bool _isLoading = false;  // 로딩 상태를 나타내는 변수
 
-
-  // 카메라에서 이미지를 가져오는 함수
-  Future<void> _getImageFromCamera() async {
+  Future<void> _getImageFromCamera(
+      String label,
+      int id,
+      Function() loading,
+      diagnosis detailss,
+      ) async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
       });
-      // 이미지 서버로 업로드 후 결과 받아오기
-      _uploadImageAsBase64(_image!);
+
+      // 서버로 이미지 업로드 후 결과 받아오기
+      String diagnosisResult = await _uploadImageAsBase64(_image!);
+
+      // 진단 결과를 화면에 표시하기 위한 모달창
+      _showResultDialog(context, diagnosisResult, label, id, loading, plantIndex, detailss);
     }
   }
 
 
-  // 이미지를 base64로 인코딩하여 서버로 업로드하는 함수
-  Future<void> _uploadImageAsBase64(File image) async {
+  Future<String> _uploadImageAsBase64(File image) async {
     setState(() {
       _isLoading = true;  // 로딩 시작
     });
 
     try {
-      // 파일을 base64로 인코딩
       List<int> imageBytes = await image.readAsBytes();
       String base64Image = base64Encode(imageBytes);
 
-      // 서버로 요청을 보낼 데이터
       var requestData = json.encode({
-        'image': base64Image, // base64로 인코딩된 이미지
+        'image': base64Image,
       });
 
-      // 코랩 서버로 요청 보내기
       var response = await http.post(
-        Uri.parse('https://22f1-34-75-121-152.ngrok-free.app/myplant_pest'), // 코랩의 API 엔드포인트
+        Uri.parse('https://7eac-34-23-46-115.ngrok-free.app/myplant_pest'),
         headers: {"Content-Type": "application/json"},
         body: requestData,
       );
 
       if (response.statusCode == 200) {
-        // 응답 본문 출력 (디버깅용)
-        print(response.body);
-
-        // 서버 응답에서 결과를 파싱
         var responseBody = json.decode(response.body);
-
-        // 코랩에서 'pest_info'로 응답했을 때 처리
         if (responseBody is Map && responseBody.containsKey('pest_info')) {
-          setState(() {
-            _diagnosisResult = responseBody['pest_info'].toString(); // 결과를 문자열로 변환
-          });
+          return responseBody['pest_info'].toString();
         } else {
-          setState(() {
-            _diagnosisResult = '잘못된 응답 형식입니다.'; // 오류 메시지 설정
-          });
+          return '잘못된 응답 형식입니다.';
         }
-
-        // 결과값을 모달로 띄움
-        _showResultDialog(context, _diagnosisResult!);
-
       } else {
-        setState(() {
-          _diagnosisResult = '서버 요청 실패';
-        });
-        _showResultDialog(context, _diagnosisResult!);
+        return '서버 요청 실패';
       }
     } catch (e) {
-      // 예외 처리
-      setState(() {
-        _diagnosisResult = '오류 발생: $e';
-      });
-      _showResultDialog(context, _diagnosisResult!);
+      return '오류 발생: $e';
     } finally {
       setState(() {
         _isLoading = false;  // 로딩 종료
@@ -527,9 +537,20 @@ class _MyplantNullState extends State<MyplantNull> {
     }
   }
 
+
   // 결과값을 모달창으로 띄우는 함수
-  void _showResultDialog(BuildContext context, String result) {
+  void _showResultDialog(
+      BuildContext context,
+      String result,
+      String diagnosisResult,
+      int id,
+      Function() loading,
+      int index,
+      diagnosis detailss,
+      )
+   {
     bool isHealthy = result == "건강"; // 결과가 '건강'인지 여부 확인
+
 
     showDialog(
       context: context,
@@ -542,20 +563,40 @@ class _MyplantNullState extends State<MyplantNull> {
           title: Text('진단 결과'),
           content: Text(
             isHealthy
-                ? '당신의 식물은 건강합니다. 등록하시겠습니까?'
-                : '$result가 의심됩니다. 등록하시겠습니까?',
+                ? '당신의 식물은 건강합니다. 등록하시겠습니까??'
+                : '$result(이)가 의심됩니다. 등록하시겠습니까?',
             style: TextStyle(fontSize: 18),
           ),
           actions: [
             TextButton(
               onPressed: () {
+
+
                 Navigator.of(context).pop(); // 모달 닫기
               },
               child: Text('취소'),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async{
                 // 등록 버튼 클릭 시 처리할 로직
+
+                print("등록하기입니다!");
+                print("등록하기입니다!");
+                print("등록하기입니다!");
+                print("등록하기입니다!");
+                print(diagnosisResult);
+                print(id);
+                print(loading);
+                print(result);
+                detailss._diagnosisResult = result;
+                print(detailss._diagnosisResult);
+                print(index);
+
+                // 건강
+                // 버튼의 로직은 그대로 유지
+                await plants(diagnosisResult, id, loading, detailss);
+                _updatePlant(index);
+
                 Navigator.of(context).pop(); // 모달 닫기
                 // 등록 기능을 추가할 수 있습니다.
               },
@@ -1256,6 +1297,7 @@ Widget buildTimelineItem(String date, bool isActive) {
   );
 }
 
+
 Widget makeBox(BuildContext context, dynamic icon, String title, Map<ManagementType, List<PlantManagementRecord>> records, type) {
   List<PlantManagementRecord> recordList = records[type] ?? [];
 
@@ -1264,24 +1306,25 @@ Widget makeBox(BuildContext context, dynamic icon, String title, Map<ManagementT
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(30),
       decoration: BoxDecoration(
-          color: Color(0xfffafafa),
-          borderRadius: BorderRadius.circular(10)),
+        color: Color(0xfffafafa),
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               icon is String
-                ? Image.asset(
-              icon, // 이미지 아이콘
-              width: 32,
-              height: 32,
-            )
-                : Icon(
+                  ? Image.asset(
+                icon, // 이미지 아이콘
+                width: 32,
+                height: 32,
+              )
+                  : Icon(
                 icon,
-                              size: 32,
-                              color: Colors.lightBlueAccent,
-                            ),
+                size: 32,
+                color: Colors.lightBlueAccent,
+              ),
               SizedBox(width: 4),
               Text(
                 title,
@@ -1296,7 +1339,7 @@ Widget makeBox(BuildContext context, dynamic icon, String title, Map<ManagementT
           recordList.isNotEmpty
               ? Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: buildTimelineItemsForManagementType(recordList),
+            children: buildTimelineItemsForManagementType(recordList, title),
           )
               : Container(
             child: Column(
@@ -1315,19 +1358,36 @@ Widget makeBox(BuildContext context, dynamic icon, String title, Map<ManagementT
   );
 }
 
-List<Widget> buildTimelineItemsForManagementType(List<PlantManagementRecord> records) {
-  // 가장 최근 5개의 기록만 사용 (최신순으로 정렬되어 있다고 가정)
+List<Widget> buildTimelineItemsForManagementType(List<PlantManagementRecord> records, String title) {
   int displayCount = records.length > 5 ? 5 : records.length;
-
-  // 최신 5개 기록만 선택하고 오래된 순서로 정렬
   List<PlantManagementRecord> displayRecords = records.take(displayCount).toList().reversed.toList();
 
-  // 5개의 슬롯을 만들고 해당 슬롯에 기록을 채우기
   return List.generate(5, (index) {
     if (index < displayRecords.length) {
-      return buildTimelineItem(
-        displayRecords[index].getFormattedDate(),
-        true, // 활성화 상태
+      // 진단 기록인지 확인
+      bool isDiagnosisRecord = title == "진단 기록";
+
+      // 질병명인지 확인 (세부 정보가 '건강'이 아닌 경우 병해충으로 간주)
+      String displayText;
+      if (displayRecords[index].details == "건강") {
+        displayText = "건강";
+      } else {
+        displayText = "병해충";
+      }
+
+      return Column(
+        children: [
+          buildTimelineItem(
+            displayRecords[index].getFormattedDate(),
+            true, // 활성화 상태
+          ),
+          // 진단 기록일 때만 텍스트 표시
+          if (isDiagnosisRecord)
+            Text(
+              displayText, // 건강 또는 병해충 표시
+              style: TextStyle(fontSize: 14, color: Colors.grey), // 날짜와 비슷한 스타일 적용
+            ),
+        ],
       );
     } else {
       return buildTimelineItem(
@@ -1337,8 +1397,6 @@ List<Widget> buildTimelineItemsForManagementType(List<PlantManagementRecord> rec
     }
   });
 }
-
-
 
 
 // 보존된 리스트

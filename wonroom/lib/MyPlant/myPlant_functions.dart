@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:wonroom/DB/plant_management_records/plant_management_model.dart';
 import 'package:wonroom/DB/plant_management_records/plant_management_records_service.dart';
+import 'package:wonroom/myPlantNull.dart';
 
 
 class PlantAction {
@@ -59,7 +60,15 @@ List<Widget> menuButton(int count, black, setState, _userPlants)
 
 // PlantAction을 매개변수로 받아 컨테이너를 생성하는 함수
 // 사진 바로 아래의 일정들을 표기해주는 역할을 한다
-List<Widget> buildPlantActionContainers(List<PlantAction> actions, _id, _loading, _updatePlant, index, _getImageFromCamera) {
+List<Widget> buildPlantActionContainers(
+    List<PlantAction> actions,
+    int _id,  // int로 수정
+    Function() _loading,
+    Function(int) _updatePlant,
+    int index,
+    Future<void> Function(String, int, int, diagnosis) _getImageFromCamera,
+    diagnosis detailss
+    ) {
   return actions.map((action) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -76,18 +85,21 @@ List<Widget> buildPlantActionContainers(List<PlantAction> actions, _id, _loading
         children: [
           OutlinedButton.icon(
             onPressed: () async {
-              if(action.label != '진단')
-                {
-                  // 버튼의 로직은 그대로 유지
-                  await plants(action.label, _id, _loading);
-                  _updatePlant(index);
-                }
-              else
-                {
-                  _getImageFromCamera();
-                }
-              
+              if (action.label != '진단') {
+                // 버튼의 로직은 그대로 유지
+                await plants(action.label, _id, _loading, detailss);
+                _updatePlant(index);
+              } else {
+                // Future<void> Function(int, Function(), Function(int), diagnosis) _getImageFromCamera,
 
+                print(_id);
+                print(_updatePlant(index));
+                print(index);
+                print(detailss);
+                await _getImageFromCamera(action.label, _id, index, detailss);
+                // 진단 결과를 사용해서 추가 작업을 수행할 수 있습니다.
+                // 예: await registerDiagnosis(_diagnosis.getstring());
+              }
             },
             icon: action.imageAsset.isNotEmpty
                 ? Image.asset(
@@ -113,9 +125,7 @@ List<Widget> buildPlantActionContainers(List<PlantAction> actions, _id, _loading
               ),
             ),
           ),
-
           SizedBox(width: 20),
-
           RichText(
             text: TextSpan(
               text: action.actionDate.contains("다음 권장 날짜")
@@ -141,9 +151,10 @@ List<Widget> buildPlantActionContainers(List<PlantAction> actions, _id, _loading
   }).toList();
 }
 
+
 // 얘는 무슨함수이냐
 // 플랜
-Future<bool> plants(String label, int _id, _loading)async
+Future<bool> plants(String label, int _id, _loading, diagnosis detailss)async
 {
   bool returnbool = false;
 
@@ -160,7 +171,8 @@ Future<bool> plants(String label, int _id, _loading)async
     ManagementType _type;
 
     // 스위치문으로 일정 타입 결정
-    switch (label) {
+    switch (label)
+        {
       case '물주기':
         numb = 1;
         _type = ManagementType.Watering;
@@ -218,7 +230,7 @@ Future<bool> plants(String label, int _id, _loading)async
           catalogNumber: 0,
           managementDate: DateTime.now(),
           managementType: _type,
-          details: "세부사항",
+          details: detailss.getstring(),
           plantId: _id
       );
 

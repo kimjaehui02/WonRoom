@@ -134,7 +134,9 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
     // 얘네가 db에 데이터를 업데이트하거나 하는 역할을 하였으니
     // 다음엔 db에서 값을 가져오는 역할을 해야합니다
     int indexPlantId = indexPlant?.plantId ?? -1;
-    await plants(input, indexPlantId, null);
+
+    diagnosis _dg = new diagnosis("");
+    await plants(input, indexPlantId, null, _dg);
 
 
     setState(() {

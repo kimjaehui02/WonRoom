@@ -3,6 +3,8 @@
     <!-- Add these permissions outside of the <application> tag -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/> <!-- Added for exact alarms -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/> <!-- Optional for notifications -->
 
     <application
         android:label="wonroom"

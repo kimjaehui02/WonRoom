@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:wonroom/DB/users/users_model.dart';
+import 'package:wonroom/Flask/Notification.dart';
 
 class StorageManager {
   final FlutterSecureStorage _storage = FlutterSecureStorage();
@@ -22,6 +23,17 @@ class StorageManager {
       print('Data written successfully.');
     } catch (e) {
       print('Error writing data: $e');
+    }
+  }
+
+  Future<void> writeNotifications(List<Notification> notifications) async {
+    try {
+      List<Map<String, dynamic>> jsonList = notifications.map((n) => n.toJson()).toList();
+      String jsonString = jsonEncode(jsonList);
+      await _storage.write(key: 'notifications', value: jsonString);
+      print('Notifications written successfully.');
+    } catch (e) {
+      print('Error writing notifications: $e');
     }
   }
 
@@ -51,6 +63,20 @@ class StorageManager {
       return value != null ? jsonDecode(value) as Map<String, dynamic> : null;
     } catch (e) {
       print('Error reading data: $e');
+      return null;
+    }
+  }
+
+  Future<List<Notification>?> readNotifications() async {
+    try {
+      String? value = await _storage.read(key: 'notifications');
+      if (value != null) {
+        List<dynamic> jsonList = jsonDecode(value);
+        return jsonList.map((json) => Notification.fromJson(json)).toList();
+      }
+      return null;
+    } catch (e) {
+      print('Error reading notifications: $e');
       return null;
     }
   }
@@ -123,3 +149,5 @@ class StorageManager {
     }
   }
 }
+
+
