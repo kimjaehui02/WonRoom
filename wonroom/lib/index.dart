@@ -127,10 +127,10 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
 
         // 날씨 데이터 변수에 저장
         setState(() {
-          _temperature = weatherData['main']['temp']; // 온도
-          _feelsLikeTemperature = weatherData['main']['feels_like']; // 체감 온도
-          _humidity = weatherData['main']['humidity']; // 습도
-          _windSpeed = weatherData['wind']['speed']; // 풍속
+          _temperature = (weatherData['main']['temp'] as num).toDouble(); // 온도
+          _feelsLikeTemperature = (weatherData['main']['feels_like'] as num).toDouble(); // 체감 온도
+          _humidity = weatherData['main']['humidity']; // 습도 (int로 처리)
+          _windSpeed = (weatherData['wind']['speed'] as num).toDouble(); // 풍속
           _weatherDescription = weatherData['weather'][0]['description']; // 날씨 설명 (한글)
           _weatherIcon = weatherData['weather'][0]['icon']; // 날씨 아이콘 코드
         });
@@ -146,7 +146,7 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   }
   Future<void> _sendWeatherDataToServer() async {
     try {
-      String serverUrl = 'https://9d96-34-75-121-152.ngrok-free.app/weather'; // 서버 URL
+      String serverUrl = 'https://2f60-34-23-46-115.ngrok-free.app/weather'; // 서버 URL
       Map<String, String> headers = {"Content-Type": "application/json"};
 
       // 서버로 전송할 날씨 데이터

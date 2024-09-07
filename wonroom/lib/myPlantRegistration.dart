@@ -81,7 +81,7 @@ void showPlantRegistrationModal(BuildContext context) {
                 Future<void> _uploadImage(File image) async {
                   setState(() {
                     _isUploading = true;
-                    _plantNameController.text = "검색중입니다..."; // 검색중일 때 표시
+                    _plantNameController.text = "분석중입니다..."; // 검색중일 때 표시
                   });
 
                   try {
@@ -91,7 +91,7 @@ void showPlantRegistrationModal(BuildContext context) {
                     // 서버로 이미지를 전송하여 텍스트(식물 이름)를 받아옴
                     final response = await http.post(
                       Uri.parse(
-                          'https://375c-34-75-121-152.ngrok-free.app/plant_register'),
+                          'https://2f60-34-23-46-115.ngrok-free.app/plant_register'),
                       headers: {'Content-Type': 'application/json'},
                       body: json.encode({'image': base64Image}),
                     );
