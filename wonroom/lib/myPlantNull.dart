@@ -1096,6 +1096,48 @@ class _MyplantNullState extends State<MyplantNull> {
                 //     ],
                 //   ),
                 // ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    padding: EdgeInsets.only(left: 10),
+                    child:
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '진단 기록',
+                          style: TextStyle(
+                            fontSize: 21,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        TextButton(onPressed: (){
+                          Navigator.push(context,
+                            MaterialPageRoute(builder: (_)=>MyPlantClinic()),
+                          );
+                        },
+
+                          child: Row(
+                            children: [
+                              Text(
+                                '자세히 보기 ',
+                                style: TextStyle(
+                                  color: Color(0xff787878),
+                                ),
+                              ),
+                              Icon(Icons.arrow_forward_ios,
+                                size: 12,
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 12),
 
                 makeBox(context, Icons.eco, "진단 기록", sortedGroupedRecords[plantIndex], ManagementType.Diagnosis),
 
@@ -1124,6 +1166,30 @@ class _MyplantNullState extends State<MyplantNull> {
                 //     )
                 // ),
 
+                SizedBox(height: 100,),
+
+                Padding(
+                    padding: const EdgeInsets.all(16),
+                    // 버튼
+                    child: ElevatedButton(onPressed: (){
+
+                    },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xff595959),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        minimumSize: const Size.fromHeight(50),
+                      ),
+                      child: const Text('해당 식물 정보 알아보기',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                    )
+                ),
               ],
             ),
           ),

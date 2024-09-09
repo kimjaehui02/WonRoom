@@ -1057,7 +1057,8 @@ class _MyplantState extends State<Myplant> {
                       children: [
                         Container(
                           padding: EdgeInsets.only(left: 10),
-                          child: Row(
+                          child:
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
@@ -1073,6 +1074,7 @@ class _MyplantState extends State<Myplant> {
                                   MaterialPageRoute(builder: (_)=>MyPlantClinic()),
                                 );
                               },
+
                                   child: Row(
                                     children: [
                                       Text(
