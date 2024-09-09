@@ -36,7 +36,7 @@
 //   // 권한 요청 (Android 12 이상에서 필요한 권한 요청)
 //   await requestPermissions();
 //
-//   runApp(const Splash());
+//   runApp(const MyApp());
 // }
 //
 // Future<void> requestPermissions() async {
@@ -178,6 +178,9 @@ import 'package:flutter/material.dart';
 import 'package:wonroom/Splash/splash_functions.dart';
 import 'package:wonroom/index.dart';
 import 'package:wonroom/intro.dart';
+import 'package:wonroom/myPlantNull.dart';
+import 'package:wonroom/notificationNulll.dart';
+import 'package:wonroom/notificationPage.dart';
 import 'splash.dart'; // Splash 위젯을 불러옵니다.
 
 void main() {
@@ -185,7 +188,7 @@ void main() {
 
   runApp(
     MaterialApp(
-      home: Splash(), // 직접 Splash 위젯을 호출
+      home: NotificationWrapper(), // 직접 Splash 위젯을 호출
     ),
   );
 

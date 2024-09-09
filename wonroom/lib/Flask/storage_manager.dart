@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:wonroom/DB/users/users_model.dart';
-import 'package:wonroom/Flask/Notification.dart';
+import 'package:wonroom/Flask/Notifications.dart'; // Notifications 클래스를 사용하는 파일
+import 'package:wonroom/NotificationItem/NotificationItem.dart'; // 수정된 경로
 
 class StorageManager {
   final FlutterSecureStorage _storage = FlutterSecureStorage();
 
-  // 데이터 저장 함수
+  // 데이터를 저장하는 일반 메서드
   Future<void> writeData(String key, String value) async {
     try {
       await _storage.write(key: key, value: value);
@@ -16,17 +17,19 @@ class StorageManager {
     }
   }
 
+  // 사용자 데이터를 저장하는 메서드
   Future<void> writeUserData(Map<String, dynamic> value) async {
     try {
       String jsonString = jsonEncode(value);
       await _storage.write(key: 'userData', value: jsonString);
-      print('Data written successfully.');
+      print('User data written successfully.');
     } catch (e) {
-      print('Error writing data: $e');
+      print('Error writing user data: $e');
     }
   }
 
-  Future<void> writeNotifications(List<Notification> notifications) async {
+  // 알림 리스트 저장 메서드 (Notifications 객체 리스트)
+  Future<void> writeNotifications(List<Notifications> notifications) async {
     try {
       List<Map<String, dynamic>> jsonList = notifications.map((n) => n.toJson()).toList();
       String jsonString = jsonEncode(jsonList);
@@ -37,7 +40,7 @@ class StorageManager {
     }
   }
 
-  // 데이터 읽기 함수
+  // 데이터를 읽는 메서드
   Future<String?> readData(String key) async {
     try {
       return await _storage.read(key: key);
@@ -47,32 +50,24 @@ class StorageManager {
     }
   }
 
-  Future<int?> readDataAsInt(String key) async {
-    try {
-      String? value = await _storage.read(key: key);
-      return value != null ? int.tryParse(value) : null;
-    } catch (e) {
-      print('Error reading data: $e');
-      return null;
-    }
-  }
-
+  // 사용자 데이터 읽기
   Future<Map<String, dynamic>?> readUserData() async {
     try {
       String? value = await _storage.read(key: 'userData');
       return value != null ? jsonDecode(value) as Map<String, dynamic> : null;
     } catch (e) {
-      print('Error reading data: $e');
+      print('Error reading user data: $e');
       return null;
     }
   }
 
-  Future<List<Notification>?> readNotifications() async {
+  // 알림 리스트를 읽어오는 메서드
+  Future<List<Notifications>?> readNotifications() async {
     try {
       String? value = await _storage.read(key: 'notifications');
       if (value != null) {
         List<dynamic> jsonList = jsonDecode(value);
-        return jsonList.map((json) => Notification.fromJson(json)).toList();
+        return jsonList.map((json) => Notifications.fromJson(json)).toList();
       }
       return null;
     } catch (e) {
@@ -81,7 +76,7 @@ class StorageManager {
     }
   }
 
-  // 데이터 삭제 함수
+  // 데이터 삭제 메서드
   Future<void> deleteData(String key) async {
     try {
       await _storage.delete(key: key);
@@ -91,7 +86,7 @@ class StorageManager {
     }
   }
 
-  // 모든 데이터 삭제 함수
+  // 모든 데이터를 삭제하는 메서드
   Future<void> deleteAllData() async {
     try {
       await _storage.deleteAll();
@@ -101,16 +96,19 @@ class StorageManager {
     }
   }
 
+  // 사용자 ID 가져오기
   Future<String?> getUserId() async {
     final userData = await readUserData();
     return userData?['user_id'] as String?;
   }
 
+  // 사용자의 즐겨찾는 식물 ID 가져오기
   Future<int?> getUserFav() async {
     final userData = await readUserData();
     return userData?['favorite_plant_id'] as int?;
   }
 
+  // 즐겨찾는 식물 ID 업데이트
   Future<void> updateFavoritePlantId(int newFavoritePlantId) async {
     try {
       Map<String, dynamic>? userData = await readUserData();
@@ -118,15 +116,16 @@ class StorageManager {
         userData['favorite_plant_id'] = newFavoritePlantId;
         String jsonString = jsonEncode(userData);
         await _storage.write(key: 'userData', value: jsonString);
-        print('favorite_plant_id updated successfully.');
+        print('Favorite plant ID updated successfully.');
       } else {
         print('No user data found to update.');
       }
     } catch (e) {
-      print('Error updating favorite_plant_id: $e');
+      print('Error updating favorite plant ID: $e');
     }
   }
 
+  // 사용자 객체 저장
   Future<void> writeUser(User user) async {
     try {
       String jsonString = jsonEncode(user.toJson());
@@ -137,6 +136,7 @@ class StorageManager {
     }
   }
 
+  // 사용자 객체 읽기
   Future<User?> readUser() async {
     try {
       String? value = await _storage.read(key: 'userData');
@@ -149,5 +149,3 @@ class StorageManager {
     }
   }
 }
-
-
