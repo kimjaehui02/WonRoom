@@ -11,6 +11,7 @@ class Intro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           // 중앙에 위치할 텍스트들

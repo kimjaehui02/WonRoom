@@ -182,17 +182,31 @@ import 'package:wonroom/myPlantNull.dart';
 import 'package:wonroom/notificationNulll.dart';
 import 'package:wonroom/notificationPage.dart';
 import 'splash.dart'; // Splash 위젯을 불러옵니다.
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
     MaterialApp(
-      home: NotificationWrapper(), // 직접 Splash 위젯을 호출
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white, // 기본 배경색을 흰색으로 설정
+        primaryColor: Colors.white, // 기본 색상 설정
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.white, // AppBar 배경색 설정
+          foregroundColor: Colors.black, // AppBar 텍스트 색상 설정 (흰색 배경에 검정색 텍스트)
+        ),
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.white, // 기본 버튼 배경색
+          textTheme: ButtonTextTheme.primary, // 기본 버튼 텍스트 색상
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.white, // FloatingActionButton 배경색
+          foregroundColor: Colors.black, // FloatingActionButton 텍스트 색상
+        ),
+      ),
+      home: Intro(), // Intro 위젯 호출
     ),
   );
 
   // 나중에 알림 시스템 로직으로 돌아가려면 이 부분을 주석 처리하거나, 별도의 함수를 사용하여 복원 가능
   // scheduleNotification(); // 여기에 알림 시스템 복원 로직을 추가할 수 있습니다.
 }
-

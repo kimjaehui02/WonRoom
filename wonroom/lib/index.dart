@@ -354,8 +354,10 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomInset : false,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         leading: IconButton(
           icon: const Icon(Icons.search),
@@ -853,8 +855,10 @@ class _IndexState extends State<Index> with SingleTickerProviderStateMixin {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      '몬스테라',
+                    Text(
+                      // '몬스테라',
+                      indexPlant?.diaryTitle ?? '다이어리 제목 없음',
+
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10),

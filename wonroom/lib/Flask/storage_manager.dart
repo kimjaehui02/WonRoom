@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:wonroom/DB/users/users_model.dart';
-import 'package:wonroom/Flask/Notifications.dart'; // Notifications 클래스를 사용하는 파일
-import 'package:wonroom/NotificationItem/NotificationItem.dart'; // 수정된 경로
+import 'package:wonroom/Flask/Notifications.dart';
+import 'package:wonroom/NotificationItem/NotificationItem.dart';
 
 class StorageManager {
   final FlutterSecureStorage _storage = FlutterSecureStorage();
@@ -39,6 +39,47 @@ class StorageManager {
       print('Error writing notifications: $e');
     }
   }
+
+  // 기존 알림에 새로운 알림 추가 메서드
+  Future<void> addNotification(Notifications newNotification) async {
+    try {
+      // 현재 저장된 알림 리스트를 읽어온다.
+      List<Notifications>? currentNotifications = await readNotifications();
+
+      // 새로운 알림을 기존 알림 리스트에 추가한다.
+      currentNotifications ??= [];
+      currentNotifications.add(newNotification);
+
+      // 업데이트된 알림 리스트를 저장한다.
+      await writeNotifications(currentNotifications);
+
+      print('Notification added successfully.');
+    } catch (e) {
+      print('Error adding notification: $e');
+    }
+  }
+
+  // 여러 개 알림 추가 메서드
+  Future<void> addNotifications(List<Notifications> newNotifications) async {
+    try {
+      // 현재 저장된 알림 리스트를 읽어온다.
+      List<Notifications>? currentNotifications = await readNotifications();
+
+      // 기존 알림 리스트가 없으면 빈 리스트를 생성한다.
+      currentNotifications ??= [];
+
+      // 새로운 알림 리스트를 기존 리스트에 추가한다.
+      currentNotifications.addAll(newNotifications);
+
+      // 업데이트된 알림 리스트를 저장한다.
+      await writeNotifications(currentNotifications);
+
+      print('Notifications added successfully.');
+    } catch (e) {
+      print('Error adding notifications: $e');
+    }
+  }
+
 
   // 데이터를 읽는 메서드
   Future<String?> readData(String key) async {
@@ -93,6 +134,16 @@ class StorageManager {
       print('All data deleted successfully.');
     } catch (e) {
       print('Error deleting all data: $e');
+    }
+  }
+
+  // 알림 전부 삭제하는 메서드
+  Future<void> deleteAllNotifications() async {
+    try {
+      await _storage.delete(key: 'notifications');
+      print('All notifications deleted successfully.');
+    } catch (e) {
+      print('Error deleting all notifications: $e');
     }
   }
 

@@ -350,9 +350,15 @@ def insert_plant_and_get_id():
         cursor.execute(sql, (user_id, catalog_number, diary_title, next_watering_date, created_at))
         db.commit()
         
+
+
         # 4. 삽입된 행의 ID를 얻어오기
         inserted_id = cursor.lastrowid
         
+        print(inserted_id)
+        print(inserted_id)
+        print(inserted_id)
+
         return jsonify({"status": "success", "message": "Plant added successfully", "plant_id": inserted_id})
     except Exception as e:
         db.rollback()  # 오류 발생 시 롤백

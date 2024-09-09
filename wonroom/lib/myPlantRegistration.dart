@@ -5,10 +5,15 @@ import 'package:wonroom/DB/user_plants/user_plants_model.dart';
 import 'package:wonroom/DB/user_plants/user_plants_service.dart';
 import 'package:wonroom/DB/plant_management_records/plant_management_model.dart';
 import 'package:wonroom/Flask/storage_manager.dart';
-
+import 'dart:convert'; // json.decode
+import 'dart:io'; // File
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart'; // ImagePicker
+import 'package:http/http.dart' as http; // http
 
 // 관리 유형 Enum 정의
 // enum ManagementType { Watering, Pruning, Repotting, Fertilizing, Diagnosis }
+
 
 void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async {
   final userPlantService = UserPlantService(); // UserPlantService 인스턴스 생성
@@ -31,6 +36,16 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
   bool _isUploading = false; // 이미지 업로드 중 여부
   String _plantName = ''; // 서버에서 받아온 식물 이름
   final picker = ImagePicker(); // ImagePicker 인스턴스 생성
+
+  DateTime? parseDate(String dateString) {
+    try {
+      final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+      return dateFormat.parse(dateString);
+    } catch (e) {
+      print('Date parsing error: $e');
+      return null;
+    }
+  }
 
   Future<void> _showConfirmationDialog(
       BuildContext context,
@@ -78,7 +93,8 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
     );
   }
 
-  Future<void> _pickDate(BuildContext context, TextEditingController controller) async {
+
+  Future<DateTime?> _pickDate(BuildContext context, TextEditingController controller) async {
     final DateTime? selectedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -89,6 +105,12 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
       // 선택된 날짜를 텍스트 필드에 반영
       controller.text = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
     }
+    print("controller.text");
+    print(controller.text);
+    print("controller.text");
+    print(controller.text);
+
+    return parseDate(controller.text);
   }
 
   void _registerPlant() async {
@@ -107,65 +129,75 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
       createdAt: DateTime.now(),
     );
 
-    try {
-      final int? plantId = await userPlantService.addPlantAndGetId(userPlant);
+    print('Last Watered Date: $_lastWateredDate');
+    print('Last Fertilized Date: $_lastFertilizedDate');
+    print('Last Repotted Date: $_lastRepottedDate');
+    print('Last Pruned Date: $_lastPrunedDate');
 
-      if (plantId == null) {
-        print('식물 등록 실패: ID를 얻지 못했습니다.');
-        return;
-      }
+    final int? plantId = await userPlantService.addPlantAndGetId(userPlant);
 
-      int newinput = plantId;
-
-      if (_lastWateredDate != null) {
-        await plantManagementService.addRecord(PlantManagementRecord(
-          catalogNumber: newinput, // catalogNumber 대신 newinput 사용
-          managementDate: _lastWateredDate!,
-          managementType: ManagementType.Watering,
-          details: 'Watering details',
-          plantId: newinput,
-        ));
-      }
-
-      if (_lastFertilizedDate != null) {
-        await plantManagementService.addRecord(PlantManagementRecord(
-          catalogNumber: newinput, // catalogNumber 대신 newinput 사용
-          managementDate: _lastFertilizedDate!,
-          managementType: ManagementType.Fertilizing,
-          details: 'Fertilizing details',
-          plantId: newinput,
-        ));
-      }
-
-      if (_lastRepottedDate != null) {
-        await plantManagementService.addRecord(PlantManagementRecord(
-          catalogNumber: newinput, // catalogNumber 대신 newinput 사용
-          managementDate: _lastRepottedDate!,
-          managementType: ManagementType.Repotting,
-          details: 'Repotting details',
-          plantId: newinput,
-        ));
-      }
-
-      if (_lastPrunedDate != null) {
-        await plantManagementService.addRecord(PlantManagementRecord(
-          catalogNumber: newinput, // catalogNumber 대신 newinput 사용
-          managementDate: _lastPrunedDate!,
-          managementType: ManagementType.Pruning,
-          details: 'Pruning details',
-          plantId: newinput,
-        ));
-      }
-
-      Navigator.pop(context);
-      if (onRefresh != null) {
-        onRefresh();
-      }
-      print('식물 등록 완료');
-    } catch (e) {
-      print('식물 등록 실패: $e');
+    if (plantId == null) {
+      print('식물 등록 실패: ID를 얻지 못했습니다.');
+      return;
     }
+
+    int newinput = plantId;
+
+    if (_lastWateredDate != null) {
+      print("_lastWateredDate: $_lastWateredDate");
+
+      await plantManagementService.addRecord(PlantManagementRecord(
+        catalogNumber: newinput,
+        managementDate: _lastWateredDate!,
+        managementType: ManagementType.Watering,
+        details: 'Watering details',
+        plantId: newinput,
+      ));
+    }
+
+    if (_lastFertilizedDate != null) {
+      print("_lastFertilizedDate: $_lastFertilizedDate");
+
+      await plantManagementService.addRecord(PlantManagementRecord(
+        catalogNumber: newinput,
+        managementDate: _lastFertilizedDate!,
+        managementType: ManagementType.Fertilizing,
+        details: 'Fertilizing details',
+        plantId: newinput,
+      ));
+    }
+
+    if (_lastRepottedDate != null) {
+      print("_lastRepottedDate: $_lastRepottedDate");
+
+      await plantManagementService.addRecord(PlantManagementRecord(
+        catalogNumber: newinput,
+        managementDate: _lastRepottedDate!,
+        managementType: ManagementType.Repotting,
+        details: 'Repotting details',
+        plantId: newinput,
+      ));
+    }
+
+    if (_lastPrunedDate != null) {
+      print("_lastPrunedDate: $_lastPrunedDate");
+
+      await plantManagementService.addRecord(PlantManagementRecord(
+        catalogNumber: newinput,
+        managementDate: _lastPrunedDate!,
+        managementType: ManagementType.Pruning,
+        details: 'Pruning details',
+        plantId: newinput,
+      ));
+    }
+
+
+    if (onRefresh != null) {
+      onRefresh();
+    }
+    print('식물 등록 완료');
   }
+
 
   // 모달을 화면에 표시
   showModalBottomSheet(
@@ -199,7 +231,7 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
 
                     // 서버로 이미지를 전송하여 텍스트(식물 이름)를 받아옴
                     final response = await http.post(
-                      Uri.parse('https://2f60-34-23-46-115.ngrok-free.app/plant_register'),
+                      Uri.parse('https://3a1b-35-247-96-36.ngrok-free.app/plant_register'),
                       headers: {'Content-Type': 'application/json'},
                       body: json.encode({'image': base64Image}),
                     );
@@ -290,7 +322,12 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
                                   TextField(
                                     controller: _lastWateredController,
                                     readOnly: true,
-                                    onTap: () => _pickDate(context, _lastWateredController),
+                                    onTap: () async
+                                    {
+                                      _lastWateredDate = await _pickDate(context, _lastWateredController);
+                                      print("_lastWateredController");
+                                      print("_lastWateredController");
+                                      },
                                     decoration: InputDecoration(
                                       labelText: '날짜 선택',
                                       border: OutlineInputBorder(),
@@ -301,7 +338,12 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
                                   TextField(
                                     controller: _lastFertilizedController,
                                     readOnly: true,
-                                    onTap: () => _pickDate(context, _lastFertilizedController),
+                                    onTap: () async
+                                    {
+                                      _lastFertilizedDate = await _pickDate(context, _lastFertilizedController);
+                                      print("_lastFertilizedController");
+                                      print(_lastFertilizedController);
+                                      },
                                     decoration: InputDecoration(
                                       labelText: '날짜 선택',
                                       border: OutlineInputBorder(),
@@ -312,7 +354,12 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
                                   TextField(
                                     controller: _lastRepottedController,
                                     readOnly: true,
-                                    onTap: () => _pickDate(context, _lastRepottedController),
+                                    onTap: () async
+                                    {
+                                      _lastRepottedDate = await _pickDate(context, _lastRepottedController);
+                                      print("_lastRepottedController");
+                                      print(_lastRepottedController);
+                                      },
                                     decoration: InputDecoration(
                                       labelText: '날짜 선택',
                                       border: OutlineInputBorder(),
@@ -323,7 +370,12 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
                                   TextField(
                                     controller: _lastPrunedController,
                                     readOnly: true,
-                                    onTap: () => _pickDate(context, _lastPrunedController),
+                                    onTap: () async
+                                    {
+                                      _lastPrunedDate = await _pickDate(context, _lastPrunedController);
+                                      print("_lastPrunedController");
+                                      print(_lastPrunedController);
+                                    },
                                     decoration: InputDecoration(
                                       labelText: '날짜 선택',
                                       border: OutlineInputBorder(),
@@ -340,7 +392,21 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: Center(
                         child: ElevatedButton(
-                          onPressed: _isUploading ? null : _registerPlant,
+                          onPressed: _isUploading ? null : () async {
+                            setState(() {
+                              _isUploading = true; // Start uploading
+                            });
+                            _registerPlant(); // Execute the registration
+                            print("asdasd");
+                            print("asdasd");
+                            print("asdasd");
+                            print("asdasd");
+                            Navigator.pop(context);
+                            setState(() {
+                              _isUploading = false; // Finish uploading
+                            });
+                          },
+
                           child: _isUploading
                               ? CircularProgressIndicator()
                               : Text('등록'),
@@ -357,6 +423,7 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
     },
   );
 }
+
 
 
 // 텍스트 필드를 생성하는 위젯
