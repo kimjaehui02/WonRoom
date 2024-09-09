@@ -6,9 +6,9 @@ import 'package:wonroom/DB/user_plants/user_plants_service.dart';
 import 'package:wonroom/DB/plant_management_records/plant_management_model.dart';
 import 'package:wonroom/Flask/storage_manager.dart';
 
+
 // 관리 유형 Enum 정의
 // enum ManagementType { Watering, Pruning, Repotting, Fertilizing, Diagnosis }
-
 
 void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async {
   final userPlantService = UserPlantService(); // UserPlantService 인스턴스 생성
@@ -26,6 +26,70 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
   DateTime? _lastRepottedDate; // 마지막 분갈이 날짜
   DateTime? _lastPrunedDate; // 마지막 가지치기 날짜
 
+  File? _image; // 이미지 파일
+  bool _showImageInField = false; // 네 버튼을 눌렀을 때 이미지를 표시할지 여부
+  bool _isUploading = false; // 이미지 업로드 중 여부
+  String _plantName = ''; // 서버에서 받아온 식물 이름
+  final picker = ImagePicker(); // ImagePicker 인스턴스 생성
+
+  Future<void> _showConfirmationDialog(
+      BuildContext context,
+      String plantName,
+      StateSetter setState,
+      ) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('식물 이름 확인'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (_image != null) Image.file(_image!), // 모달창에 이미지 미리보기
+              SizedBox(height: 10),
+              Text('받아온 식물 이름 "$plantName"이(가) 맞나요?'),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('아니요'),
+              onPressed: () {
+                setState(() {
+                  _plantNameController.clear(); // 텍스트 필드 초기화
+                  _showImageInField = false; // 이미지 표시 제거
+                });
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+              },
+            ),
+            TextButton(
+              child: Text('네'),
+              onPressed: () {
+                setState(() {
+                  // 텍스트 필드에 값 반영 및 이미지를 표시하지 않음
+                  _plantNameController.text = plantName;
+                  _showImageInField = false; // 이미지를 표시하지 않도록 설정
+                });
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _pickDate(BuildContext context, TextEditingController controller) async {
+    final DateTime? selectedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (selectedDate != null) {
+      // 선택된 날짜를 텍스트 필드에 반영
+      controller.text = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
+    }
+  }
 
   void _registerPlant() async {
     if (_plantNameController.text.isEmpty) {
@@ -103,7 +167,6 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
     }
   }
 
-
   // 모달을 화면에 표시
   showModalBottomSheet(
     context: context,
@@ -122,128 +185,171 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
           maxChildSize: 0.9, // 모달 최대 높이 비율
           minChildSize: 0.5, // 모달 최소 높이 비율
           builder: (BuildContext context, ScrollController scrollController) {
-            return Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    controller: scrollController, // 스크롤 컨트롤러 연결
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Container(
-                            width: 60,
-                            height: 5,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300], // 드래그 핸들 색상
-                              borderRadius: BorderRadius.circular(10), // 핸들 둥글게
+            return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                Future<void> _uploadImage(File image) async {
+                  setState(() {
+                    _isUploading = true;
+                    _plantNameController.text = "검색중입니다..."; // 검색중일 때 표시
+                  });
+
+                  try {
+                    final imageBytes = await image.readAsBytes();
+                    final base64Image = base64Encode(imageBytes);
+
+                    // 서버로 이미지를 전송하여 텍스트(식물 이름)를 받아옴
+                    final response = await http.post(
+                      Uri.parse('https://2f60-34-23-46-115.ngrok-free.app/plant_register'),
+                      headers: {'Content-Type': 'application/json'},
+                      body: json.encode({'image': base64Image}),
+                    );
+
+                    if (response.statusCode == 200) {
+                      final data = json.decode(response.body);
+                      print('서버 응답: $data');
+
+                      // 서버에서 받아온 텍스트 확인 후 적용하는 다이얼로그 호출
+                      _showConfirmationDialog(
+                          context, data['plant_name'], setState); // setState 추가
+                    } else {
+                      print('API 호출 오류: ${response.statusCode}');
+                    }
+                  } catch (e) {
+                    print('API 호출 중 오류 발생: $e');
+                  } finally {
+                    setState(() {
+                      _isUploading = false;
+                    });
+                  }
+                }
+
+                Future<void> _pickImage(ImageSource source) async {
+                  final pickedFile = await picker.pickImage(source: source);
+                  if (pickedFile != null) {
+                    final selectedImage = File(pickedFile.path);
+                    setState(() {
+                      _image = selectedImage; // 이미지를 표시하기 위해 설정
+                    });
+                    await _uploadImage(selectedImage); // 이미지를 서버로 전송
+                  }
+                }
+
+                return Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: Container(
+                                width: 60,
+                                height: 5,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        Center(
-                          child: Text(
-                            '식물 등록', // 제목
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '식물 등록',
+                                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 20),
+                                  // 이미지 추가 버튼
+                                  if (_image != null)
+                                    Container(
+                                      width: double.infinity,
+                                      child: Image.file(_image!, fit: BoxFit.cover),
+                                    ),
+                                  ElevatedButton(
+                                    onPressed: () => _pickImage(ImageSource.camera),
+                                    child: Text('사진 촬영'),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () => _pickImage(ImageSource.gallery),
+                                    child: Text('갤러리에서 선택'),
+                                  ),
+                                  SizedBox(height: 20),
+                                  TextField(
+                                    controller: _plantNameController,
+                                    decoration: InputDecoration(
+                                      labelText: '식물 이름',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+                                  Text('마지막 물 준 날짜'),
+                                  TextField(
+                                    controller: _lastWateredController,
+                                    readOnly: true,
+                                    onTap: () => _pickDate(context, _lastWateredController),
+                                    decoration: InputDecoration(
+                                      labelText: '날짜 선택',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text('마지막 영양제 준 날짜'),
+                                  TextField(
+                                    controller: _lastFertilizedController,
+                                    readOnly: true,
+                                    onTap: () => _pickDate(context, _lastFertilizedController),
+                                    decoration: InputDecoration(
+                                      labelText: '날짜 선택',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text('마지막 분갈이 날짜'),
+                                  TextField(
+                                    controller: _lastRepottedController,
+                                    readOnly: true,
+                                    onTap: () => _pickDate(context, _lastRepottedController),
+                                    decoration: InputDecoration(
+                                      labelText: '날짜 선택',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text('마지막 가지치기 날짜'),
+                                  TextField(
+                                    controller: _lastPrunedController,
+                                    readOnly: true,
+                                    onTap: () => _pickDate(context, _lastPrunedController),
+                                    decoration: InputDecoration(
+                                      labelText: '날짜 선택',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: _buildTextField(
-                            controller: _plantNameController,
-                            label: '식물 이름',
-                            hintText: '파키라',
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: _buildDatePicker(
-                            context,
-                            label: '마지막 물준날',
-                            controller: _lastWateredController,
-                            onDateSelected: (date) => _lastWateredDate = date,
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: _buildDatePicker(
-                            context,
-                            label: '마지막 영양제',
-                            controller: _lastFertilizedController,
-                            onDateSelected: (date) => _lastFertilizedDate = date,
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: _buildDatePicker(
-                            context,
-                            label: '마지막 분갈이',
-                            controller: _lastRepottedController,
-                            onDateSelected: (date) => _lastRepottedDate = date,
-                          ),
-                        ),
-                        SizedBox(height: 24),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: _buildDatePicker(
-                            context,
-                            label: '마지막 가지치기',
-                            controller: _lastPrunedController,
-                            onDateSelected: (date) => _lastPrunedDate = date,
-                          ),
-                        ),
-                        SizedBox(height: 24),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () {
-                            Navigator.pop(context); // 취소 버튼 클릭 시 모달 닫기
-                          },
-                          child: Text('취소', style: TextStyle(fontSize: 25)),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.grey,
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10), // 버튼 둥글게
-                            ),
-                            side: BorderSide(color: Colors.grey), // 버튼 테두리 색상
-                            minimumSize: Size(150, 50), // 버튼 크기
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 16),
-                      Expanded(
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Center(
                         child: ElevatedButton(
-                          onPressed: _registerPlant, // 등록 버튼 클릭 시 식물 등록 함수 호출
-                          child: Text('등록', style: TextStyle(fontSize: 25, color: Colors.white)),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10), // 버튼 둥글게
-                            ),
-                            minimumSize: Size(150, 50), // 버튼 크기
-                          ),
+                          onPressed: _isUploading ? null : _registerPlant,
+                          child: _isUploading
+                              ? CircularProgressIndicator()
+                              : Text('등록'),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ],
+                    ),
+                  ],
+                );
+              },
             );
           },
         ),

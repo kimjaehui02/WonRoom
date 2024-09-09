@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:wonroom/plantClinicChat.dart';
 
 class PlantDetailPage extends StatelessWidget {
   final PageController _pageController = PageController();
@@ -14,7 +15,7 @@ class PlantDetailPage extends StatelessWidget {
         .toList();
 
     // "pasete" 필드를 쉼표로 분리하여 리스트로 변환
-    final pestInfo = (data['pasete'] as String? ?? '')
+    final pestInfo = (data['pest_info'] as String? ?? '')
         .split(',')
         .map((pest) => pest.trim()) // 공백 제거
         .toList();
@@ -29,10 +30,8 @@ class PlantDetailPage extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: Text(
-            '${data['name'] ?? '정보가 없습니다.'}',
-            style: TextStyle(color: Colors.white)
-        ),
+        title: Text('${data['name'] ?? '정보가 없습니다.'}',
+            style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -77,17 +76,35 @@ class PlantDetailPage extends StatelessWidget {
                   SizedBox(height: 16),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
-                    child: Image.asset(
-                      'images/plant_0.jpg',
-                      width: MediaQuery.of(context).size.width * 0.85,
-                      height: MediaQuery.of(context).size.width * 0.85,
-                      fit: BoxFit.cover,
-                    ),
+                    child: data['img'] != null && data['img'].isNotEmpty
+                        ? Image.network(
+                            data['img'], // 서버에서 넘어온 이미지 URL 사용
+                            width: MediaQuery.of(context).size.width * 0.85,
+                            height: MediaQuery.of(context).size.width * 0.85,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              // 이미지 로드 실패 시 기본 이미지 표시
+                              return Image.asset(
+                                'images/defaultProfile.png', // 기본 이미지
+                                width: MediaQuery.of(context).size.width * 0.85,
+                                height:
+                                    MediaQuery.of(context).size.width * 0.85,
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          )
+                        : Image.asset(
+                            'images/defaultProfile.png', // 기본 이미지
+                            width: MediaQuery.of(context).size.width * 0.85,
+                            height: MediaQuery.of(context).size.width * 0.85,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                   SizedBox(height: 16),
                   Text(
                     '${(data['functional_info'] as List<dynamic>?)?.map((info) => '• $info').join('\n') ?? '정보가 없습니다.'}',
                     style: TextStyle(fontSize: 16, color: Color(0xff595959)),
+                    textAlign: TextAlign.left,
                   ),
                   SizedBox(height: 20),
                   Row(
@@ -105,12 +122,14 @@ class PlantDetailPage extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.water_drop, color: Colors.lightBlueAccent),
+                                  Icon(Icons.water_drop,
+                                      color: Colors.lightBlueAccent),
                                   SizedBox(width: 5),
                                   Text(
                                     '물주기:',
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Color(0xff595959), fontSize: 16),
+                                    style: TextStyle(
+                                        color: Color(0xff595959), fontSize: 16),
                                   ),
                                 ],
                               ),
@@ -146,7 +165,8 @@ class PlantDetailPage extends StatelessWidget {
                                   Text(
                                     '온도:',
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Color(0xff595959), fontSize: 16),
+                                    style: TextStyle(
+                                        color: Color(0xff595959), fontSize: 16),
                                   ),
                                 ],
                               ),
@@ -184,7 +204,8 @@ class PlantDetailPage extends StatelessWidget {
                             Text(
                               '식물 위치:',
                               textAlign: TextAlign.center,
-                              style: TextStyle(color: Color(0xff595959), fontSize: 16),
+                              style: TextStyle(
+                                  color: Color(0xff595959), fontSize: 16),
                             ),
                           ],
                         ),
@@ -233,7 +254,7 @@ class PlantDetailPage extends StatelessWidget {
                     },
                     children: List<TableRow>.generate(
                       _buildTableData().length,
-                          (index) {
+                      (index) {
                         return _buildTableRow(
                           _buildTableData()[index]['parameter']!,
                           _buildTableData()[index]['value']!,
@@ -326,8 +347,6 @@ class PlantDetailPage extends StatelessWidget {
               ],
             ),
 
-
-
             // 구분
 
             Container(
@@ -357,35 +376,48 @@ class PlantDetailPage extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemCount: pestInfo.length,
                       itemBuilder: (context, index) {
-                        return Container(
-                          width: MediaQuery.of(context).size.width * 0.35,
-                          margin: EdgeInsets.only(right: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 150,
-                                decoration: BoxDecoration(
-                                  color: Colors.blueAccent,
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        'images/pest_${index}.jpg'), // 이미지 경로 수정 필요
-                                    fit: BoxFit.cover,
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PlantClinicChat(
+                                  diseaseName: pestInfo[index],
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            margin: EdgeInsets.only(right: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                    color: Colors.blueAccent,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          'images/defaultProfile.png'),
+                                      // 이미지 경로 수정 필요
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(height: 8),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10, right: 10, top: 4),
-                                child: Text(
-                                  '${pestInfo[index]}', // 해충/질병 이름 표시
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 16),
+                                SizedBox(height: 8),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, top: 4),
+                                  child: Text(
+                                    '${pestInfo[index]}', // 해충/질병 이름 표시
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 16),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -394,7 +426,9 @@ class PlantDetailPage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 24,)
+            SizedBox(
+              height: 24,
+            )
           ],
         ),
       ),
@@ -410,7 +444,10 @@ class PlantDetailPage extends StatelessWidget {
       {"parameter": "급수 일정", "value": data['watering'] ?? '정보가 없습니다.'},
       {"parameter": "광 요구도", "value": data['light_requirement'] ?? '정보가 없습니다.'},
       {"parameter": "비료 정보", "value": data['fertilizer_info'] ?? '정보가 없습니다.'},
-      {"parameter": "번식 방법", "value": data['propagation_method'] ?? '정보가 없습니다.'},
+      {
+        "parameter": "번식 방법",
+        "value": data['propagation_method'] ?? '정보가 없습니다.'
+      },
       {"parameter": "냄새", "value": data['odor'] ?? '정보가 없습니다.'},
       {"parameter": "독성", "value": data['toxicity'] ?? '정보가 없습니다.'},
     ];

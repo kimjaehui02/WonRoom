@@ -53,7 +53,7 @@ class _MyplantState extends State<Myplant> {
 
       // 코랩 서버로 요청 보내기
       var response = await http.post(
-        Uri.parse('https://456e-34-75-121-152.ngrok-free.app/myplant_pest'), // 코랩의 API 엔드포인트
+        Uri.parse('https://2822-34-75-121-152.ngrok-free.app/myplant_pest'), // 코랩의 API 엔드포인트
         headers: {"Content-Type": "application/json"},
         body: requestData,
       );
