@@ -290,9 +290,14 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    '식물 등록',
-                                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                  Center(
+                                    child: Text(
+                                      '식물 등록',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold
+                                      ),
+                                    ),
                                   ),
                                   SizedBox(height: 20),
                                   // 이미지 추가 버튼
@@ -301,86 +306,204 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
                                       width: double.infinity,
                                       child: Image.file(_image!, fit: BoxFit.cover),
                                     ),
-                                  ElevatedButton(
-                                    onPressed: () => _pickImage(ImageSource.camera),
-                                    child: Text('사진 촬영'),
+                                  // 이미지 버튼
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _buildImageButton(
+                                        icon: Icons.camera_alt,
+                                        label: '사진 촬영',
+                                        onPressed: _isUploading
+                                            ? null
+                                            : () => _pickImage(ImageSource.camera),
+                                      ),
+                                      _buildImageButton(
+                                        icon: Icons.photo_library,
+                                        label: '앨범에서 선택',
+                                        onPressed: _isUploading
+                                            ? null
+                                            : () => _pickImage(ImageSource.gallery),
+                                      ),
+                                    ],
                                   ),
-                                  ElevatedButton(
-                                    onPressed: () => _pickImage(ImageSource.gallery),
-                                    child: Text('갤러리에서 선택'),
-                                  ),
+                                  // ElevatedButton(
+                                  //   onPressed: () => _pickImage(ImageSource.camera),
+                                  //   child: Text('사진 촬영'),
+                                  // ),
+                                  // ElevatedButton(
+                                  //   onPressed: () => _pickImage(ImageSource.gallery),
+                                  //   child: Text('갤러리에서 선택'),
+                                  // ),
                                   SizedBox(height: 20),
-                                  TextField(
-                                    controller: _plantNameController,
-                                    decoration: InputDecoration(
-                                      labelText: '식물 이름',
-                                      border: OutlineInputBorder(),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                    child: _buildTextField(
+                                      controller: _plantNameController,
+                                      hintText: '', // 힌트 텍스트를 제거하고 서버에서 받아온 텍스트 사용
+                                      label: '식물 이름',
+                                      enabled: !_isUploading,
                                     ),
                                   ),
+                                  // TextField(
+                                  //   controller: _plantNameController,
+                                  //   decoration: InputDecoration(
+                                  //     labelText: '식물 이름',
+                                  //     border: OutlineInputBorder(),
+                                  //   ),
+                                  // ),
                                   SizedBox(height: 20),
-                                  Text('마지막 물 준 날짜'),
-                                  TextField(
-                                    controller: _lastWateredController,
-                                    readOnly: true,
+
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                    child: GestureDetector(
                                     onTap: () async
-                                    {
-                                      _lastWateredDate = await _pickDate(context, _lastWateredController);
-                                      print("_lastWateredController");
-                                      print("_lastWateredController");
+                                      {
+                                        _lastWateredDate = await _pickDate(context, _lastWateredController);
+                                        print("_lastWateredController");
+                                        print("_lastWateredController");
                                       },
-                                    decoration: InputDecoration(
-                                      labelText: '날짜 선택',
-                                      border: OutlineInputBorder(),
+                                      child: AbsorbPointer(
+                                        child: _buildTextField(
+                                          controller: _lastWateredController,
+                                          hintText: '날짜를 선택하세요',
+                                          label: '마지막 물준날',
+                                          enabled: !_isUploading,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                  SizedBox(height: 10),
-                                  Text('마지막 영양제 준 날짜'),
-                                  TextField(
-                                    controller: _lastFertilizedController,
-                                    readOnly: true,
-                                    onTap: () async
-                                    {
-                                      _lastFertilizedDate = await _pickDate(context, _lastFertilizedController);
-                                      print("_lastFertilizedController");
-                                      print(_lastFertilizedController);
+
+                                  // Text('마지막 물 준 날짜'),
+                                  // TextField(
+                                  //   controller: _lastWateredController,
+                                  //   readOnly: true,
+                                  //   onTap: () async
+                                  //   {
+                                  //     _lastWateredDate = await _pickDate(context, _lastWateredController);
+                                  //     print("_lastWateredController");
+                                  //     print("_lastWateredController");
+                                  //     },
+                                  //   decoration: InputDecoration(
+                                  //     labelText: '날짜 선택',
+                                  //     border: OutlineInputBorder(),
+                                  //   ),
+                                  // ),
+
+                                  SizedBox(height: 20),
+
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                    child: GestureDetector(
+                                        onTap: () async
+                                        {
+                                          _lastFertilizedDate = await _pickDate(context, _lastFertilizedController);
+                                          print("_lastFertilizedController");
+                                          print(_lastFertilizedController);
+                                          },
+                                      child: AbsorbPointer(
+                                        child: _buildTextField(
+                                          controller: _lastFertilizedController,
+                                          hintText: '날짜를 선택하세요',
+                                          label: '마지막 영양제',
+                                          enabled: !_isUploading,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Text('마지막 영양제 준 날짜'),
+                                  // TextField(
+                                  //   controller: _lastFertilizedController,
+                                  //   readOnly: true,
+                                  //   onTap: () async
+                                  //   {
+                                  //     _lastFertilizedDate = await _pickDate(context, _lastFertilizedController);
+                                  //     print("_lastFertilizedController");
+                                  //     print(_lastFertilizedController);
+                                  //     },
+                                  //   decoration: InputDecoration(
+                                  //     labelText: '날짜 선택',
+                                  //     border: OutlineInputBorder(),
+                                  //   ),
+                                  // ),
+
+                                  SizedBox(height: 20),
+
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                    child: GestureDetector(
+                                      onTap: () async
+                                      {
+                                        _lastRepottedDate = await _pickDate(context, _lastRepottedController);
+                                        print("_lastRepottedController");
+                                        print(_lastRepottedController);
                                       },
-                                    decoration: InputDecoration(
-                                      labelText: '날짜 선택',
-                                      border: OutlineInputBorder(),
+                                      child: AbsorbPointer(
+                                        child: _buildTextField(
+                                          controller: _lastRepottedController,
+                                          hintText: '날짜를 선택하세요',
+                                          label: '마지막 분갈이',
+                                          enabled: !_isUploading,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                  SizedBox(height: 10),
-                                  Text('마지막 분갈이 날짜'),
-                                  TextField(
-                                    controller: _lastRepottedController,
-                                    readOnly: true,
-                                    onTap: () async
-                                    {
-                                      _lastRepottedDate = await _pickDate(context, _lastRepottedController);
-                                      print("_lastRepottedController");
-                                      print(_lastRepottedController);
+
+                                  // Text('마지막 분갈이 날짜'),
+                                  // TextField(
+                                  //   controller: _lastRepottedController,
+                                  //   readOnly: true,
+                                  //   onTap: () async
+                                  //   {
+                                  //     _lastRepottedDate = await _pickDate(context, _lastRepottedController);
+                                  //     print("_lastRepottedController");
+                                  //     print(_lastRepottedController);
+                                  //     },
+                                  //   decoration: InputDecoration(
+                                  //     labelText: '날짜 선택',
+                                  //     border: OutlineInputBorder(),
+                                  //   ),
+                                  // ),
+
+                                  SizedBox(height: 20),
+
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                    child: GestureDetector(
+                                      onTap: () async
+                                      {
+                                        _lastPrunedDate = await _pickDate(context, _lastPrunedController);
+                                        print("_lastPrunedController");
+                                        print(_lastPrunedController);
                                       },
-                                    decoration: InputDecoration(
-                                      labelText: '날짜 선택',
-                                      border: OutlineInputBorder(),
+                                      child: AbsorbPointer(
+                                        child: _buildTextField(
+                                          controller: _lastPrunedController,
+                                          hintText: '날짜를 선택하세요',
+                                          label: '마지막 가지치기',
+                                          enabled: !_isUploading,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                  SizedBox(height: 10),
-                                  Text('마지막 가지치기 날짜'),
-                                  TextField(
-                                    controller: _lastPrunedController,
-                                    readOnly: true,
-                                    onTap: () async
-                                    {
-                                      _lastPrunedDate = await _pickDate(context, _lastPrunedController);
-                                      print("_lastPrunedController");
-                                      print(_lastPrunedController);
-                                    },
-                                    decoration: InputDecoration(
-                                      labelText: '날짜 선택',
-                                      border: OutlineInputBorder(),
-                                    ),
-                                  ),
+
+                                  // Text('마지막 가지치기 날짜'),
+                                  // TextField(
+                                  //   controller: _lastPrunedController,
+                                  //   readOnly: true,
+                                  //   onTap: () async
+                                  //   {
+                                  //     _lastPrunedDate = await _pickDate(context, _lastPrunedController);
+                                  //     print("_lastPrunedController");
+                                  //     print(_lastPrunedController);
+                                  //   },
+                                  //   decoration: InputDecoration(
+                                  //     labelText: '날짜 선택',
+                                  //     border: OutlineInputBorder(),
+                                  //   ),
+                                  // ),
+
+
                                 ],
                               ),
                             ),
@@ -424,13 +547,43 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
   );
 }
 
-
+Widget _buildImageButton({
+  required IconData icon,
+  required String label,
+  required VoidCallback? onPressed,
+}) {
+  return Expanded(
+    child: Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(color: Color(0xffc2c2c2)),
+          bottom: BorderSide(color: Color(0xffc2c2c2)),
+        ),
+      ),
+      child: TextButton.icon(
+        onPressed: onPressed,
+        icon: Icon(icon, color: Color(0xff787878)),
+        label: Text(
+          label,
+          style: TextStyle(
+            color: Color(0xff333333),
+            fontSize: 16,
+          ),
+        ),
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.symmetric(vertical: 10),
+        ),
+      ),
+    ),
+  );
+}
 
 // 텍스트 필드를 생성하는 위젯
 Widget _buildTextField({
   required String label,
   required String hintText,
   required TextEditingController controller,
+  required bool enabled,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -438,19 +591,18 @@ Widget _buildTextField({
       Padding(
         padding: const EdgeInsets.only(left: 6),
         child: Text(
-          label, // 필드 레이블
+          label,
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
-      SizedBox(height: 8),
+      SizedBox(height: 10),
       TextField(
         controller: controller,
+        enabled: enabled,
         decoration: InputDecoration(
-          hintText: hintText, // 힌트 텍스트
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          hintText: hintText,
+          border: OutlineInputBorder(),
+          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         ),
       ),
     ],
