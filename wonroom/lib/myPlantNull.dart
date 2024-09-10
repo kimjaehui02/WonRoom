@@ -22,6 +22,7 @@ import 'package:wonroom/DB/user_plants/user_plants_service.dart';
 import 'package:wonroom/DB/users/user_service.dart';
 import 'package:wonroom/DB/users/users_model.dart';
 import 'package:wonroom/Flask/storage_manager.dart';
+import 'package:wonroom/ImageService/ImageService.dart';
 import 'package:wonroom/MyPlant/myPlant_functions.dart';
 import 'package:wonroom/myPlantClinic.dart';
 import 'package:wonroom/myPlantRegistration.dart';
@@ -89,6 +90,7 @@ class _MyplantNullState extends State<MyplantNull> {
   final StorageManager _sm = new StorageManager();
   final UserPlantService _ups = new UserPlantService();
 
+  final imageService = new ImageService();
 
 
   @override
@@ -580,8 +582,8 @@ class _MyplantNullState extends State<MyplantNull> {
             ),
             TextButton(
               onPressed: () async{
-                // 등록 버튼 클릭 시 처리할 로직
 
+                // 등록 버튼 클릭 시 처리할 로직
                 print("등록하기입니다!");
                 print("등록하기입니다!");
                 print("등록하기입니다!");
@@ -597,6 +599,14 @@ class _MyplantNullState extends State<MyplantNull> {
                 // 건강
                 // 버튼의 로직은 그대로 유지
                 await plants(diagnosisResult, id, loading, detailss);
+
+                // 이미지 저장 로직 추가
+                final imageService = ImageService();
+                final imageFile = _image; // 현재 선택된 이미지
+                if (imageFile != null) {
+                  await imageService.saveImage(imageFile, 'photos', id.toString());
+                }
+
                 _updatePlant(index);
 
                 Navigator.of(context).pop(); // 모달 닫기
@@ -754,17 +764,47 @@ class _MyplantNullState extends State<MyplantNull> {
                     SizedBox(height: 16),
 
                     // 이미지
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.85,
-                      height: MediaQuery.of(context).size.width * 0.85,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: AssetImage('images/img01.jpg'), // 로컬 이미지 경로
-                        ),
-                      ),
+                    // Container(
+                    //   width: MediaQuery.of(context).size.width * 0.85,
+                    //   height: MediaQuery.of(context).size.width * 0.85,
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(10),
+                    //     image: DecorationImage(
+                    //       fit: BoxFit.fill,
+                    //       // image: AssetImage('images/img01.jpg'), // 로컬 이미지 경로
+                    //       image: imageService.loadImage2(context, plantIndex),
+                    //       // image: AssetImage(imageService.loadImagesForPost(plantIndex.toString(), "user_plants") ?? 'images/img01.jpg'), // 로컬 이미지 경로
+                    //     ),
+                    //   ),
+                    // ),
+                    // 이미지
+// 이미지
+                    FutureBuilder<ImageProvider>(
+                      future: imageService.loadImageProvider("user_plants", plantIndex.toString()),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator()); // 로딩 중에는 로딩 인디케이터를 표시합니다.
+                        } else if (snapshot.hasError) {
+                          return Center(child: Text('Error: ${snapshot.error}')); // 에러가 발생했을 때 에러 메시지를 표시합니다.
+                        } else if (snapshot.hasData) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width * 0.85,
+                            height: MediaQuery.of(context).size.width * 0.85,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: snapshot.data!,
+                              ),
+                            ),
+                          );
+                        } else {
+                          return Center(child: Text('No image found')); // 이미지가 없을 때 메시지를 표시합니다.
+                        }
+                      },
                     ),
+
+
 
                     Container(
                       padding: EdgeInsets.only(left: 24, right: 24),

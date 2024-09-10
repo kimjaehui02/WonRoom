@@ -3,8 +3,12 @@
     <!-- Add these permissions outside of the <application> tag -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/> <!-- Added for exact alarms -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/> <!-- Optional for notifications -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
+    <!-- Add permissions for reading and writing to external storage -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:label="wonroom"
@@ -23,8 +27,7 @@
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
-                android:resource="@style/NormalTheme"
-                />
+                android:resource="@style/NormalTheme"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -34,7 +37,7 @@
         <!-- Add the following meta-data tag for FlutterLocalNotificationsPlugin -->
         <meta-data
             android:name="flutterEmbedding"
-            android:value="2" />
+            android:value="2"/>
 
         <!-- Add a receiver for handling notifications after the device reboots -->
         <receiver android:name="me.carda.notifications.receivers.NotificationReceiver"

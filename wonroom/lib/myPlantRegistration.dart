@@ -9,7 +9,9 @@ import 'dart:convert'; // json.decode
 import 'dart:io'; // File
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart'; // ImagePicker
-import 'package:http/http.dart' as http; // http
+import 'package:http/http.dart' as http;
+import 'package:wonroom/ImageService/ImageService.dart'; // http
+import 'package:path/path.dart' as p;
 
 // 관리 유형 Enum 정의
 // enum ManagementType { Watering, Pruning, Repotting, Fertilizing, Diagnosis }
@@ -36,6 +38,8 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
   bool _isUploading = false; // 이미지 업로드 중 여부
   String _plantName = ''; // 서버에서 받아온 식물 이름
   final picker = ImagePicker(); // ImagePicker 인스턴스 생성
+
+  dynamic localImage;
 
   DateTime? parseDate(String dateString) {
     try {
@@ -140,6 +144,14 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
       print('식물 등록 실패: ID를 얻지 못했습니다.');
       return;
     }
+
+    final imageService = new ImageService();
+
+
+
+    await imageService.saveImage(localImage, plantId.toString(), "user_plants");
+
+    imageService.countAllImages();
 
     int newinput = plantId;
 
@@ -255,16 +267,62 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
                   }
                 }
 
+                // Future<void> _pickImage(ImageSource source) async {
+                //   final pickedFile = await picker.pickImage(source: source);
+                //   if (pickedFile != null) {
+                //     final selectedImage = File(pickedFile.path);
+                //     setState(() {
+                //       _image = selectedImage; // 이미지를 표시하기 위해 설정
+                //     });
+                //     await _uploadImage(selectedImage); // 이미지를 서버로 전송
+                //   }
+                // }
+
+
                 Future<void> _pickImage(ImageSource source) async {
+
+                  print("asdsasdasdas");
+                  print("asdsasdasdas");
+                  print("asdsasdasdas");
+                  print("asdsasdasdas");
+                  print("asdsasdasdas");
+                  print("asdsasdasdas");
+                  print("asdsasdasdas");
+                  print("asdsasdasdas");
+
                   final pickedFile = await picker.pickImage(source: source);
                   if (pickedFile != null) {
                     final selectedImage = File(pickedFile.path);
+
                     setState(() {
                       _image = selectedImage; // 이미지를 표시하기 위해 설정
                     });
-                    await _uploadImage(selectedImage); // 이미지를 서버로 전송
+
+                    // 파일 이름을 지정 (예: pickedFile.name 사용 또는 고유한 파일명 생성)
+                    final fileName = p.basename(pickedFile.path);
+
+                    // ImageService 인스턴스 생성
+                    final imageService = ImageService();
+
+                    // 이미지를 로컬 저장소에 저장
+                    // await imageService.saveImage(selectedImage, "photos", fileName);
+
+
+                    int inpudd = await imageService.countAllImages();
+
+                    print(inpudd);
+                    print(inpudd);
+                    print(inpudd);
+                    print(inpudd);
+                    print(inpudd);
+                    print(inpudd);
+
+                    localImage = selectedImage;
+                    // 저장 후 이미지를 서버로 전송
+                    await _uploadImage(selectedImage);
                   }
                 }
+
 
                 return Column(
                   children: [
