@@ -204,7 +204,7 @@ void main() {
           foregroundColor: Colors.black, // FloatingActionButton 텍스트 색상
         ),
       ),
-      home: Intro(), // Intro 위젯 호출
+      home: Splash(), // Intro 위젯 호출
     ),
   );
 

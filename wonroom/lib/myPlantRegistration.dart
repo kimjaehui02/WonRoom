@@ -243,7 +243,7 @@ void showPlantRegistrationModal(BuildContext context, Function? onRefresh) async
 
                     // 서버로 이미지를 전송하여 텍스트(식물 이름)를 받아옴
                     final response = await http.post(
-                      Uri.parse('https://3a1b-35-247-96-36.ngrok-free.app/plant_register'),
+                      Uri.parse('https://d8f2-35-243-183-183.ngrok-free.app/plant_register'),
                       headers: {'Content-Type': 'application/json'},
                       body: json.encode({'image': base64Image}),
                     );

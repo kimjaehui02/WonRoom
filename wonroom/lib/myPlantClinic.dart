@@ -577,12 +577,99 @@
 // }
 
 
+import 'dart:async'; // Future 사용을 위해 추가
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wonroom/DB/plant_management_records/plant_management_model.dart';
+import 'package:wonroom/DB/plant_management_records/plant_management_records_service.dart';
+import 'package:wonroom/DB/user_plants/user_plants_model.dart';
+import 'package:wonroom/DB/user_plants/user_plants_service.dart';
+import 'package:wonroom/DB/users/user_service.dart';
 import 'package:wonroom/plantClinicChat.dart';
+import 'package:wonroom/Flask/storage_manager.dart'; // 경로에 맞게 수정
 
-class MyPlantClinic extends StatelessWidget {
+class MyPlantClinic extends StatefulWidget {
   const MyPlantClinic({super.key});
+
+  @override
+  _MyPlantClinicState createState() => _MyPlantClinicState();
+}
+
+class _MyPlantClinicState extends State<MyPlantClinic> {
+
+  // 1. 유저정보를스토리지에서 받아오는 부분
+  final StorageManager _SM = new StorageManager();
+
+  // 2. 1번에서 받아온 유저id로 식물들의 정보를 받아오는 부분
+  final UserPlantService _UPS = new UserPlantService();
+
+  // 3. 2번에서 받아온 식물들의 식물id로 식물 일정들을 받아오는 부분이 필요해
+  final PlantManagementService _PMS = new PlantManagementService();
+
+
+  // 1. 유저정보를 저장하는 변수
+  String UserId = "";
+
+  // 2. 식물들의 리스트를 저장하는 변수
+  List<UserPlant> ListOfUserPlant = [];
+
+  // 3. 식물일정들의 리스트를 저장하는 변수
+  List<List<PlantManagementRecord>> ListOfPlantManagementRecord = [];
+
+
+  // 로딩중 여부를체크합니다
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+
+  Future<void> _loadData() async {
+    setState(() {
+      _isLoading = true; // 로딩 시작
+    });
+
+    final String? subid = await _SM.getUserId();
+    setState(() {
+      UserId = subid ?? "";
+    });
+
+    final List<UserPlant>? subUserPlant = await _UPS.getPlants(UserId);
+    setState(() {
+      ListOfUserPlant = subUserPlant ?? [];
+      // ListOfPlantManagementRecord를 업데이트하기 위해 초기화
+      ListOfPlantManagementRecord = List.generate(ListOfUserPlant.length, (index) => []);
+    });
+
+    for (int i = 0; i < ListOfUserPlant.length; i++) {
+      final List<PlantManagementRecord>? subPlantManagementRecord =
+      await _PMS.getRecords(ListOfUserPlant[i].plantId ?? -1);
+
+      // 조건에 맞는 항목만 필터링하여 저장할 리스트
+      final List<PlantManagementRecord> filteredRecords = subPlantManagementRecord?.where(
+              (record) => record.managementType == 'Diagnosis' && record.details != '건강'
+      ).toList() ?? [];
+
+      // 필터링된 항목을 출력
+      for (var record in filteredRecords) {
+        print(record.details);
+      }
+
+      // 필터링된 항목으로 리스트 업데이트
+      ListOfPlantManagementRecord[i] = filteredRecords;
+    }
+
+
+    setState(() {
+      _isLoading = false; // 로딩 종료
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -602,58 +689,22 @@ class MyPlantClinic extends StatelessWidget {
           },
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 3,
-          ),
-          Container(
-            padding: EdgeInsets.all(16),
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.08), // 더 연한 그림자
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            child: RichText(
-              text: TextSpan(
-                text: '내역은 최신순으로 정렬됩니다.\n',
-                style: TextStyle(
-                  color: Color(0xffc2c2c2),
-                  height: 1.5,
-                  fontSize: 14,
-                ),
-                children: [
-                  TextSpan(
-                      text: '치료 완료 시 \'치료요망\'을 눌러주세요.',
-                      style: TextStyle(
-                        color: Color(0xff787878),
-                      )),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          // 데이터 리스트 예시
-          Expanded(
-            child: ListView(
-              children: [
-                _buildRecordItem(context, '24.08.12', '시들음병', 'images/img01.jpg', true), // 예시: 치료 완료
-                _buildRecordItem(context, '24.08.12', '시들음병', 'images/img01.jpg', false), // 예시: 치료 요망
-                _buildRecordItem(context, '24.08.12', '시들음병', 'images/img01.jpg', false), // 예시: 치료 요망
-                _buildRecordItem(context, '24.08.12', '시들음병', 'images/img01.jpg', false), // 예시: 치료 요망
-                // 데이터가 없다면, 안내 메시지 표시
-                // _buildNoDataMessage(),
-              ],
-            ),
-          ),
-        ],
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : ListOfPlantManagementRecord.isEmpty
+          ? _buildNoDataMessage()
+          : ListView.builder(
+        itemCount: ListOfPlantManagementRecord.length,
+        itemBuilder: (context, index) {
+          // final PlantManagementRecord record = ListOfPlantManagementRecord[index];
+          // return _buildRecordItem(
+          //   context,
+            // record.getFormattedDate(),
+            // record.details,
+            // 'images/img01.jpg', // 예시 이미지 경로
+            // false, // 예시 치료 완료 여부
+          // );
+        },
       ),
     );
   }

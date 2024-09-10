@@ -68,7 +68,8 @@ List<Widget> buildPlantActionContainers(
     int index,
     Future<void> Function(String, int, int, diagnosis) _getImageFromCamera,
     diagnosis detailss
-    ) {
+    )
+{
   return actions.map((action) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20),
