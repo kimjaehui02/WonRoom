@@ -329,6 +329,9 @@ class _MyplantNullState extends State<MyplantNull> {
                       // return index1;
                     });
                     Navigator.pop(context);
+
+                    _initializeData();
+
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
@@ -404,13 +407,15 @@ class _MyplantNullState extends State<MyplantNull> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async{
 
 
-                      _ups.deletePlantWithRecords(_userPlants[plantIndex].plantId ?? -1);
+                      await _ups.deletePlantWithRecords(_userPlants[plantIndex].plantId ?? -1);
 
                       Navigator.pop(context);
+                      // Navigator.push(context, MyplantNull());
                       _showDeletionSuccessDialog(context);
+
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xff595959),
@@ -780,7 +785,7 @@ class _MyplantNullState extends State<MyplantNull> {
                     // 이미지
 // 이미지
                     FutureBuilder<ImageProvider>(
-                      future: imageService.loadImageProvider("user_plants", plantIndex.toString()),
+                      future: imageService.loadImageProvider("user_plants", _userPlants[plantIndex].plantId.toString()),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator()); // 로딩 중에는 로딩 인디케이터를 표시합니다.

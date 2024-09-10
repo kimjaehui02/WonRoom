@@ -39,13 +39,14 @@ class ImageService {
     return imagePath;
   }
 
+
   // 파일 이름을 생성하는 함수
   Future<String> _generateFileName(String postID, String tableName) async {
     final path = await _getLocalPath(tableName);
     final files = Directory(path).listSync();
 
     int imageID = 1;
-    final regex = RegExp(r'^${RegExp.escape(postID)}_(\d+)\.');
+    final regex = RegExp(r'^${RegExp.escape(tableName)}_${RegExp.escape(postID)}_(\d+)\.');
     for (var file in files) {
       if (file is File) {
         final fileName = p.basenameWithoutExtension(file.path);
@@ -60,10 +61,13 @@ class ImageService {
     }
 
     final fileExtension = p.extension(files.isEmpty ? 'dummy.png' : files.first.path);
-    final fileName = '${postID}_$imageID$fileExtension';
+    final fileName = '${tableName}_${postID}_$imageID$fileExtension';
     print('Generated file name: $fileName');
     return fileName;
   }
+
+
+
 
   Future<File> saveImage(File image, String postID, String tableName) async {
     if (image == null) {
@@ -94,7 +98,8 @@ class ImageService {
     return savedFile;
   }
 
-  // 로컬 저장소에서 이미지 파일을 불러오는 함수
+
+// 로컬 저장소에서 이미지 파일을 불러오는 함수
   Future<List<File>> loadImagesForPost(String postID, String tableName) async {
     final path = await _getLocalPath(tableName);
     final directory = Directory(path);
@@ -111,12 +116,13 @@ class ImageService {
     final imageFiles = files
         .where((file) => file is File)
         .map((file) => File(file.path))
-        .where((file) => p.basename(file.path).startsWith('${postID}_'))
+        .where((file) => p.basename(file.path).startsWith('${tableName}_${postID}_'))
         .toList();
 
     print('Filtered image files: ${imageFiles.map((file) => file.path).toList()}');
     return imageFiles;
   }
+
 
   Future<int> countImagesForPost(String postID, String tableName) async {
     final images = await loadImagesForPost(postID, tableName);
@@ -150,9 +156,32 @@ class ImageService {
     final imageFile = File(fullImagePath);
 
     print('Requested image path: $fullImagePath');
+    List<File> AI = await getImagesFromPost(postID, tableName);
+    File AI2 = AI[0];
+
+    print(postID);
+    print(postID);
+    print(postID);
+    print(postID);
+    print(postID);
+    print(postID);
+    print(postID);
+    print(postID);
+    print(postID);
+    print(postID);
+    print(postID);
+    print(postID);
+    print(postID);
+    print(postID);
+    print(postID);
+
     if (await imageFile.exists()) {
       print('Image provider created with file: $fullImagePath');
       return FileImage(imageFile);
+    }
+    else if (await AI2.exists()) {
+      print('AI2 created with file: $fullImagePath');
+      return FileImage(AI2);
     } else {
       print('Image file does not exist. Returning default image provider');
       return AssetImage('images/img01.jpg');
@@ -228,6 +257,37 @@ class ImageService {
     print('Total count of images: ${imageFiles.length}');
     return imageFiles;
   }
+
+  Future<List<File>> getImagesFromPost(String postID, String tableName) async {
+    final path = await getApplicationDocumentsDirectory();
+    final imagesDir = Directory(p.join(path.path, 'images'));
+
+    // 디렉토리가 존재하는지 확인
+    if (!imagesDir.existsSync()) {
+      print('Images directory does not exist');
+      return [];
+    }
+
+    final directories = imagesDir.listSync();
+    List<File> imageFiles = [];
+
+    for (var dir in directories) {
+      if (dir is Directory) {
+        final files = Directory(dir.path).listSync();
+        imageFiles.addAll(
+            files.where((file) =>
+            file is File &&
+                _isImageFile(file) &&
+                p.basename(file.path).contains('${tableName}_$postID')
+            ).cast<File>()
+        );
+      }
+    }
+
+    print('Total count of images for post $postID in table $tableName: ${imageFiles.length}');
+    return imageFiles;
+  }
+
 
   bool _isImageFile(File file) {
     // 이미지 파일의 확장자를 확인하는 간단한 예제
